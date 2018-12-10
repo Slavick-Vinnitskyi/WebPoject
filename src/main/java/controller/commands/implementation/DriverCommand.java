@@ -39,17 +39,22 @@ public class DriverCommand implements Command {
     private void handleDriverAccept(int assignmentId, DriverMainPageService service, int driverId) throws SQLException, ClassNotFoundException {
         System.out.println("Driver: " + driverId + ", applied assignment: " + assignmentId);
         List<Assignment> assignmentsForDriverByStatus = service.getAssignmentsForDriverByStatus(driverId, Assignment.Status.assigned);
-        Assignment assignmentToUpdate = searchInListById(assignmentsForDriverByStatus, assignmentId);
-        assignmentToUpdate.setStatus(Assignment.Status.applyied);
-        service.updateAssignment(assignmentToUpdate, driverId);
+        try {
+
+            Assignment assignmentToUpdate = searchInListById(assignmentsForDriverByStatus, assignmentId);
+            assignmentToUpdate.setStatus(Assignment.Status.applyied);
+            service.updateAssignment(assignmentToUpdate);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     private Assignment searchInListById(List<Assignment> assignments, int id) {
-        for (Assignment a : assignments) {
-            if (a.getId() == id) {
-                return a;
-            }
-        }
-        return null;
+//        for (Assignment a : assignments) {
+//            if (a.getId() == id) {
+//                return a;
+//            }
+//        }
+        return assignments.stream().filter(a -> a.getId() == id).findFirst().orElse(null);
     }
 }

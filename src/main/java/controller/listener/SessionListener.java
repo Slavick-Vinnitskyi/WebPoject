@@ -19,7 +19,7 @@ public class SessionListener implements HttpSessionListener {
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
         HttpSession session = httpSessionEvent.getSession();
         Set<String> loggedUsers = ServletUtility.getLoggedUsers(httpSessionEvent);
-
+        System.out.println("Session closed");
         String userName = ServletUtility.getUserName(session);
         loggedUsers.remove(userName);
 

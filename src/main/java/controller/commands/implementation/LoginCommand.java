@@ -52,9 +52,9 @@ public class LoginCommand implements Command {
 
     private String getRedirectPath(User.ROLE role) {
         if (role == User.ROLE.ADMIN) {
-            return "redirect: /admin";
+            return "redirect: /park/admin";
         } else if (role == User.ROLE.DRIVER) {
-            return "redirect: /driver";
+            return "redirect: /park/driver";
         } else return "/login.jsp";
     }
 }

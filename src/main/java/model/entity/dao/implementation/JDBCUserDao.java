@@ -65,7 +65,7 @@ public class JDBCUserDao implements UserDao {
         User findingUser = new User();
         final String query = "select * from edited_car_park.person where login = ?";
         try (PreparedStatement st = connection.prepareStatement(query)) {
-            st.setString(0, login);
+            st.setString(1, login);
             return getUser(findingUser, st);
 
         } catch (SQLException e) {

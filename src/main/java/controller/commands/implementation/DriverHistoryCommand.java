@@ -1,9 +1,12 @@
 package controller.commands.implementation;
 import controller.commands.Command;
+import model.entity.Assignment;
+import model.entity.User;
+import model.service.DriverHistoryPageService;
 
-import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 public class DriverHistoryCommand implements Command {
 
@@ -11,6 +14,16 @@ public class DriverHistoryCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+        try {
+            DriverHistoryPageService service = new DriverHistoryPageService();
+            User user = (User) request.getSession().getAttribute("user");
+            int userId = user.getId();
+            List <Assignment> assignments = service.getPastAssignmentsForDriver(userId);
+            request.setAttribute("assignmentsHistory", assignments);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 //        log.info("DriverHistoryPage");
         return "/WEB-INF/driver/history.jsp";
     }

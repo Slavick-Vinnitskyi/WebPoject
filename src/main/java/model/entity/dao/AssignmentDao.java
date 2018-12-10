@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface AssignmentDao extends GenericDao<Assignment> {
     List<Assignment> findForUser(int id, Assignment.Status status);
-    void updateToAppliedForUser(Assignment entity, int id);
+    List<Assignment> findPastForUser(int id);
+    void updateToAppliedForUser(Assignment entity);
 }

@@ -5,6 +5,7 @@ import controller.commands.implementation.*;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +13,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+//
+@WebServlet(urlPatterns = "/park/*" , loadOnStartup = 1)
 public class Servlet extends HttpServlet {
     private Map<String, Command> commands = new HashMap<>();
 
@@ -67,7 +70,8 @@ public class Servlet extends HttpServlet {
         System.out.println("ip = " + ipAdress);
         String path = request.getRequestURI();
         System.out.println("processRequest, path=" + path);
-        path = path.replaceAll(".*/project/", "");
-        return commands.getOrDefault(path, (r) -> "/index");
+        path = path.replaceAll(".*/park/", "");
+        path = path.replaceAll(".*/park", "");
+        return commands.getOrDefault(path, (r) -> "/park/index");
     }
 }

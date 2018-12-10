@@ -3,16 +3,24 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js" type="text/javascript"></script>
     <title>ADMIN</title>
 </head>
 <body>
 
 <h1 align="center">Admin page</h1>
 
-<table  border="1" style="width:75%" align="center">
-    <tr><th>Route</th><th>Date</th><th>Driver</th><th>Appointment</th></tr>
+<table  border="1" style="width:75%" align="center" class="table table-hover">
+    <tr class="table-dark"><th>Route</th>
+        <th>Date</th>
+        <th>Driver</th>
+        <th>Appointment</th>
+    </tr>
     <c:forEach var="i" items="${requestScope.routeList}">
-    <tr><td>${i.start} <c:out value="${i.finish}"/></td><td>${i.startUa}</td><td>${i.finishUa}</td>
+    <tr class="table-secondary"><td>${i.start} <c:out value="${i.finish}"/></td>
+        <td>${i.startUa}</td>
+        <td>${i.finishUa}</td>
         <td>
             <form>
                 <c:set var="driver" value="${'Valeriy' ? 'Valeriy' : 'Anton'}"  scope = "session"/>
@@ -21,15 +29,16 @@
                     <option value = "Valeriy" ${driver == 'Valeriy' ? 'selected' : ''}>Valeriy</option>
                 </select>
             </form>
-        <form method="post" action="<c:url value='/add'/>">
-            <input type="number" hidden name="id" value="${i.id}" />
-            <input class="w3-input w3-border" type="submit" name="appoint" value="Appoint"/>
-        </form>
+            <form method="post" action="<c:url value='/add'/>">
+                <input type="number" hidden name="id" value="${i.id}" />
+                <input class="w3-input w3-border" type="submit" name="appoint" value="Appoint"/>
+            </form>
         </td>
+    </tr>
         </c:forEach>
 </table>
-<a href="${pageContext.request.contextPath}/admin/add_car">Add new car</a>
-<a href="${pageContext.request.contextPath}/admin/add_route">Add new route</a>
-<a href="${pageContext.request.contextPath}/logout">Logout</a>
+<a href="${pageContext.request.contextPath}/park/admin/add_car">Add new car</a>
+<a href="${pageContext.request.contextPath}/park/admin/add_route">Add new route</a>
+<a href="${pageContext.request.contextPath}/park/logout">Logout</a>
 </body>
 </html>

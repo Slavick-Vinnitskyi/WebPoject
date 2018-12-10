@@ -6,8 +6,9 @@
 <fmt:bundle basename="driver" prefix="driver.">
 <html lang="${language}">
 <head>
-    <title><fmt:message key="welcome"/></title>
-
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js" type="text/javascript"></script><title>
+    <fmt:message key="welcome"/></title>
 </head>
 <body>
 <form>
@@ -20,15 +21,15 @@
 <h1 align="center">
 
     <c:out value="${sessionScope.user.firstName}"/><fmt:message key="assignments"/></h1>
-<table  border="1" style="width:75%" align="center">
-    <tr>
+<table  border="1" style="width:75%" align="center" class="table table-hover">
+    <tr class="table-dark">
         <th><fmt:message key="table.start"/> </th>
         <th><fmt:message key="table.finish"/></th>
         <th><fmt:message key="table.time"/></th>
         <th><fmt:message key="table.status"/></th>
     </tr>
     <c:forEach var = "ass" items="${requestScope.assignmentsAssignedList}">
-    <tr>
+    <tr class="table-secondary">
         <td><c:out value="${ass.route.start}"/></td>
         <td><c:out value="${ass.route.finish}"/></td>
         <td><c:out value="${ass.date}"/></td>
@@ -46,15 +47,15 @@
 <h1 align="center">
     <c:out value="${sessionScope.user.firstName}"/><fmt:message key="routes"/>
 </h1>
-<table  border="1" style="width:75%" align="center">
-    <tr>
+<table  border="1" style="width:75%" align="center" class="table table-hover">
+    <tr class="table-dark">
         <th><fmt:message key="table.start"/> </th>
         <th><fmt:message key="table.finish"/></th>
         <th><fmt:message key="table.time"/></th>
         <th><fmt:message key="table.status"/></th>
     </tr>
     <c:forEach var = "ass" items="${requestScope.assignmentsAppliedList}">
-        <tr>
+        <tr class="table-secondary">
             <td><c:out value="${ass.route.start}"/></td>
             <td><c:out value="${ass.route.finish}"/></td>
             <td><c:out value="${ass.date}"/></td>
@@ -63,11 +64,11 @@
     </c:forEach>
 </table>
 <div align="left">
-    <a href="${pageContext.request.contextPath}/driver/history"><fmt:message key="link.history"/></a>
+    <a href="${pageContext.request.contextPath}/park/driver/history"><fmt:message key="link.history"/></a>
     <br>
-    <a href="${pageContext.request.contextPath}/driver/about"><fmt:message key="link.own_page"/></a>
+    <a href="${pageContext.request.contextPath}/park/driver/about"><fmt:message key="link.own_page"/></a>
     <br>
-    <a href="${pageContext.request.contextPath}/logout"><fmt:message key="link.logout"/></a>
+    <a href="${pageContext.request.contextPath}/park/logout"><fmt:message key="link.logout"/></a>
 </div>
 </body>
 </html>

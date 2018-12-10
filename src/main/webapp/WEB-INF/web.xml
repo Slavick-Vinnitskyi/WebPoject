@@ -5,15 +5,15 @@
          version="3.1">
 
 
-    <servlet>
-        <servlet-name>Servlet</servlet-name>
-        <servlet-class>controller.Servlet</servlet-class>
-    </servlet>
+    <!--<servlet>-->
+        <!--<servlet-name>Servlet</servlet-name>-->
+        <!--<servlet-class>controller.Servlet</servlet-class>-->
+    <!--</servlet>-->
 
-    <servlet-mapping>
-        <servlet-name>Servlet</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>Servlet</servlet-name>-->
+        <!--<url-pattern>/</url-pattern>-->
+    <!--</servlet-mapping>-->
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>controller.filters.AuthenticationFilter</filter-class>
