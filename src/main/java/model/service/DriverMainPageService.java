@@ -39,9 +39,9 @@ public class DriverMainPageService {
 //        }
 //    }
 
-    public void updateAssignment(Assignment assignment) throws SQLException, ClassNotFoundException {
+    public void updateAssignment(Assignment assignment, int id) throws SQLException, ClassNotFoundException {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
-            dao.update(assignment);
+            dao.updateToAppliedForUser(assignment, id);
         }
     }
 

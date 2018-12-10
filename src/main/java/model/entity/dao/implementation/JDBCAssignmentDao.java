@@ -28,7 +28,8 @@ public class JDBCAssignmentDao implements AssignmentDao {
                 "left join route r on assignment.route = r.route_id " +
                 "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
                 "left join car c on ptc.fk_car_id = c.car_id " +
-                "left join person p on ptc.fk_person_id = p.person_id where date_start > DATE(NOW())";
+                "left join person p on ptc.fk_person_id = p.person_id where id = ?";
+
         return null;
     }
 
@@ -85,19 +86,37 @@ public class JDBCAssignmentDao implements AssignmentDao {
     @Override
     public void update(Assignment entity) {
         final String query = "UPDATE assignment " +
-                "left join person_to_car on person_to_car_id = person_to_car.id " +
-                "left join person p on person_to_car.fk_person_id = p.person_id " +
+                "left join route r on assignment.route = r.route_id " +
+                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
+                "left join car c on ptc.fk_car_id = c.car_id " +
+                "left join person p on ptc.fk_person_id = p.person_id " +
                 "SET status = ? where p.person_id = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1 , String.valueOf(entity.getStatus()));
             preparedStatement.setInt(2 , entity.getId());
             preparedStatement.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
+    @Override
+    public void updateToAppliedForUser(Assignment entity, int id) {
+        final String query = "UPDATE assignment " +
+                "left join route r on assignment.route = r.route_id " +
+                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
+                "left join car c on ptc.fk_car_id = c.car_id " +
+                "left join person p on ptc.fk_person_id = p.person_id " +
+                "SET status = ? where p.person_id = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1 , String.valueOf(entity.getStatus()));
+            preparedStatement.setInt(2 , id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     @Override
     public void delete(int id) {
