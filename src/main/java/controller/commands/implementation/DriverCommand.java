@@ -10,6 +10,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class DriverCommand implements Command {
+    /**
+     * @param request request from client
+     * @return - driver page without redirect if form was`n used
+     *         - driver page with redirect in order to reset request
+     *         to prevent form resending(Some implementation of 'Post/Redirect/Get' pattern )
+     */
     @Override
     public String execute(HttpServletRequest request) {
         try {
@@ -20,15 +26,16 @@ public class DriverCommand implements Command {
             if (request.getParameter("id") != null) {
                 int assignmentId = Integer.valueOf(request.getParameter("id"));
                 handleDriverAccept(assignmentId, service, userId);
+                return "redirect: /park/driver";
             }
             List<Assignment> assignments = service.getAssignmentsForDriverByStatus(userId, Assignment.Status.assigned);
             request.setAttribute("assignmentsAssignedList", assignments);
-
+//TODO: Попробовать возврашать Optional
             List<Assignment> applied = service.getAssignmentsForDriverByStatus(userId, Assignment.Status.applyied);
             request.setAttribute("assignmentsAppliedList", applied);
 
-
-
+        } catch (NullPointerException e) {
+            System.out.println("bad");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -55,6 +62,6 @@ public class DriverCommand implements Command {
 //                return a;
 //            }
 //        }
-        return assignments.stream().filter(a -> a.getId() == id).findFirst().orElse(null);
+        return assignments.stream().filter(a -> a.getId() == id).findFirst().get();
     }
 }

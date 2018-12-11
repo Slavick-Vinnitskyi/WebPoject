@@ -34,7 +34,7 @@
         <td><c:out value="${ass.route.finish}"/></td>
         <td><c:out value="${ass.date}"/></td>
         <td>
-        <form method="post" action="<c:url value='/driver'/>">
+        <form method="post" action="<c:url value="/park/driver"/>">
             <c:out value="${ass.status}"/>
             <input type="number" hidden name="id" value="${ass.id}" />
             <input type="submit" name="apply" value="<fmt:message key="table.apply"/>"/>
@@ -48,12 +48,14 @@
     <c:out value="${sessionScope.user.firstName}"/><fmt:message key="routes"/>
 </h1>
 <table  border="1" style="width:75%" align="center" class="table table-hover">
-    <tr class="table-dark">
-        <th><fmt:message key="table.start"/> </th>
-        <th><fmt:message key="table.finish"/></th>
-        <th><fmt:message key="table.time"/></th>
-        <th><fmt:message key="table.status"/></th>
-    </tr>
+    <thead class="thead-dark">
+        <tr>
+            <th><fmt:message key="table.start"/> </th>
+            <th><fmt:message key="table.finish"/></th>
+            <th><fmt:message key="table.time"/></th>
+            <th><fmt:message key="table.status"/></th>
+        </tr>
+    </thead>
     <c:forEach var = "ass" items="${requestScope.assignmentsAppliedList}">
         <tr class="table-secondary">
             <td><c:out value="${ass.route.start}"/></td>
