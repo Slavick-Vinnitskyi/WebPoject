@@ -2,31 +2,41 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
-        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
-        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js" type="text/javascript"></script>
-        <title>Login page</title>
-    </head>
-    <body>
-        <div align="center">
-            <h1>Вход в систему</h1><br/>
-            <form method="post" action="${pageContext.request.contextPath}/park/login" style="width: 200px; height: 35px;">
-            <label>
-                Login:
-                <input type="text" name="name">
-            </label>
-            <br/>
-                <label>
-                Password:
-                <input type="password" name="pass">
-            </label>
-            <br/><br/>
-                <input class="button" type="submit" value="Войти">
-        </form>
-        </div>
-        <br/><br/><br/><br/><br/><br/>
-        <div align="center">
-        <a href="${pageContext.request.contextPath}/park/logout">На головну</a>
 
-        </div>
-    </body>
+    <!-- Bootstrap CSS -->
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/elegant-icons-style.css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/font-awesome.css" rel="stylesheet"/>
+    <!-- Custom styles -->
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/style-responsive.css" rel="stylesheet"/>
+    <title>Login</title>
+
+
+    </head>
+        <body class="login-img3-body">
+            <div class="container">
+                <form class="login-form" method="post" action="${pageContext.request.contextPath}/park/login">
+                    <div class="login-wrap">
+                        <p class="login-img"><i class="icon_lock_alt"></i></p>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="icon_profile"></i></span>
+                            <input type="text" class="form-control" placeholder="Username" autofocus name="name">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                            <input type="password" class="form-control" placeholder="Password" name="pass">
+                        </div>
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+                        <div class="text-center">
+                            <a href="${pageContext.request.contextPath}/park/logout">Deny</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </body>
 </html>

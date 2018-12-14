@@ -7,9 +7,26 @@
 <fmt:bundle basename="index" prefix="index.">
 <html lang="${language}">
 <head>
-    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
-    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js" type="text/javascript"></script>
-    <title>The all-new Uber</title>
+    <%--<link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">--%>
+    <%--<script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>--%>
+        <!-- Bootstrap CSS -->
+        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <!-- bootstrap theme -->
+        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+        <!--external css-->
+        <!-- font icon -->
+        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/elegant-icons-style.css" rel="stylesheet" />
+        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+        <!-- Custom styles -->
+        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/style.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/style-responsive.css" rel="stylesheet" />
+
+
+        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/html5shiv.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/respond.min.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/lte-ie7.js" type="text/javascript"></script>
+
+        <title>The all-new Uber</title>
 </head>
     <body>
     <form>
@@ -26,7 +43,7 @@
         <br>
     </div>
     <div align = "center">
-        <fmt:message key="signup1"/> <a href="${pageContext.request.contextPath}/register"><fmt:message key="signup2"/></a>
+        <fmt:message key="signup1"/> <a href="${pageContext.request.contextPath}/park/register"><fmt:message key="signup2"/></a>
         <br>
     </div>
     <div align = "center">
