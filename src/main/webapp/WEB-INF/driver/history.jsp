@@ -46,9 +46,9 @@
             <ul>
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                    <span class="profile-ava">
-                                        <img alt="" src="${pageContext.request.contextPath}/resources/bootstrap/img/avatar1_small.jpg">
-                                    </span>
+                        <span class="profile-ava">
+                            <img alt="" src="${pageContext.request.contextPath}/resources/bootstrap/img/avatar1_small.jpg">
+                        </span>
                         <span class="username"><c:out value="${sessionScope.user.firstName}"/> <c:out value="${sessionScope.user.secondName}"/></span>
                         <b class="caret"></b>
                     </a>
@@ -94,10 +94,10 @@
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-8 col-lg-offset-2">
                     <section class="panel">
                         <header class="panel-heading text-center">
-                            <c:out value="${sessionScope.user.firstName}"/><fmt:message key="assignments"/>
+                            <c:out value="${sessionScope.user.firstName}"/> <fmt:message key="assignments"/>
                         </header>
 
                         <table class="table table-striped table-advance table-hover">
@@ -108,12 +108,11 @@
                                 <th><i class="icon_calendar"></i> <fmt:message key="table.time"/></th>
                             </tr>
                             <c:forEach var = "ass" items="${requestScope.assignmentsHistory}">
-                                <tr class="table-secondary">
-                                    <td><c:out value="${ass.route.start}"/></td>
-                                    <td><c:out value="${ass.route.finish}"/></td>
-                                    <td><c:out value="${ass.date}"/></td>
-
-                                </tr>
+                            <tr class="table-secondary">
+                                <td><c:out value="${ass.route.start}"/></td>
+                                <td><c:out value="${ass.route.finish}"/></td>
+                                <td><c:out value="${ass.date}"/></td>
+                            </tr>
                             </c:forEach>
                             </tbody>
                         </table>

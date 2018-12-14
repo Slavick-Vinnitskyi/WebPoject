@@ -47,7 +47,6 @@
     </tr>
         </c:forEach>
 </table>--%>
-<!DOCTYPE html>
 <html lang="en">
 
 <head>

@@ -1,39 +1,178 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Славик Винницкий
-  Date: 04.12.2018
-  Time: 15:35
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
-    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js" type="text/javascript"></script>
-    <title>Adding route</title>
-</head>
-<body>
-    <h2>Here you can add new route</h2>
-    <form method="post">
-        <label>
-            Start
-            <input type="text" name="model">
-        </label>
-        <label>
-            Finish
-            <input type="text" name="year">
-        </label>
-        <br>
-        <label>
-            Початок
-            <input type="text" name="model">
-        </label>
-        <label>
-            Кінець
-            <input type="text" name="year">
-        </label>
-        <br><br>
-        <input class="button" type="submit" value="Add route">
-    </form>
-</body>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="language" value="${not empty param.language ? param.language
+ : not empty language ? language : pageContext.request.locale}" scope="session"/>
+<fmt:setLocale value="${language}" scope = "session"/>
+<fmt:bundle basename="route" prefix="route.">
+<html lang="${language}">
+    <head>
+        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <!-- bootstrap theme -->
+        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+        <!--external css-->
+        <!-- font icon -->
+        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/elegant-icons-style.css" rel="stylesheet" />
+        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+        <!-- Custom styles -->
+        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/style.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/style-responsive.css" rel="stylesheet" />
+        <!-- javascripts -->
+        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
+        <!-- nicescroll -->
+        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.scrollTo.min.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.nicescroll.js" type="text/javascript"></script>
+        <!--custome script for all page-->
+        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/scripts.js"></script>
+
+        <title>Adding route</title>
+    </head>
+    <body>
+        <section id="container" class="">
+            <header class="header dark-bg">
+                <div class="toggle-nav">
+                    <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
+                </div>
+
+                <!--logo start-->
+                <a href="${pageContext.request.contextPath}/park/index" class="logo">Car <span class="lite">Park</span></a>
+                <!--logo end-->
+                <div class="top-nav notification-row">
+                    <ul>
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="profile-ava">
+                                <img alt="" src="${pageContext.request.contextPath}/resources/bootstrap/img/avatar1_small.jpg">
+                            </span>
+                                <span class="username"><c:out value="${sessionScope.user.firstName}"/> <c:out value="${sessionScope.user.secondName}"/></span>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu extended logout">
+                                <div class="log-arrow-up"></div>
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/park/logout"><i class="icon_key_alt"></i>Log Out</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- user login dropdown end -->
+                    </ul>
+                    <!-- notificatoin dropdown end-->
+                </div>
+            </header>
+            <!--header end-->
+
+            <!--sidebar start-->
+            <aside>
+                <div id="sidebar" class="nav-collapse ">
+                    <!-- sidebar menu start-->
+                    <ul class="sidebar-menu">
+                        <li class="">
+                            <a class=""  href="${pageContext.request.contextPath}/park/">
+                                <i class="icon_house_alt"></i>
+                                <span><fmt:message key="index_page"/></span>
+                            </a>
+                        </li>
+                        <li class="sub-menu">
+                            <a href="${pageContext.request.contextPath}/park/admin" class="">
+                                <i class="icon_desktop"></i>
+                                <span><fmt:message key="home_page"/></span>
+                                <span class="menu-arrow arrow_carrot-right"></span>
+                            </a>
+                        </li>
+                        <li class="sub-menu">
+                            <a class="" href="${pageContext.request.contextPath}/park/admin/add_car">
+                                <i class="icon_house_alt"></i>
+                                <span><fmt:message key="bus_page"/></span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- sidebar menu end-->
+                </div>
+            </aside>
+            <!--header end-->
+            <section id="container main-content">
+                <section class="wrapper">
+                    <div class="row">
+                        <div class="col-lg-4 col-lg-offset-5">
+                            <h2><fmt:message key="welcome"/></h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <form method="post" class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-4">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-2 control-label"><fmt:message key="from_en"/></label>
+                                        <input type="text" class="form-control round-input" name="start">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-2 control-label"><fmt:message key="to_en"/></label>
+                                        <input type="text" class="form-control round-input" name="start">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-4">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-2 control-label"><fmt:message key="from_ua"/></label>
+                                        <input type="text" class="form-control round-input" name="start">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-2 control-label"><fmt:message key="to_ua"/></label>
+                                        <input type="text" class="form-control round-input" name="start">
+                                    </div>
+                                </div>
+                                    <input class="btn btn-info" type="submit" value="<fmt:message key="add"/>">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <section class="panel">
+                                <header class="panel-heading text-center">
+                                    <fmt:message key="routes"/>
+                                </header>
+
+                                <table class="table table-striped table-advance table-hover">
+                                    <tbody>
+                                    <tr>
+                                        <th><i class="icon_pin_alt"></i><fmt:message key="from"/> </th>
+                                        <th><i class="icon_pin_alt"></i><fmt:message key="to"/></th>
+                                    </tr>
+                                    <c:forEach var = "route" items="${requestScope.routesList}">
+                                        <tr class="table-secondary">
+                                            <td><c:out value="${route.start}"/></td>
+                                            <td><c:out value="${route.finish}"/></td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </section>
+                            <nav>
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only"><fmt:message key="pagin.prev"/></span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only"><fmt:message key="pagin.next"/></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </section>
+    </body>
 </html>
+</fmt:bundle>
