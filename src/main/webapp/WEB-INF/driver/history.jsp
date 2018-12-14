@@ -1,17 +1,32 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Славик Винницкий
-  Date: 03.12.2018
-  Time: 13:42
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<html>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" scope="session"/>
+<fmt:bundle basename="driver_history" prefix="history.">
+    <html lang="${language}">
 <head>
-    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
-    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+    <!-- Bootstrap CSS -->
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles -->
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/style-responsive.css" rel="stylesheet" />
+
+    <!-- javascripts -->
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
+    <!-- nicescroll -->
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.scrollTo.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <!--custome script for all page-->
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/scripts.js"></script>
     <title>History</title>
 
 </head>
@@ -66,9 +81,9 @@
                     </a>
                 </li>
                 <li class="sub-menu">
-                    <a href="${pageContext.request.contextPath}/park/driver/history" class="">
+                    <a href="${pageContext.request.contextPath}/park/driver" class="">
                         <i class="icon_desktop"></i>
-                        <span><fmt:message key="link.history"/></span>
+                        <span><fmt:message key="link.main"/></span>
                     </a>
                 </li>
             </ul>
@@ -129,3 +144,4 @@
 </section>
 </body>
 </html>
+</fmt:bundle>
