@@ -30,7 +30,7 @@ public class DriverCommand implements Command {
             }
             List<Assignment> assignments = service.getAssignmentsForDriverByStatus(userId, Assignment.Status.assigned);
             request.setAttribute("assignmentsAssignedList", assignments);
-//TODO: Попробовать возврашать Optional
+//TODO: Попробовать возвращать Optional
             List<Assignment> applied = service.getAssignmentsForDriverByStatus(userId, Assignment.Status.applyied);
             request.setAttribute("assignmentsAppliedList", applied);
 
@@ -57,11 +57,6 @@ public class DriverCommand implements Command {
     }
 
     private Assignment searchInListById(List<Assignment> assignments, int id) {
-//        for (Assignment a : assignments) {
-//            if (a.getId() == id) {
-//                return a;
-//            }
-//        }
         return assignments.stream().filter(a -> a.getId() == id).findFirst().get();
     }
 }
