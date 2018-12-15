@@ -14,7 +14,7 @@ public class User {
     private String secondName_ua;
 
     public enum ROLE {
-        DRIVER, ADMIN, UNDEFINED
+        driver, admin, guest
     }
     public ROLE getRole() {
         return role;

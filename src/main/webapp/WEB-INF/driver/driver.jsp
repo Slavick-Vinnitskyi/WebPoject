@@ -25,7 +25,9 @@
         <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.scrollTo.min.js"></script>
         <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.nicescroll.js" type="text/javascript"></script>
         <!--custome script for all page-->
-        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/scripts.js"></script>
+        <script type="text/javascript">
+            <%@include file="/resources/bootstrap/js/scripts.js"%>
+        </script>
         <title>
         <fmt:message key="welcome"/></title>
     </head>
@@ -37,7 +39,7 @@
                 </div>
 
                 <!--logo start-->
-                <a href="${pageContext.request.contextPath}/park/index" class="logo">Car <span class="lite">Park</span></a>
+                <a href="${pageContext.request.contextPath}/park/logout" class="logo">Car <span class="lite">Park</span></a>
                 <!--logo end-->
 
                 <div class="top-nav notification-row">
@@ -82,7 +84,7 @@
                     <!-- sidebar menu start-->
                     <ul class="sidebar-menu">
                         <li class="">
-                            <a class=""  href="${pageContext.request.contextPath}/park/index">
+                            <a class=""  href="${pageContext.request.contextPath}/park/logout">
                                 <i class="icon_house_alt"></i>
                                 <span>Index page</span>
                             </a>

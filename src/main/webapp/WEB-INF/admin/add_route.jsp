@@ -75,20 +75,19 @@
                 <ul class="sidebar-menu">
                     <li class="">
                         <a class="" href="${pageContext.request.contextPath}/park/">
-                            <i class="icon_house_alt"></i>
+                            <i class="icon_house"></i>
                             <span><fmt:message key="index_page"/></span>
                         </a>
                     </li>
                     <li class="sub-menu">
                         <a href="${pageContext.request.contextPath}/park/admin" class="">
-                            <i class="icon_desktop"></i>
+                            <i class="icon_house_alt"></i>
                             <span><fmt:message key="home_page"/></span>
-                            <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                     </li>
                     <li class="sub-menu">
                         <a class="" href="${pageContext.request.contextPath}/park/admin/add_car">
-                            <i class="icon_house_alt"></i>
+                            <i class="icon_plus_alt"></i>
                             <span><fmt:message key="bus_page"/></span>
                         </a>
                     </li>

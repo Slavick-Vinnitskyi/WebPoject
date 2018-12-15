@@ -9,6 +9,6 @@ public class LogoutUtil {
     public static void makeLogout(HttpServletRequest request) {
         String name = ServletUtility.getUserName(request.getSession());
         ServletUtility.logOut(request, name);
-        ServletUtility.setUserRole(request, User.ROLE.UNDEFINED, "Guest");
+        ServletUtility.setUserRole(request, User.ROLE.guest, "guest");
     }
 }

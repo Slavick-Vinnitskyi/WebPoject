@@ -1,56 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%--<html>
-<head>
-    &lt;%&ndash;<link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">&ndash;%&gt;
-
-    &lt;%&ndash;<!-- bootstrap theme -->&ndash;%&gt;
-    &lt;%&ndash;<link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap-theme.css" rel="stylesheet">&ndash;%&gt;
-    &lt;%&ndash;<!--external css-->&ndash;%&gt;
-    &lt;%&ndash;<!-- font icon -->&ndash;%&gt;
-    &lt;%&ndash;<link href="${pageContext.request.contextPath}/resources/bootstrap/css/elegant-icons-style.css" rel="stylesheet" />&ndash;%&gt;
-    &lt;%&ndash;<link href="${pageContext.request.contextPath}/resources/bootstrap/css/font-awesome.min.css" rel="stylesheet" />&ndash;%&gt;
-    &lt;%&ndash;<!-- Custom styles -->&ndash;%&gt;
-    &lt;%&ndash;<link href="${pageContext.request.contextPath}/resources/bootstrap/css/style.css" rel="stylesheet">&ndash;%&gt;
-    &lt;%&ndash;<link href="${pageContext.request.contextPath}/resources/bootstrap/css/style-responsive.css" rel="stylesheet" />&ndash;%&gt;
-    &lt;%&ndash;<script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js" type="text/javascript"></script>&ndash;%&gt;
-    <title>ADMIN</title>
-</head>
-<body>
-
-<h1 align="center">Admin page</h1>
-
-<table  border="1" style="width:75%" align="center" class="table table-hover">
-    <tr class="table-dark"><th>Route</th>
-        <th>Date</th>
-        <th>Driver</th>
-        <th>Appointment</th>
-    </tr>
-    <c:forEach var="i" items="${requestScope.routeList}">
-    <tr class="table-secondary"><td>${i.start} <c:out value="${i.finish}"/></td>
-        <td>${i.startUa}</td>
-        <td>${i.finishUa}</td>
-        <td>
-            <form>
-                <c:set var="driver" value="${'Valeriy' ? 'Valeriy' : 'Anton'}"  scope = "session"/>
-                <select id = "driver" name = "driver" onchange = "submit()">
-                    <option value = "Anton" ${driver == 'Anton' ? 'selected' : ''}>Anton</option>
-                    <option value = "Valeriy" ${driver == 'Valeriy' ? 'selected' : ''}>Valeriy</option>
-                </select>
-            </form>
-            <form method="post" action="<c:url value='/add'/>">
-                <input type="number" hidden name="id" value="${i.id}" />
-                <input class="w3-input w3-border" type="submit" name="appoint" value="Appoint"/>
-            </form>
-        </td>
-    </tr>
-        </c:forEach>
-</table>--%>
+<c:set var="language" value="${not empty param.language ? param.language
+ : not empty language ? language : pageContext.request.locale}" scope="session"/>
+<fmt:setLocale value="${language}" scope = "session"/>
+<fmt:bundle basename="admin" prefix="admin.">
 <html lang="en">
-
 <head>
-
     <!-- Bootstrap CSS -->
     <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- bootstrap theme -->
@@ -72,7 +28,7 @@
     <!--custome script for all page-->
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/scripts.js"></script>
 
-    <title>Admin Page</title>
+    <title><fmt:message key="title"/></title>
 
 </head>
 
@@ -86,23 +42,17 @@
         </div>
 
         <!--logo start-->
-        <a href="${pageContext.request.contextPath}/park/index" class="logo">Car <span class="lite">Park</span></a>
+        <a href="${pageContext.request.contextPath}/park/logout" class="logo">Car <span class="lite">Park</span></a>
         <!--logo end-->
         <div class="top-nav notification-row">
             <ul>
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="profile-ava">
-                                <img alt="" src="${pageContext.request.contextPath}/resources/bootstrap/img/avatar1_small.jpg">
-                            </span>
-                        <span class="username">Jenifer Smith</span>
+                        <span class="username"><c:out value="${sessionScope.user.firstName}"/> <c:out value="${sessionScope.user.secondName}"/></span>
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu extended logout">
                         <div class="log-arrow-up"></div>
-                        <li class="eborder-top">
-                            <a href="#"><i class="icon_profile"></i> My Profile</a>
-                        </li>
                         <li>
                             <a href="${pageContext.request.contextPath}/park/logout"><i class="icon_key_alt"></i>Log Out</a>
                         </li>
@@ -121,21 +71,20 @@
             <!-- sidebar menu start-->
             <ul class="sidebar-menu">
                 <li class="">
-                    <a class="" href="index.html">
-                        <i class="icon_house_alt"></i>
+                    <a class="" href="${pageContext.request.contextPath}/park/logout">
+                        <i class="icon_house"></i>
                         <span>Index page</span>
                     </a>
                 </li>
                 <li class="sub-menu">
                     <a href="${pageContext.request.contextPath}/park/admin/add_route" class="">
-                        <i class="icon_desktop"></i>
+                        <i class="icon_plus_alt"></i>
                         <span>Add route</span>
-                        <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                 </li>
                 <li class="sub-menu">
                         <a class="" href="${pageContext.request.contextPath}/park/admin/add_car">
-                            <i class="icon_house_alt"></i>
+                            <i class="icon_plus_alt"></i>
                             <span>Add bus</span>
                         </a>
                 </li>
@@ -148,74 +97,141 @@
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
-                <div class="col-lg-12">
+                <form method="post" class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <div class="col-sm-6">
+                                <label class="col-sm-2 control-label"><fmt:message key="table.route"/></label>
+                                <select class="form-control m-bot15">
+                                    <option>Route 1</option>
+                                    <option>Option 2</option>
+                                    <option>Option 3</option>
+                                </select>
+                                <%--<input type="text" class="form-control round-input" name="mark">--%>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-2 control-label"><fmt:message key="input.date"/></label>
+                                <input id="dp1" type="text"  value="28-10-2013" class="form-control round-input" name="date">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <div class="col-sm-6">
+                                <label class="col-sm-2 control-label"><fmt:message key="input.auto"/></label>
+                                <select class="form-control m-bot15">
+                                    <option>Car 1</option>
+                                    <option>Option 2</option>
+                                    <option>Option 3</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-2 control-label"><fmt:message key="input.driver"/></label>
+                                <select class="form-control m-bot15">
+                                    <option>Driver 1</option>
+                                    <option>Option 2</option>
+                                    <option>Option 3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <input class="btn btn-info" type="submit" value="<fmt:message key="input.submit"/>">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
                     <section class="panel">
-                        <header class="panel-heading">
-                            Give a few assignments to your driver`s!
+                        <header class="text-center">
+                            <fmt:message key="assign"/>
                         </header>
 
                         <table class="table table-striped table-advance table-hover">
                             <tbody>
                             <tr>
-                                <th><i class="icon_profile"></i> Full Name</th>
-                                <th><i class="icon_calendar"></i> Date</th>
-                                <th><i class="icon_mail_alt"></i> Email</th>
-                                <th><i class="icon_pin_alt"></i> City</th>
-                                <th><i class="icon_mobile"></i> Mobile</th>
-                                <th><i class="icon_cogs"></i> Action</th>
+                                <th><i class="icon_profile"></i> <fmt:message key="table.login"/></th>
+                                <th><i class="icon_calendar"></i> <fmt:message key="table.date"/></th>
+                                <th><i class="icon_drive_alt"></i> <fmt:message key="table.car"/></th>
+                                <th><i class="icon_pin_alt"></i> <fmt:message key="table.route"/></th>
                             </tr>
                             <tr>
-                                <td>Angeline Mcclain</td>
+                                <td>Angeline232</td>
                                 <td>2004-07-06</td>
-                                <td>dale@chief.info</td>
-                                <td>Rosser</td>
-                                <td>176-026-5992</td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a class="btn btn-primary" href="#"><i class="icon_plus_alt2"></i></a>
-                                        <a class="btn btn-success" href="#"><i class="icon_check_alt2"></i></a>
-                                        <a class="btn btn-danger" href="#"><i class="icon_close_alt2"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Sung Carlson</td>
-                                <td>2011-01-10</td>
-                                <td>ione.gisela@high.org</td>
-                                <td>Robert Lee</td>
-                                <td>724-639-4784</td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a class="btn btn-primary" href="#"><i class="icon_plus_alt2"></i></a>
-                                        <a class="btn btn-success" href="#"><i class="icon_check_alt2"></i></a>
-                                        <a class="btn btn-danger" href="#"><i class="icon_close_alt2"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Bryon Osborne</td>
-                                <td>2006-10-29</td>
-                                <td>sol.raleigh@language.edu</td>
-                                <td>York</td>
-                                <td>180-456-0056</td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a class="btn btn-primary" href="#"><i class="icon_plus_alt2"></i></a>
-                                        <a class="btn btn-success" href="#"><i class="icon_check_alt2"></i></a>
-                                        <a class="btn btn-danger" href="#"><i class="icon_close_alt2"></i></a>
-                                    </div>
-                                </td>
+                                <td>Mercedez</td>
+                                <td>Kyiv - Kharkiv</td>
                             </tr>
                             </tbody>
                         </table>
                     </section>
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-6">
+                    <section class="panel">
+                        <header class="text-center">
+                            <fmt:message key="applied"/>
+                        </header>
+
+                        <table class="table table-striped table-advance table-hover">
+                            <tbody>
+                            <tr>
+                                <th><i class="icon_profile"></i> <fmt:message key="table.login"/></th>
+                                <th><i class="icon_calendar"></i> <fmt:message key="table.date"/></th>
+                                <th><i class="icon_drive_alt"></i> <fmt:message key="table.car"/></th>
+                                <th><i class="icon_pin_alt"></i> <fmt:message key="table.route"/></th>
+                            </tr>
+                            <tr>
+                                <td>Angeline232</td>
+                                <td>2004-07-06</td>
+                                <td>Mercedez</td>
+                                <td>Kyiv - Kharkiv</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
             <!-- page end-->
         </section>
     </section>
 </section>
-
-
 </body>
 </html>
+</fmt:bundle>

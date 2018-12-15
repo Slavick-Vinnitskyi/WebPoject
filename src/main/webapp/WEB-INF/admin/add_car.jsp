@@ -92,20 +92,19 @@
                 <ul class="sidebar-menu">
                     <li class="">
                         <a class=""  href="${pageContext.request.contextPath}/park/">
-                            <i class="icon_house_alt"></i>
+                            <i class="icon_house"></i>
                             <span><fmt:message key="navigation.index"/></span>
                         </a>
                     </li>
                     <li class="sub-menu">
                         <a href="${pageContext.request.contextPath}/park/admin" class="">
-                            <i class="icon_desktop"></i>
+                            <i class="icon_house_alt"></i>
                             <span><fmt:message key="navigation.home"/></span>
-                            <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                     </li>
                     <li class="sub-menu">
                         <a class="" href="${pageContext.request.contextPath}/park/admin/add_route">
-                            <i class="icon_house_alt"></i>
+                            <i class="icon_plus_alt"></i>
                             <span><fmt:message key="navigation.add_route"/></span>
                         </a>
                     </li>

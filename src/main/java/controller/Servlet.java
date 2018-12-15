@@ -24,16 +24,16 @@ public class Servlet extends HttpServlet {
                 .setAttribute("loggedUsers", new HashSet<String>());
 
         commands.put("index", new IndexCommand());
-        commands.put("logout", new LogoutCommand());
         commands.put("login", new LoginCommand());
         commands.put("register", new RegisterCommand());
-        commands.put("admin", new AdminCommand());
+        commands.put("logout", new LogoutCommand());
         commands.put("driver", new DriverCommand());
         commands.put("driver/history", new DriverHistoryCommand());
         commands.put("driver/about", new DriverAboutCommand());
-        commands.put("exception", new ExceptionCommand());
+        commands.put("admin", new AdminCommand());
         commands.put("admin/add_car", new AdminAddingCarCommand());
         commands.put("admin/add_route", new AdminAddingRouteCommand());
+        commands.put("exception", new ExceptionCommand());
 
     }
 

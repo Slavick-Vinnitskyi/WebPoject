@@ -42,7 +42,7 @@ public class JDBCUserDao implements UserDao {
 
         List <User> drivers = new CopyOnWriteArrayList<>();
 
-        final String query = "select * from edited_car_park.person where role = 'DRIVER'";
+        final String query = "select * from edited_car_park.person where role = Driver";
         try (Statement st = connection.createStatement()) {
             ResultSet rs = st.executeQuery(query);
 

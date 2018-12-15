@@ -22,9 +22,9 @@ public class LoginCommand implements Command {
         if (name == null || name.equals("") || pass == null || pass.equals("")) {
             return "/login.jsp";
         }
-        if (ServletUtility.checkUserIsLogged(request, name)) {
+       /* if (ServletUtility.checkUserIsLogged(request, name)) {
             return "/WEB-INF/error.jsp";
-        }
+        }*/
 
         User.ROLE role = getUserRole(name);
         ServletUtility.logIn(request, name);
@@ -41,19 +41,19 @@ public class LoginCommand implements Command {
             InputStream is = cl.getResourceAsStream("users.properties");
             properties.load(is);
 
-            String roleStr = properties.getProperty(name, User.ROLE.DRIVER.toString());
+            String roleStr = properties.getProperty(name, User.ROLE.driver.toString());
             return User.ROLE.valueOf(roleStr);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return User.ROLE.UNDEFINED;
+        return User.ROLE.guest;
     }
 
     private String getRedirectPath(User.ROLE role) {
-        if (role == User.ROLE.ADMIN) {
+        if (role == User.ROLE.admin) {
             return "redirect: /park/admin";
-        } else if (role == User.ROLE.DRIVER) {
+        } else if (role == User.ROLE.driver) {
             return "redirect: /park/driver";
         } else return "/login.jsp";
     }

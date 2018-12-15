@@ -15,7 +15,7 @@ public class CarMapper implements ObjectMapper<Car> {
         car.setId(resultSet.getInt("car_id"));
         car.setModel(resultSet.getString("model"));
         car.setYear(resultSet.getInt("year"));
-        car.setLicenseType(LicenseType.valueOf(resultSet.getString("type")));
+        car.setLicenseType(LicenseType.valueOf(resultSet.getString("bus.add.type")));
         return car;
     }
 
