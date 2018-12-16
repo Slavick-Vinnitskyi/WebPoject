@@ -96,7 +96,7 @@
             </div>
         </aside>
         <!--header end-->
-        <section id="container main-content">
+        <section id="main-content">
             <section class="wrapper">
                 <div class="col-lg-4 col-lg-offset-2">
                     <div class="row">

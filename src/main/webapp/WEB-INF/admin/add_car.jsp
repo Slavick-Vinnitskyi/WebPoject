@@ -113,7 +113,7 @@
             </div>
         </aside>
         <!--header end-->
-        <section id="container main-content">
+        <section id="main-content">
             <section class="wrapper">
                 <div class="row">
                     <div class="text-center">
