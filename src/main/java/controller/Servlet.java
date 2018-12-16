@@ -4,6 +4,7 @@ import controller.commands.*;
 import controller.commands.implementation.*;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,13 +14,22 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
+
 //
 @WebServlet(urlPatterns = "/park/*" , loadOnStartup = 1)
 public class Servlet extends HttpServlet {
+    private static ServletContext context;
+
+    public static ServletContext getContext() {
+        return context;
+    }
+
     private Map<String, Command> commands = new HashMap<>();
 
     @Override
     public void init(ServletConfig servletConfig) {
+        context = servletConfig.getServletContext();
         servletConfig.getServletContext()
                 .setAttribute("loggedUsers", new HashSet<String>());
 
@@ -58,7 +68,7 @@ public class Servlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        if (page.contains("redirect: ")) {
+        if (Objects.requireNonNull(page).contains("redirect: ")) {
             response.sendRedirect(request.getContextPath() + page.replaceAll("redirect: ", ""));
         } else {
             request.getRequestDispatcher(page).forward(request, response);

@@ -26,8 +26,8 @@ public class AuthenticationFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
         permissions = new ConcurrentHashMap<>();
         permissions.put("guest", Arrays.asList("login", "register", "", "index", "logout"));
-        permissions.put("driver", Arrays.asList("driver", "driver/history", "driver/about", "logout", "", "index"));
-        permissions.put("admin", Arrays.asList("admin", "admin/add_car", "admin/add_route", "logout", "", "index"));
+        permissions.put("driver", Arrays.asList("driver", "driver/history", "driver/about", "logout", "", "index", "login"));
+        permissions.put("admin", Arrays.asList("admin", "admin/add_car", "admin/add_route", "logout", "", "index", "login"));
     }
 
     @Override

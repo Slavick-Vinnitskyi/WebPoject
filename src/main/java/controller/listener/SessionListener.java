@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import java.util.Map;
 import java.util.Set;
 
 @WebListener
@@ -23,6 +24,6 @@ public class SessionListener implements HttpSessionListener {
         String userName = ServletUtility.getUserName(session);
         loggedUsers.remove(userName);
 
-        ServletUtility.setLoggedUsers(session, loggedUsers);
+        ServletUtility.setLoggedUsers(httpSessionEvent.getSession(),loggedUsers);
     }
 }

@@ -1,19 +1,24 @@
 package controller.commands.utils;
 
+import controller.Servlet;
 import model.entity.User;
 import model.service.UserService;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 
 public class ServletUtility {
-    public static void setUserRole(HttpServletRequest request, User.ROLE role, String name) {
-        HttpSession session = request.getSession();
+    private static ServletContext context = Servlet.getContext();
 
+    public static void saveUserDataToSession(HttpServletRequest request, User.ROLE role, String name, int id) {
+        HttpSession session = request.getSession();
+        session.setAttribute("userId", id);
         session.setAttribute("userName", name);
         session.setAttribute("role", role);
     }
@@ -24,10 +29,10 @@ public class ServletUtility {
         session.setAttribute("user", user);
     }
 
-    public static boolean checkUserIsLogged(HttpServletRequest request, String userName){
-        Set<String> loggedUsers = getLoggedUsers(request);
-        return loggedUsers.stream().anyMatch(userName::equals);
-    }
+//    public static boolean checkUserIsLogged(HttpServletRequest request, String userName){
+//        Set<String> loggedUsers = getLoggedUsers(request);
+//        return loggedUsers.stream().anyMatch(userName::equals);
+//    }
     public static void logIn(HttpServletRequest request, String userName){
         Set<String> loggedUsers = getLoggedUsers(request);
         loggedUsers.add(userName);
@@ -41,8 +46,7 @@ public class ServletUtility {
     }
 
     private static Set<String> getLoggedUsers(HttpServletRequest request) {
-        return (HashSet<String>) request.getServletContext()
-                .getAttribute("loggedUsers");
+        return (Set<String>) context.getAttribute("loggedUsers");
     }
 
     public static Set<String> getLoggedUsers(HttpSessionEvent httpSessionEvent) {

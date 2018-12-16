@@ -24,7 +24,6 @@ public class DriverHistoryCommand implements Command {
             e.printStackTrace();
         }
 
-//        log.info("DriverHistoryPage");
         return "/WEB-INF/driver/history.jsp";
     }
 }
