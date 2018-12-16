@@ -1,8 +1,10 @@
 package model.entity.dao.implementation;
 
+import model.dto.IndexDto;
 import model.entity.Assignment;
 import model.entity.dao.AssignmentDao;
 import model.entity.dao.mappers.implementation.AssignmentMapper;
+import model.entity.dao.mappers.implementation.IndexDtoMapper;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -36,9 +38,7 @@ public class JDBCAssignmentDao implements AssignmentDao {
     @Override
     public List<Assignment> findAll() throws SQLException {
         List<Assignment> assignments = new CopyOnWriteArrayList<>();
-//        final String query = "select * from edited_car_park.assignment" +
-//                " left join route on edited_car_park.assignment.route = route.route_id" +
-//                " where date_start > DATE(NOW())";
+
         final String query = "select * from assignment " +
                 "left join route r on assignment.route = r.route_id " +
                 "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
@@ -53,14 +53,6 @@ public class JDBCAssignmentDao implements AssignmentDao {
         }
     }
 
-    private List<Assignment> getAssignments(List<Assignment> assignments, ResultSet resultSet) throws SQLException {
-        AssignmentMapper assignmentMapper = new AssignmentMapper();
-        while (resultSet.next()) {
-            Assignment assignment = assignmentMapper.extractFromResultSet(resultSet);
-            assignments.add(assignment);
-        }
-        return new ArrayList<>(assignments);
-    }
 
     public List<Assignment> findForUser(int id, Assignment.Status status) {
         List<Assignment> assignments = new CopyOnWriteArrayList<>();
@@ -98,10 +90,6 @@ public class JDBCAssignmentDao implements AssignmentDao {
         }
     }
 
-    private List<Assignment> getAssignments(List<Assignment> assignments, PreparedStatement statement) throws SQLException {
-        ResultSet resultSet = statement.executeQuery();
-        return getAssignments(assignments, resultSet);
-    }
 
     @Override
     public void update(Assignment entity) {
@@ -137,7 +125,42 @@ public class JDBCAssignmentDao implements AssignmentDao {
         }
     }
 
+    @Override
+    public List<IndexDto> findAllFutureApplied() {
+                final String query = "select * from edited_car_park.assignment" +
+                " left join route on edited_car_park.assignment.route = route.route_id" +
+                " where date_start > DATE(NOW()) and status='applied'" +
+                        "ORDER BY date_start";
+        List<IndexDto> assignments = new CopyOnWriteArrayList<>();
 
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            IndexDtoMapper indexDtoMapper = new IndexDtoMapper();
+            while (resultSet.next()) {
+                IndexDto dto = indexDtoMapper.extractFromResultSet(resultSet);
+                assignments.add(dto);
+            }
+            return new ArrayList<>(assignments);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    private List<Assignment> getAssignments(List<Assignment> assignments, PreparedStatement statement) throws SQLException {
+        ResultSet resultSet = statement.executeQuery();
+        return getAssignments(assignments, resultSet);
+    }
+
+    private List<Assignment> getAssignments(List<Assignment> assignments, ResultSet resultSet) throws SQLException {
+        AssignmentMapper assignmentMapper = new AssignmentMapper();
+        while (resultSet.next()) {
+            Assignment assignment = assignmentMapper.extractFromResultSet(resultSet);
+            assignments.add(assignment);
+        }
+        return new ArrayList<>(assignments);
+    }
 
     @Override
     public void delete(int id) {

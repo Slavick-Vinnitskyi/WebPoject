@@ -1,6 +1,7 @@
 package controller.commands.implementation;
 
 import controller.commands.Command;
+import model.dto.IndexDto;
 import model.entity.Assignment;
 import model.service.IndexService;
 
@@ -13,7 +14,7 @@ public class IndexCommand implements Command {
     public String execute(HttpServletRequest request) throws Exception {
 
         IndexService indexService = new IndexService();
-        List<Assignment> assignmentList = indexService.getFutureAssignments();
+        List<IndexDto> assignmentList = indexService.getFutureAssignments();
         request.setAttribute("assignmentList", assignmentList);
         return "/WEB-INF/index.jsp";
     }

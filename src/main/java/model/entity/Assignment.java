@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class Assignment {
 
     public enum Status {
-        assigned, applyied
+        assigned, applied
     }
 
     private int id;
