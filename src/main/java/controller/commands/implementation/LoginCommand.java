@@ -1,9 +1,11 @@
 package controller.commands.implementation;
 
+import controller.commands.utils.SecurityUtil;
 import controller.commands.utils.ServletUtility;
 import controller.commands.Command;
 import controller.commands.utils.LogoutUtil;
 import model.entity.User;
+import model.entity.dao.implementation.UserNotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -18,23 +20,44 @@ public class LoginCommand implements Command {
         String name = request.getParameter("name");
         String pass = request.getParameter("pass");
 
+        try {
 
-        if (name == null || name.equals("") || pass == null || pass.equals("")) {
-            return "/login.jsp";
+            User authorized = checkLoginAndPassword(name, pass, request);
+            User.ROLE role = authorized.getRole();
+            ServletUtility.logIn(request, name);
+            ServletUtility.setUserRole(request, role, name);
+            ServletUtility.setUser(request, name);
+
+            return getRedirectPath(role);
+        } catch (UserNotFoundException e) {
+            return informAboutWrongInput(request);
         }
-       /* if (ServletUtility.checkUserIsLogged(request, name)) {
-            return "/WEB-INF/error.jsp";
-        }*/
-
-        User.ROLE role = getUserRole(name);
-        ServletUtility.logIn(request, name);
-        ServletUtility.setUserRole(request, role, name);
-        ServletUtility.setUser(request, name);
-
-        return getRedirectPath(role);
     }
 
-    private User.ROLE getUserRole(String name) {
+    private User authorization(HttpServletRequest request) throws UserNotFoundException {
+        String name = request.getParameter("name");
+        String pass = request.getParameter("pass");
+        try {
+            return new SecurityUtil().validateUser(name, pass);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private User checkLoginAndPassword(String login, String password, HttpServletRequest request)  throws UserNotFoundException{
+        if (login == null || login.equals("") || password == null || password.equals("")) {
+            return null;
+        }
+        return authorization(request);
+    }
+
+    private String informAboutWrongInput(HttpServletRequest request) {
+        request.setAttribute("info", "Invalid name or password");
+        return "/login.jsp";
+    }
+
+/*    private User.ROLE getUserRole(String name) {
         try {
             Properties properties = new Properties();
             ClassLoader cl = this.getClass().getClassLoader();
@@ -48,7 +71,7 @@ public class LoginCommand implements Command {
             e.printStackTrace();
         }
         return User.ROLE.guest;
-    }
+    }*/
 
     private String getRedirectPath(User.ROLE role) {
         if (role == User.ROLE.admin) {

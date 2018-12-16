@@ -31,7 +31,7 @@ public class DriverCommand implements Command {
             List<Assignment> assignments = service.getAssignmentsForDriverByStatus(userId, Assignment.Status.assigned);
             request.setAttribute("assignmentsAssignedList", assignments);
 //TODO: Попробовать возвращать Optional
-            List<Assignment> applied = service.getAssignmentsForDriverByStatus(userId, Assignment.Status.applyied);
+            List<Assignment> applied = service.getAssignmentsForDriverByStatus(userId, Assignment.Status.applied);
             request.setAttribute("assignmentsAppliedList", applied);
 
         } catch (NullPointerException e) {
@@ -49,7 +49,7 @@ public class DriverCommand implements Command {
         try {
 
             Assignment assignmentToUpdate = searchInListById(assignmentsForDriverByStatus, assignmentId);
-            assignmentToUpdate.setStatus(Assignment.Status.applyied);
+            assignmentToUpdate.setStatus(Assignment.Status.applied);
             service.updateAssignment(assignmentToUpdate);
         } catch (NullPointerException e) {
             e.printStackTrace();

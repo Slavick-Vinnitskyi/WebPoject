@@ -1,5 +1,6 @@
 package model.service;
 
+import model.dto.IndexDto;
 import model.entity.Assignment;
 import model.entity.dao.AssignmentDao;
 import model.entity.dao.DaoFactory;
@@ -16,9 +17,9 @@ public class IndexService {
     public IndexService() throws Exception {
     }
 
-    public List<Assignment> getFutureAssignments() throws SQLException, ClassNotFoundException {
+    public List<IndexDto> getFutureAssignments() throws SQLException, ClassNotFoundException {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
-            return dao.findAll();
+            return dao.findAllFutureApplied();
         }
     }
 }

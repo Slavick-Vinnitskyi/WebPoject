@@ -23,12 +23,10 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public User findById(int id) {
-
-        User findingUser = new User();
         final String query = "select * from edited_car_park.person where person_id = ?";
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setInt(0, id);
-            return getUser(findingUser, st);
+            return getUser(st);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,12 +59,10 @@ public class JDBCUserDao implements UserDao {
     }
 
     public User findByName(String login) {
-
-        User findingUser = new User();
         final String query = "select * from edited_car_park.person where login = ?";
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, login);
-            return getUser(findingUser, st);
+            return getUser(st);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,12 +70,28 @@ public class JDBCUserDao implements UserDao {
         return null;
     }
 
-    private User getUser(User findingUser, PreparedStatement st) throws SQLException {
+    @Override
+    public User findByLoginAndPassword(String login, String password) throws UserNotFoundException, SQLException {
+        final String query = "select * from edited_car_park.person where login = ? and password = ?";
+        try (PreparedStatement st = connection.prepareStatement(query)) {
+            st.setString(1, login);
+            st.setString(2, password);
+            ResultSet resultSet = st.executeQuery();
+            if (resultSet.next()) {
+                return getUser(st);
+            } else {
+                throw new UserNotFoundException("Wrong login or password");
+            }
+        }
+    }
+
+    private User getUser(PreparedStatement st) throws SQLException {
+        User findingUser = new User();
         ResultSet rs = st.executeQuery();
-        UserMapper driverMapper = new UserMapper();
+        UserMapper userMapper = new UserMapper();
 
         while (rs.next()) {
-            findingUser = driverMapper
+            findingUser = userMapper
                     .extractFromResultSet(rs);
         }
         return findingUser;

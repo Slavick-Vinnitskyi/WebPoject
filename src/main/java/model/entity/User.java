@@ -17,6 +17,9 @@ public class User {
         driver, admin, guest
     }
     public ROLE getRole() {
+        if(role == null) {
+            return ROLE.guest;
+        }
         return role;
     }
 

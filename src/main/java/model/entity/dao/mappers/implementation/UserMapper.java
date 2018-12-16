@@ -18,7 +18,7 @@ public class UserMapper implements ObjectMapper<User> {
         user.setSecondName(resultSet.getString("second_name"));
         user.setFirstName_ua(resultSet.getString("first_name_ua"));
         user.setSecondName_ua(resultSet.getString("second_name_ua"));
-        user.setRole(User.ROLE.driver);
+        user.setRole(User.ROLE.valueOf(resultSet.getString("role")));
         return user;
     }
 

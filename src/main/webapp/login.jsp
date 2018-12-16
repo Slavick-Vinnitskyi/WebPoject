@@ -1,5 +1,6 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
     <head>
 
@@ -21,6 +22,7 @@
         <body class="login-img3-body">
             <div class="container">
                 <form class="login-form" method="post" action="${pageContext.request.contextPath}/park/login">
+                    <div><p><c:out value="${requestScope.info}"/></p><div>
                     <div class="login-wrap">
                         <p class="login-img"><i class="icon_lock_alt"></i></p>
                         <div class="input-group">
