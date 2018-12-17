@@ -37,18 +37,18 @@
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/scripts.js"></script>
 
     <!-- javascripts -->
-    <script src="resources/bootstrap/js/jquery.js"></script>
-    <script src="resources/bootstrap/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}resources/bootstrap/js/jquery.js"></script>
+    <script src="${pageContext.request.contextPath}resources/bootstrap/js/bootstrap.min.js"></script>
     <!-- nice scroll -->
-    <script src="resources/bootstrap/js/jquery.scrollTo.min.js"></script>
-    <script src="resources/bootstrap/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}resources/bootstrap/js/jquery.scrollTo.min.js"></script>
+    <script src="${pageContext.request.contextPath}resources/bootstrap/js/jquery.nicescroll.js" type="text/javascript"></script>
     <!-- jquery validate js -->
-    <script type="text/javascript" src="resources/bootstrap/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}resources/bootstrap/js/jquery.validate.min.js"></script>
     <!-- custom form validation script for this page-->
-    <script src="resources/bootstrap/js/form-validation-script.js"></script>
+    <script src="${pageContext.request.contextPath}resources/bootstrap/js/form-validation-script.js"></script>
     <!--custome script for all page-->
-    <script src="resources/bootstrap/js/scripts.js"></script>
-    <script src="resources/bootstrap/js/gritter.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}resources/bootstrap/js/scripts.js"></script>
+    <script src="${pageContext.request.contextPath}resources/bootstrap/js/gritter.js" type="text/javascript"></script>
 
     <title>Registration</title>
 </head>

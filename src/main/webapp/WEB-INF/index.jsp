@@ -41,7 +41,7 @@
                <div class="row">
                    <div align = "center">
                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/login.jsp" ><fmt:message key="login"/></a>
-                       <a class="btn btn-success" href="${pageContext.request.contextPath}/park/register"><fmt:message key="signup"/></a>
+                       <a class="btn btn-success" href="${pageContext.request.contextPath}/register.jsp"><fmt:message key="signup"/></a>
                        <br><br>
                    </div>
                </div>
