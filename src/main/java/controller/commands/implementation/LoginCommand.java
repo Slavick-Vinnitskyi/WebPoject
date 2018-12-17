@@ -1,14 +1,16 @@
 package controller.commands.implementation;
 
-import controller.commands.utils.SecurityUtil;
 import controller.commands.utils.ServletUtility;
 import controller.commands.Command;
 import model.entity.User;
 import model.entity.dao.implementation.UserNotFoundException;
+import model.service.LoginService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
+import java.util.Optional;
+
 //TODO: remove unnecessary methods
 //TODO: move login/logout methods to Security command
 //TODO: make userDTO instead of user object
@@ -63,9 +65,17 @@ public class LoginCommand implements Command {
     }
 
     private void forceLogout(HttpServletRequest request) {
-        if(ServletUtility.getUserId(request) != 0 ) {
+        if(getUserId(request) != -1) {
             ServletUtility.logOut(request.getSession());
         }
+    }
+
+    /**
+     * @param request needs to get the session
+     * @return user id if those exist of 0 if not
+     */
+    private int getUserId(HttpServletRequest request) {
+        return (int) Optional.ofNullable(request.getSession().getAttribute("userId")).orElse(-1);
     }
 
 /*    private void makeLogout(HttpServletRequest request) {
@@ -78,7 +88,7 @@ public class LoginCommand implements Command {
     private User authorization(String name, String pass, HttpServletRequest request) throws UserNotFoundException {
 
         try {
-            return new SecurityUtil().validateUser(name, pass);
+            return new LoginService().validateUser(name, pass);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
