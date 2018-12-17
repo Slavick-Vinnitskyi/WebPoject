@@ -9,6 +9,6 @@ public class LogoutUtil {
     public static void makeLogout(HttpServletRequest request) {
         String name = ServletUtility.getUserName(request.getSession());
         ServletUtility.logOut(request, name);
-        ServletUtility.saveUserDataToSession(request, User.ROLE.guest, "guest",0);
+        ServletUtility.saveUserDataToSession(request, User.ROLE.guest, "guest", ServletUtility.getUserId(request));
     }
 }

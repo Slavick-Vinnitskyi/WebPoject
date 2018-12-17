@@ -10,11 +10,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 @WebServlet(urlPatterns = "/park/*" , loadOnStartup = 1)
 public class Servlet extends HttpServlet {
@@ -29,7 +31,7 @@ public class Servlet extends HttpServlet {
     @Override
     public void init(ServletConfig servletConfig) {
         context = servletConfig.getServletContext();
-        context.setAttribute("loggedUsers", new HashSet<String>());
+        context.setAttribute("loggedUsers", new ConcurrentHashMap<Integer, HttpSession>());
 
         commands.put("index", new IndexCommand());
         commands.put("login", new LoginCommand());
