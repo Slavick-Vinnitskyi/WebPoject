@@ -16,22 +16,20 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 
-//
 @WebServlet(urlPatterns = "/park/*" , loadOnStartup = 1)
 public class Servlet extends HttpServlet {
+
     private static ServletContext context;
+    private Map<String, Command> commands = new HashMap<>();
 
     public static ServletContext getContext() {
         return context;
     }
 
-    private Map<String, Command> commands = new HashMap<>();
-
     @Override
     public void init(ServletConfig servletConfig) {
         context = servletConfig.getServletContext();
-        servletConfig.getServletContext()
-                .setAttribute("loggedUsers", new HashSet<String>());
+        context.setAttribute("loggedUsers", new HashSet<String>());
 
         commands.put("index", new IndexCommand());
         commands.put("login", new LoginCommand());

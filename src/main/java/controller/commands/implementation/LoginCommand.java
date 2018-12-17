@@ -3,19 +3,16 @@ package controller.commands.implementation;
 import controller.commands.utils.SecurityUtil;
 import controller.commands.utils.ServletUtility;
 import controller.commands.Command;
-import controller.commands.utils.LogoutUtil;
 import model.entity.User;
 import model.entity.dao.implementation.UserNotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Map;
 
 public class LoginCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) throws Exception {
-        LogoutUtil.makeLogout(request);
+        makeLogout(request);
 
         String name = request.getParameter("name");
         String pass = request.getParameter("pass");
@@ -31,6 +28,13 @@ public class LoginCommand implements Command {
         } catch (UserNotFoundException e) {
             return informAboutWrongInput(request);
         }
+    }
+
+    private void makeLogout(HttpServletRequest request) {
+        String name = ServletUtility.getUserName(request.getSession());
+        ServletUtility.logOut(request, name);
+        ServletUtility.saveUserDataToSession(request, User.ROLE.guest, "guest",0);
+
     }
 
     private User authorization(String name, String pass, HttpServletRequest request) throws UserNotFoundException {

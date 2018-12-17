@@ -7,10 +7,7 @@ import model.service.DriverMainPageService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 public class DriverCommand implements Command {
     /**
