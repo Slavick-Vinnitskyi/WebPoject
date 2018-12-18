@@ -1,5 +1,6 @@
 package controller.filters;
 
+import model.entity.User;
 import model.exception.PageAccessException;
 
 import javax.servlet.*;
@@ -19,15 +20,15 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @WebFilter(urlPatterns = {"/park/*"})
 public class AuthenticationFilter implements Filter {
-    private Map<String, List<String>> permissions;
+    private Map<User.ROLE, List<String>> allowed;
     private String path;
     private HttpSession session;
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        permissions = new ConcurrentHashMap<>();
-        permissions.put("guest", Arrays.asList("login", "register", "", "index", "logout"));
-        permissions.put("driver", Arrays.asList("driver", "driver/history", "driver/about", "logout", "", "index", "login"));
-        permissions.put("admin", Arrays.asList("admin", "admin/add_car", "admin/add_route", "logout", "", "index", "login"));
+    public void init(FilterConfig filterConfig) {
+        allowed = new ConcurrentHashMap<>();
+        allowed.put(User.ROLE.guest, Arrays.asList("login", "register", "", "index", "logout"));
+        allowed.put(User.ROLE.driver, Arrays.asList("driver", "driver/history", "driver/about", "logout", "", "index", "login"));
+        allowed.put(User.ROLE.admin, Arrays.asList("admin", "admin/add_car", "admin/add_route", "logout", "", "index", "login"));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class AuthenticationFilter implements Filter {
 
         path = req.getRequestURI();
         session = req.getSession();
-        String role = getUserRole();
+        User.ROLE role = getUserRole();
 
         cleanUpPath();
 
@@ -56,15 +57,18 @@ public class AuthenticationFilter implements Filter {
         path = path.replaceAll(".*/park", "");
     }
 
-    private String getUserRole() {
+    private User.ROLE getUserRole() {
         return session.getAttribute("role") != null ?
-                session.getAttribute("role").toString() : "guest";
+                (User.ROLE) session.getAttribute("role") : User.ROLE.guest;
     }
 
-    private boolean checkPermission(String role) {
-        return permissions.get(role).contains(path);
+    /**
+     * @param role user role that try to access to some page
+     * @return true if user is allowed to visit page
+     */
+    private boolean checkPermission(User.ROLE role) {
+        return allowed.get(role).contains(path);
     }
-
 
     @Override
     public void destroy() {

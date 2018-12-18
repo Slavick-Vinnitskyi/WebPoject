@@ -14,9 +14,6 @@ public class AdminMainPageService {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
 
-    public AdminMainPageService() throws Exception {
-    }
-
     public List<Route> getAllRoutes() throws SQLException, ClassNotFoundException {
         try (RouteDao dao = daoFactory.createRouteDao()) {
             return dao.findAll();

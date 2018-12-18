@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,11 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Servlet extends HttpServlet {
 
     private static ServletContext context;
-    private Map<String, Command> commands = new HashMap<>();
-
-    public static ServletContext getContext() {
-        return context;
-    }
+    private Map<String, Command> commands = new ConcurrentHashMap<>();
 
     @Override
     public void init(ServletConfig servletConfig) {
@@ -44,6 +39,10 @@ public class Servlet extends HttpServlet {
         commands.put("admin/add_route", new AdminAddingRouteCommand());
         commands.put("exception", new ExceptionCommand());
 
+    }
+
+    public static ServletContext getContext() {
+        return context;
     }
 
     @Override

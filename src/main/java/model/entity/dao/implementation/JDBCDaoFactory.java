@@ -21,9 +21,12 @@ public class JDBCDaoFactory extends DaoFactory {
     private final static String DATABASE_USER = "root";
     private final static String DATABASE_PASSWORD = "root";
 
-    /*public JDBCDaoFactory() throws Exception {
-    }*/
 
+    /**
+     * @return
+     * @throws SQLException if something wrong with driver
+     * @throws ClassNotFoundException
+     */
     @Override
     public UserDao createUserDao() throws SQLException, ClassNotFoundException {
 

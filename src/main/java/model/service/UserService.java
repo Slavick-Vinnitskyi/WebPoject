@@ -10,8 +10,6 @@ import java.util.List;
 public class UserService {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
-    public UserService() throws Exception {
-    }
 
     public List<User> getAllUser() throws SQLException, ClassNotFoundException {
         try (UserDao dao = daoFactory.createUserDao()) {

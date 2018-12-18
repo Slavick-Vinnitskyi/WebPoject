@@ -12,7 +12,7 @@ public abstract class DaoFactory {
     public abstract AssignmentDao createAssignmentDao() throws SQLException, ClassNotFoundException;
     public abstract AssignmentDao createCarDao() throws SQLException, ClassNotFoundException;
 
-    public static DaoFactory getInstance() throws Exception {
+    public static DaoFactory getInstance() {
         if(daoFactory == null) {
             synchronized (DaoFactory.class) {
                 if(daoFactory == null) {

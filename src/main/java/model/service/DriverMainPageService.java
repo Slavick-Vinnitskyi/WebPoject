@@ -24,9 +24,6 @@ import java.util.List;
 public class DriverMainPageService {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
-    public DriverMainPageService() throws Exception {
-    }
-
 
     public List<Assignment> getAssignmentsForDriverByStatus(int id, Assignment.Status status) throws SQLException, ClassNotFoundException {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {

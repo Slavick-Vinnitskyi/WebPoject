@@ -1,6 +1,6 @@
 package controller.commands.implementation;
 
-import controller.commands.utils.ServletUtility;
+import controller.commands.utils.SecurityUtility;
 import controller.commands.Command;
 import model.entity.User;
 import model.entity.dao.implementation.UserNotFoundException;
@@ -11,48 +11,42 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.Optional;
 
-//TODO: remove unnecessary methods
-//TODO: move login/logout methods to Security command
 //TODO: make userDTO instead of user object
 public class LoginCommand implements Command {
+    private SecurityUtility security = new SecurityUtility();
 
+    /**
+     * @param request request from client
+     * @return user page if input is right
+     */
     @Override
     public String execute(HttpServletRequest request) {
-        forceLogout(request);
-//        makeLogout(request);
-//
+        logout(request);
         String name = request.getParameter("name");
         String pass = request.getParameter("pass");
-//
-//        try {
-//            User authorized = checkLoginAndPassword(name, pass, request);
-//            User.ROLE role = authorized.getRole();
-//            ServletUtility.logIn(request, name);
-//            ServletUtility.saveUserDataToSession(request, role, name, authorized.getId());
-//            ServletUtility.setUser(request, name);
-//
-//            return getRedirectPath(role);
-//        } catch (UserNotFoundException e) {
-//            return informAboutWrongInput(request);
-//        }
+
         try {
-            User user = checkLoginAndPassword(name, pass, request);
+            User user = checkLoginAndPassword(name, pass);
             logIn(request, user);
             return getRedirectPath(user.getRole());
-        }catch (UserNotFoundException | NullPointerException e) {
+        } catch (UserNotFoundException | NullPointerException e) {
             return informAboutWrongInput(request);
         }
     }
 
     private void logIn(HttpServletRequest request, User user) {
-        Map<Integer, HttpSession> loggedUsers = ServletUtility.getLoggedUsers();
+        Map<Integer, HttpSession> loggedUsers = security.getLoggedUsers();
         int userId = user.getId();
-        if(loggedUsers.containsKey(userId)) {
+        destroyPreviousSession(loggedUsers, userId);
+        loggedUsers.put(userId, request.getSession());
+        security.setLoggedUsers(loggedUsers);
+        sessionSetup(request, user);
+    }
+
+    private void destroyPreviousSession(Map<Integer, HttpSession> loggedUsers, int userId) {
+        if (loggedUsers.containsKey(userId)) {
             loggedUsers.get(userId).invalidate();
         }
-        loggedUsers.put(userId, request.getSession());
-        ServletUtility.setLoggedUsers(loggedUsers);
-        sessionSetup(request, user);
     }
 
     private void sessionSetup(HttpServletRequest request, User user) {
@@ -64,9 +58,14 @@ public class LoginCommand implements Command {
         session.setAttribute("user", user);
     }
 
-    private void forceLogout(HttpServletRequest request) {
-        if(getUserId(request) != -1) {
-            ServletUtility.logOut(request.getSession());
+    /**
+     * Making logout to invalidate last user session
+     *
+     * @param request with session that will be putted instead of previous
+     */
+    private void logout(HttpServletRequest request) {
+        if (getUserId(request) != -1) {
+            security.logOut(request.getSession());
         }
     }
 
@@ -78,37 +77,23 @@ public class LoginCommand implements Command {
         return (int) Optional.ofNullable(request.getSession().getAttribute("userId")).orElse(-1);
     }
 
-/*    private void makeLogout(HttpServletRequest request) {
-        String name = ServletUtility.getUserName(request.getSession());
-        ServletUtility.logOut(request, name);
-        ServletUtility.saveUserDataToSession(request, User.ROLE.guest, "guest",0);
 
-    }*/
-
-    private User authorization(String name, String pass, HttpServletRequest request) throws UserNotFoundException {
+    private User authorization(String name, String pass) throws UserNotFoundException {
 
         try {
             return new LoginService().validateUser(name, pass);
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
             return null;
         }
     }
-/*    private void logOutIfUserExist(HttpServletRequest request, User user) {
-        Map<Integer, HttpSession> loggedUsers = ServletUtility.getLoggedUsers();
-        int userId = user.getId();
-        if(loggedUsers.containsKey(userId)) {
-            loggedUsers.get(userId).invalidate();
-        }
-        loggedUsers.put(userId,request.getSession());
-        ServletUtility.setLoggedUsers(loggedUsers);
-    }*/
 
-    private User checkLoginAndPassword(String login, String password, HttpServletRequest request)  throws UserNotFoundException{
+
+    private User checkLoginAndPassword(String login, String password) throws UserNotFoundException {
         if (login == null || login.equals("") || password == null || password.equals("")) {
             return null;
         }
-        return authorization(login, password, request);
+        return authorization(login, password);
     }
 
     private String informAboutWrongInput(HttpServletRequest request) {
