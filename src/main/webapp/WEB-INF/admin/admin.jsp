@@ -119,7 +119,7 @@
                         <div class="col-sm-4 col-sm-offset-4">
                             <div class="col-sm-6">
                                 <label class="col-sm-2 control-label"><fmt:message key="input.auto"/></label>
-                                <select class="form-control m-bot15">
+                                <select class="form-control m-bot15" id = "ids">
                                     <option>Car 1</option>
                                     <option>Option 2</option>
                                     <option>Option 3</option>

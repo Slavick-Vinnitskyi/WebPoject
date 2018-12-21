@@ -6,6 +6,7 @@
 <fmt:setLocale value="${language}" scope = "session"/>
 <fmt:bundle basename="index" prefix="index.">
 <html lang="${language}">
+<%--TODO: доавить c:if для проверти роли на индексе чтобы не выводить эти кнопки--%>
 <head>
         <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <!-- bootstrap theme -->

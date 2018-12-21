@@ -3,10 +3,11 @@ package controller.filters;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
-@WebFilter(urlPatterns = {"/park/*"})
+//@WebFilter(urlPatterns = {"/park/*"}, filterName = "encodingFilter")
 public class EncodingFilter implements Filter {
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig){
+
     }
 
     @Override
@@ -14,7 +15,9 @@ public class EncodingFilter implements Filter {
         servletResponse.setContentType("text/html");
         servletResponse.setCharacterEncoding("UTF-8");
         servletRequest.setCharacterEncoding("UTF-8");
+//        throw new ServletException();
         filterChain.doFilter(servletRequest, servletResponse);
+
     }
 
     @Override

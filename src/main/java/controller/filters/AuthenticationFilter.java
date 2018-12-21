@@ -4,9 +4,7 @@ import model.entity.User;
 import model.exception.PageAccessException;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
@@ -17,12 +15,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Filter implements authentication mechanism
+ TODO: сделать ЗАПРЕЩЕНИЕ для прохода а не РАЗРЕШЕНИЕ
  */
-@WebFilter(urlPatterns = {"/park/*"})
+//@WebFilter(urlPatterns = {"/park/*"}, filterName = "authFilter")
 public class AuthenticationFilter implements Filter {
     private Map<User.ROLE, List<String>> allowed;
     private String path;
     private HttpSession session;
+
     @Override
     public void init(FilterConfig filterConfig) {
         allowed = new ConcurrentHashMap<>();
@@ -37,7 +37,6 @@ public class AuthenticationFilter implements Filter {
                          FilterChain filterChain) throws IOException, ServletException {
 
         final HttpServletRequest req = (HttpServletRequest) request;
-        final HttpServletResponse res = (HttpServletResponse) response;
 
         path = req.getRequestURI();
         session = req.getSession();
@@ -50,6 +49,7 @@ public class AuthenticationFilter implements Filter {
         }
 
         filterChain.doFilter(request, response);
+
     }
 
     private void cleanUpPath() {
