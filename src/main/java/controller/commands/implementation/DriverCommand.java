@@ -7,9 +7,12 @@ import model.service.DriverMainPageService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-
+//TODO: оптимизировать работу страницы(не переиспользовать данные с базы)
 public class DriverCommand implements Command {
+    private List<Long> assign = new ArrayList<>();
+    private List<Long> apply = new ArrayList<>();
     /**
      * @param request request from client
      * @return - driver page without redirect if form was`n used
@@ -31,12 +34,20 @@ public class DriverCommand implements Command {
 
             if (request.getParameter("id") != null) {
                 int assignmentId = Integer.valueOf(request.getParameter("id"));
+                long start = System.nanoTime();
                 processDriverAccept(assignmentId, assignedList, service, userId);
+                long end = System.nanoTime() - start;
+                assign.add(end);
+                System.out.println("accept = " + assign.stream().mapToLong(Long::longValue).average().orElse(Long.MIN_VALUE));
                 return "redirect: /park/driver";
             }
             else if (request.getParameter("refused_id") != null) {
                 int assignmentId = Integer.valueOf(request.getParameter("refused_id"));
+                long start = System.nanoTime();
                 processDriverRefuse(assignmentId, service, userId);
+                long end = System.nanoTime() - start;
+                apply.add(end);
+                System.out.println("refuse = " + apply.stream().mapToLong(Long::longValue).average().orElse(Long.MIN_VALUE));
                 return "redirect: /park/driver";
             }
 
