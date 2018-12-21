@@ -124,7 +124,24 @@ public class JDBCAssignmentDao implements AssignmentDao {
             e.printStackTrace();
         }
     }
-
+    /*@Override
+    public void updateToAssignedForUser(Assignment entity) {
+        final String query = "UPDATE assignment " +
+                "left join route r on assignment.route = r.route_id " +
+                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
+                "left join car c on ptc.fk_car_id = c.car_id " +
+                "left join person p on ptc.fk_person_id = p.person_id " +
+                "SET status = ? where p.person_id = ? and assignment_id = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1 , String.valueOf(entity.getStatus()));
+            preparedStatement.setInt(2 , entity.getDriver().getId());
+            preparedStatement.setInt(3 , entity.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+*/
     @Override
     public List<IndexDto> findAllFutureApplied() {
                 final String query = "select * from edited_car_park.assignment" +

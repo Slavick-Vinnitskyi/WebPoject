@@ -52,7 +52,8 @@
                                     <option value = "ua" ${language == 'ua' ? 'selected' : ''}>Українська</option>
                                 </select>
                             </form>
-                        </li>--%>
+                        </li>
+--%>
                         <li class="dropdown">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                     <span class="profile-ava">

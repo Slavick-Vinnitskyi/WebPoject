@@ -13,8 +13,8 @@ public class DriverCommand implements Command {
     /**
      * @param request request from client
      * @return - driver page without redirect if form was`n used
-     *         - driver page with redirect in order to reset request
-     *         to prevent form resending(Some implementation of 'Post/Redirect/Get' pattern )
+     * - driver page with redirect in order to reset request
+     * to prevent form resending(Some implementation of 'Post/Redirect/Get' pattern )
      */
     @Override
     public String execute(HttpServletRequest request) {
@@ -23,16 +23,22 @@ public class DriverCommand implements Command {
             User user = (User) request.getSession().getAttribute("user");
             int userId = user.getId();
 
-            if (request.getParameter("id") != null) {
-                int assignmentId = Integer.valueOf(request.getParameter("id"));
-                handleDriverAccept(assignmentId, service, userId);
-                return "redirect: /park/driver";
-            }
-            List<Assignment> assignments = service.getAssignmentsForDriverByStatus(userId, Assignment.Status.assigned);
-            request.setAttribute("assignmentsAssignedList", assignments);
+            List<Assignment> assignedList = service.getAssignmentsForDriverByStatus(userId, Assignment.Status.assigned);
+            request.setAttribute("assignmentsAssignedList", assignedList);
 //TODO: Попробовать возвращать Optional
             List<Assignment> applied = service.getAssignmentsForDriverByStatus(userId, Assignment.Status.applied);
             request.setAttribute("assignmentsAppliedList", applied);
+
+            if (request.getParameter("id") != null) {
+                int assignmentId = Integer.valueOf(request.getParameter("id"));
+                processDriverAccept(assignmentId, assignedList, service, userId);
+                return "redirect: /park/driver";
+            }
+            else if (request.getParameter("refused_id") != null) {
+                int assignmentId = Integer.valueOf(request.getParameter("refused_id"));
+                processDriverRefuse(assignmentId, service, userId);
+                return "redirect: /park/driver";
+            }
 
         } catch (NullPointerException e) {
             System.out.println("bad");
@@ -43,14 +49,25 @@ public class DriverCommand implements Command {
         return "/WEB-INF/driver/driver.jsp";
     }
 
-    private void handleDriverAccept(int assignmentId, DriverMainPageService service, int driverId) throws SQLException, ClassNotFoundException {
+    private void processDriverAccept(int assignmentId, List<Assignment> assignedList, DriverMainPageService service, int driverId) throws SQLException, ClassNotFoundException {
         System.out.println("Driver: " + driverId + ", applied assignment: " + assignmentId);
-        List<Assignment> assignmentsForDriverByStatus = service.getAssignmentsForDriverByStatus(driverId, Assignment.Status.assigned);
+//        List<Assignment> assignedList = service.getAssignmentsForDriverByStatus(driverId, Assignment.Status.assigned);
         try {
+            Assignment assignmentToApply = searchInListById(assignedList, assignmentId);
+            assignmentToApply.setStatus(Assignment.Status.applied);
+            service.updateAssignment(assignmentToApply);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
 
-            Assignment assignmentToUpdate = searchInListById(assignmentsForDriverByStatus, assignmentId);
-            assignmentToUpdate.setStatus(Assignment.Status.applied);
-            service.updateAssignment(assignmentToUpdate);
+    private void processDriverRefuse(int assignmentId, DriverMainPageService service, int driverId) throws SQLException, ClassNotFoundException {
+        List<Assignment> appliedList = service.getAssignmentsForDriverByStatus(driverId, Assignment.Status.applied);
+        try {
+            Assignment assignmentToRefuse = searchInListById(appliedList, assignmentId);
+            assignmentToRefuse.setStatus(Assignment.Status.assigned);
+            service.updateAssignment(assignmentToRefuse);
+
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
