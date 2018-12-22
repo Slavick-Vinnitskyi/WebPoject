@@ -8,10 +8,39 @@ public class User {
     private ROLE role;
 
     private String firstName;
-
     private String secondName;
+
     private String firstName_ua;
     private String secondName_ua;
+
+    public ForeignName getNameBundle(String firstName, String secondName){
+        return new ForeignName(firstName, secondName);
+    }
+    public class ForeignName {
+        private String firstName;
+        private String secondName;
+
+        public ForeignName(String firstName, String secondName) {
+            this.firstName = firstName;
+            this.secondName = secondName;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        public String getSecondName() {
+            return secondName;
+        }
+
+        public void setSecondName(String secondName) {
+            this.secondName = secondName;
+        }
+    }
 
     public enum ROLE {
         driver, admin, guest

@@ -3,6 +3,7 @@ package model.entity.dao.implementation;
 import model.entity.User;
 import model.entity.dao.UserDao;
 import model.entity.dao.mappers.implementation.UserMapper;
+import model.exception.UserNotFoundException;
 
 import java.sql.*;
 import java.util.ArrayList;

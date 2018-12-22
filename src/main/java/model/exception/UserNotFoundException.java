@@ -1,4 +1,4 @@
-package model.entity.dao.implementation;
+package model.exception;
 
 public class UserNotFoundException extends Throwable {
     public UserNotFoundException(String message) {

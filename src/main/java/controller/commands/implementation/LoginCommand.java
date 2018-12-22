@@ -3,7 +3,7 @@ package controller.commands.implementation;
 import controller.commands.utils.SecurityUtility;
 import controller.commands.Command;
 import model.entity.User;
-import model.entity.dao.implementation.UserNotFoundException;
+import model.exception.UserNotFoundException;
 import model.service.LoginService;
 
 import javax.servlet.http.HttpServletRequest;

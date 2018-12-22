@@ -1,7 +1,7 @@
 package model.entity.dao;
 
 import model.entity.User;
-import model.entity.dao.implementation.UserNotFoundException;
+import model.exception.UserNotFoundException;
 
 import java.sql.SQLException;
 

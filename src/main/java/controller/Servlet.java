@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Servlet extends HttpServlet {
 
     private static ServletContext context;
-    private Map<String, Command> commands = new ConcurrentHashMap<>();
+    private static Map<String, Command> commands = new ConcurrentHashMap<>();
 
     @Override
     public void init(ServletConfig servletConfig) {
