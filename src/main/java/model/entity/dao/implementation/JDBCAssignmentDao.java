@@ -28,15 +28,23 @@ public class JDBCAssignmentDao implements AssignmentDao {
     public Assignment findById(int id) {
         final String query = "select * from assignment " +
                 "left join route r on assignment.route = r.route_id " +
-                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
-                "left join car c on ptc.fk_car_id = c.car_id " +
-                "left join person p on ptc.fk_person_id = p.person_id where id = ?";
-
+                "where assignment.assignment_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    Assignment assignment = new AssignmentMapper().extractFromResultSet1(resultSet);
+                    return assignment;
+                }
+            } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
         return null;
     }
 
     @Override
-    public List<Assignment> findAll() throws SQLException {
+    public List<Assignment> findAll() {
         List<Assignment> assignments = new CopyOnWriteArrayList<>();
 
         final String query = "select * from assignment " +
@@ -110,15 +118,12 @@ public class JDBCAssignmentDao implements AssignmentDao {
     @Override
     public void updateToAppliedForUser(Assignment entity) {
         final String query = "UPDATE assignment " +
-                "left join route r on assignment.route = r.route_id " +
-                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
-                "left join car c on ptc.fk_car_id = c.car_id " +
-                "left join person p on ptc.fk_person_id = p.person_id " +
-                "SET status = ? where p.person_id = ? and assignment_id = ?";
+        "left join route r on assignment.route = r.route_id " +
+                "SET status = ? where assignment.assignment_id = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1 , String.valueOf(entity.getStatus()));
-            preparedStatement.setInt(2 , entity.getDriver().getId());
-            preparedStatement.setInt(3 , entity.getId());
+//            preparedStatement.setInt(2 , entity.getDriver().getId());
+            preparedStatement.setInt(2, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

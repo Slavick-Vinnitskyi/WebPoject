@@ -30,11 +30,11 @@ public class DriverMainPageService {
             return dao.findForUser(id, status);
         }
     }
-//    public Assignment getAssignmentsById(int id) throws SQLException, ClassNotFoundException {
-//        try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
-//            return dao.findById(id);
-//        }
-//    }
+    public Assignment getAssignmentById(int assignmentId) throws SQLException, ClassNotFoundException {
+        try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
+            return dao.findById(assignmentId);
+        }
+    }
 
     public void updateAssignment(Assignment assignment) throws SQLException, ClassNotFoundException {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {

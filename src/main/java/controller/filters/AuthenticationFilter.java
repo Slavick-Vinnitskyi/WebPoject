@@ -27,7 +27,7 @@ public class AuthenticationFilter implements Filter {
     public void init(FilterConfig filterConfig) {
         allowed = new ConcurrentHashMap<>();
         allowed.put(User.ROLE.guest, Arrays.asList("login", "register", "", "index", "logout"));
-        allowed.put(User.ROLE.driver, Arrays.asList("driver", "driver/history", "driver/about", "logout", "", "index", "login"));
+        allowed.put(User.ROLE.driver, Arrays.asList("driver", "driver/history", "driver/about", "logout", "", "index", "login", "driverAccessButton", "driverRefuseButton" ));
         allowed.put(User.ROLE.admin, Arrays.asList("admin", "admin/add_car", "admin/add_route", "logout", "", "index", "login"));
     }
 

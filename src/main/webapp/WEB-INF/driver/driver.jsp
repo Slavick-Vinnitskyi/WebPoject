@@ -126,7 +126,7 @@
                                             <td><c:out value="${ass.date}"/></td>
                                             <td><c:out value="${ass.status}"/></td>
                                             <td>
-                                                <form method="post" action="<c:url value="/park/driver"/>">
+                                                <form method="post" action="<c:url value="/park/driverAccessButton"/>">
                                                     <input type="number" hidden name="id" value="${ass.id}"/>
                                                     <input type="submit" name="apply" class="btn btn-primary" value="<fmt:message key="table.apply"/>"/>
                                                 </form>
@@ -178,7 +178,7 @@
                                             <td><c:out value="${ass.date}"/></td>
                                             <td><c:out value="${ass.status}"/></td>
                                             <td>
-                                                <form method="post" action="<c:url value="/park/driver"/>">
+                                                <form method="post" action="<c:url value="/park/driverRefuseButton"/>">
                                                     <input type="number" hidden name="refused_id" value="${ass.id}"/>
                                                     <input type="submit" name="refuse" class="btn btn-danger" value="<fmt:message key="table.deny"/>"/>
                                                 </form>

@@ -38,6 +38,8 @@ public class Servlet extends HttpServlet {
         commands.put("admin/add_car", new AdminAddingCarCommand());
         commands.put("admin/add_route", new AdminAddingRouteCommand());
         commands.put("exception", new ExceptionCommand());
+        commands.put("driverAccessButton", new DriverAccessButtonCommand());
+        commands.put("driverRefuseButton", new DriverRefuseButtonCommand());
 
     }
 

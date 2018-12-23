@@ -28,6 +28,17 @@ public class AssignmentMapper implements ObjectMapper<Assignment> {
         return assignment;
     }
 
+    public Assignment extractFromResultSet1(ResultSet resultSet) throws SQLException {
+
+        Assignment assignment = new Assignment();
+        assignment.setId(resultSet.getInt("assignment_id"));
+        assignment.setDate((resultSet.getDate("date_start").toLocalDate()));
+        assignment.setStatus(Assignment.Status.valueOf(resultSet.getString("status")));
+        Route route = new RouteMapper().extractFromResultSet(resultSet);
+        assignment.setRoute(route);
+        return assignment;
+    }
+
 
 
 
