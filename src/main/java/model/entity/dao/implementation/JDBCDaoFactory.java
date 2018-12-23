@@ -1,9 +1,6 @@
 package model.entity.dao.implementation;
 
-import model.entity.dao.AssignmentDao;
-import model.entity.dao.DaoFactory;
-import model.entity.dao.RouteDao;
-import model.entity.dao.UserDao;
+import model.entity.dao.*;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -44,8 +41,8 @@ public class JDBCDaoFactory extends DaoFactory {
     }
 
     @Override
-    public AssignmentDao createCarDao() throws SQLException, ClassNotFoundException {
-        return null;
+    public CarDao createCarDao() throws SQLException, ClassNotFoundException {
+        return new JDBCCarDao(getConnection());
     }
 
     private Connection getConnection() throws SQLException, ClassNotFoundException {

@@ -169,7 +169,7 @@
                                     <tr class="table-secondary">
                                         <td><c:out value="${route.model}"/></td>
                                         <td><c:out value="${route.year}"/></td>
-                                        <td><c:out value="${route.type}"/></td>
+                                        <td><c:out value="${route.licenseType}"/></td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>

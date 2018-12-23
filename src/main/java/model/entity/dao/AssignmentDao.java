@@ -11,4 +11,6 @@ public interface AssignmentDao extends GenericDao<Assignment> {
     void updateToAppliedForUser(Assignment entity);
 
     List<IndexDto> findAllFutureApplied();
+
+    List<Assignment> findByStatus(Assignment.Status status);
 }

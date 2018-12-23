@@ -20,10 +20,10 @@ public class AssignmentMapper implements ObjectMapper<Assignment> {
         assignment.setDate((resultSet.getDate("date_start").toLocalDate()));
         assignment.setStatus(Assignment.Status.valueOf(resultSet.getString("status")));
         Route route = new RouteMapper().extractFromResultSet(resultSet);
-        User user = new UserMapper().extractFromResultSet(resultSet);
-        Car bus = new Car();
-        assignment.setDriver(user);
         assignment.setRoute(route);
+        User user = new UserMapper().extractFromResultSet(resultSet);
+        Car bus = new CarMapper().extractFromResultSet(resultSet);
+        assignment.setDriver(user);
         assignment.setBus(bus);
         return assignment;
     }

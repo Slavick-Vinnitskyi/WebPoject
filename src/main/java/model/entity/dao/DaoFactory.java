@@ -10,7 +10,7 @@ public abstract class DaoFactory {
     public abstract UserDao createUserDao() throws SQLException, ClassNotFoundException;
     public abstract RouteDao createRouteDao() throws SQLException, ClassNotFoundException;
     public abstract AssignmentDao createAssignmentDao() throws SQLException, ClassNotFoundException;
-    public abstract AssignmentDao createCarDao() throws SQLException, ClassNotFoundException;
+    public abstract CarDao createCarDao() throws SQLException, ClassNotFoundException;
 
     public static DaoFactory getInstance() {
         if(daoFactory == null) {

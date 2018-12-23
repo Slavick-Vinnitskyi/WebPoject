@@ -6,6 +6,8 @@ public class Car {
     private int id;
     private String model;
     private int year;
+    private LicenseType licenseType;
+
 
     public Car() {
     }
@@ -23,8 +25,6 @@ public class Car {
     public void setId(int id) {
         this.id = id;
     }
-
-    private LicenseType licenseType;
 
     public String getModel() {
         return model;

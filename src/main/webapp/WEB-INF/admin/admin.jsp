@@ -155,12 +155,14 @@
                                 <th><i class="icon_drive_alt"></i> <fmt:message key="table.car"/></th>
                                 <th><i class="icon_pin_alt"></i> <fmt:message key="table.route"/></th>
                             </tr>
-                            <tr>
-                                <td>Angeline232</td>
-                                <td>2004-07-06</td>
-                                <td>Mercedez</td>
-                                <td>Kyiv - Kharkiv</td>
-                            </tr>
+                            <c:forEach var="assign" items="${requestScope.assigned}">
+                                <tr>
+                                    <td><c:out value="${assign.driver.login}"/></td>
+                                    <td><c:out value="${assign.date}"/></td>
+                                    <td><c:out value="${assign.bus.model}"/></td>
+                                    <td><c:out value="${assign.route.start}"/> - <c:out value="${assign.route.finish}"/></td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </section>
@@ -198,12 +200,14 @@
                                 <th><i class="icon_drive_alt"></i> <fmt:message key="table.car"/></th>
                                 <th><i class="icon_pin_alt"></i> <fmt:message key="table.route"/></th>
                             </tr>
+                            <c:forEach var="assign" items="${requestScope.applied}">
                             <tr>
-                                <td>Angeline232</td>
-                                <td>2004-07-06</td>
-                                <td>Mercedez</td>
-                                <td>Kyiv - Kharkiv</td>
+                                <td><c:out value="${assign.driver.login}"/></td>
+                                <td><c:out value="${assign.date}"/></td>
+                                <td><c:out value="${assign.bus.model}"/></td>
+                                <td><c:out value="${assign.route.start}"/> - <c:out value="${assign.route.finish}"/></td>
                             </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </section>

@@ -156,7 +156,7 @@
                                 <th><i class="icon_pin_alt"></i><fmt:message key="from"/></th>
                                 <th><i class="icon_pin_alt"></i><fmt:message key="to"/></th>
                             </tr>
-                            <c:forEach var="route" items="${requestScope.routesList}">
+                            <c:forEach var="route" items="${requestScope.routeList}">
                                 <tr class="table-secondary">
                                     <td><c:out value="${route.start}"/></td>
                                     <td><c:out value="${route.finish}"/></td>

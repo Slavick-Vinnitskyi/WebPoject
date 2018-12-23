@@ -170,6 +170,25 @@ public class JDBCAssignmentDao implements AssignmentDao {
 
     }
 
+    @Override
+    public List<Assignment> findByStatus(Assignment.Status status) {
+        List<Assignment> assignments = new CopyOnWriteArrayList<>();
+        final String query = "select * " +
+                "from assignment " +
+                "left join route r on assignment.route = r.route_id " +
+                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
+                "left join car c on ptc.fk_car_id = c.car_id " +
+                "left join person p on ptc.fk_person_id = p.person_id " +
+                "where assignment.status = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, String.valueOf(status));
+            return getAssignments(assignments, statement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private List<Assignment> getAssignments(List<Assignment> assignments, PreparedStatement statement) throws SQLException {
         ResultSet resultSet = statement.executeQuery();
         return getAssignments(assignments, resultSet);

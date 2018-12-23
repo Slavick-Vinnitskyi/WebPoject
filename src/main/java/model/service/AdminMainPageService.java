@@ -1,6 +1,8 @@
 package model.service;
 
+import model.entity.Assignment;
 import model.entity.Route;
+import model.entity.dao.AssignmentDao;
 import model.entity.dao.DaoFactory;
 import model.entity.dao.RouteDao;
 
@@ -14,9 +16,11 @@ public class AdminMainPageService {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
 
-    public List<Route> getAllRoutes() throws SQLException, ClassNotFoundException {
-        try (RouteDao dao = daoFactory.createRouteDao()) {
-            return dao.findAll();
+    public List<Assignment> getAssignmentsByStatus(Assignment.Status status) throws SQLException, ClassNotFoundException {
+        try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
+            return dao.findByStatus(status);
         }
     }
+
+
 }
