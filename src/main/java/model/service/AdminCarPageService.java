@@ -15,4 +15,10 @@ public class AdminCarPageService {
             return dao.findAll();
         }
     }
+
+    public void insertCar(Car entity) throws SQLException, ClassNotFoundException {
+        try (CarDao dao = daoFactory.createCarDao()) {
+            dao.create(entity);
+        }
+    }
 }

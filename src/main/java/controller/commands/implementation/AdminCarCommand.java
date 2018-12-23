@@ -10,12 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.List;
 
-public class AdminAddingCarCommand implements Command {
+public class AdminCarCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
         try {
-
             AdminCarPageService service = new AdminCarPageService();
             List<Car> routeList = service.getAllRoutes();
             request.setAttribute("carList", routeList);

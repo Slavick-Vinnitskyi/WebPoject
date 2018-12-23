@@ -27,7 +27,7 @@ public class JDBCAssignmentDao implements AssignmentDao {
     @Override
     public Assignment findById(int id) {
         final String query = "select * from assignment " +
-                "left join route r on assignment.route = r.route_id " +
+                "left join route r on assignment.route_id = r.route_id " +
                 "where assignment.assignment_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
@@ -48,7 +48,7 @@ public class JDBCAssignmentDao implements AssignmentDao {
         List<Assignment> assignments = new CopyOnWriteArrayList<>();
 
         final String query = "select * from assignment " +
-                "left join route r on assignment.route = r.route_id " +
+                "left join route r on assignment.route_id = r.route_id " +
                 "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
                 "left join car c on ptc.fk_car_id = c.car_id " +
                 "left join person p on ptc.fk_person_id = p.person_id where date_start > DATE(NOW())";
@@ -66,7 +66,7 @@ public class JDBCAssignmentDao implements AssignmentDao {
         List<Assignment> assignments = new CopyOnWriteArrayList<>();
         final String query = "select * " +
                 "from assignment " +
-                "left join route r on assignment.route = r.route_id " +
+                "left join route r on assignment.route_id = r.route_id " +
                 "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
                 "left join car c on ptc.fk_car_id = c.car_id " +
                 "left join person p on ptc.fk_person_id = p.person_id " +
@@ -84,7 +84,7 @@ public class JDBCAssignmentDao implements AssignmentDao {
         List<Assignment> assignments = new CopyOnWriteArrayList<>();
         final String query = "select * " +
                 "from assignment " +
-                "left join route r on assignment.route = r.route_id " +
+                "left join route r on assignment.route_id = r.route_id " +
                 "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
                 "left join car c on ptc.fk_car_id = c.car_id " +
                 "left join person p on ptc.fk_person_id = p.person_id " +
@@ -102,7 +102,7 @@ public class JDBCAssignmentDao implements AssignmentDao {
     @Override
     public void update(Assignment entity) {
         final String query = "UPDATE assignment " +
-                "left join route r on assignment.route = r.route_id " +
+                "left join route r on assignment.route_id = r.route_id " +
                 "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
                 "left join car c on ptc.fk_car_id = c.car_id " +
                 "left join person p on ptc.fk_person_id = p.person_id " +
@@ -118,7 +118,7 @@ public class JDBCAssignmentDao implements AssignmentDao {
     @Override
     public void updateToAppliedForUser(Assignment entity) {
         final String query = "UPDATE assignment " +
-        "left join route r on assignment.route = r.route_id " +
+        "left join route r on assignment.route_id = r.route_id " +
                 "SET status = ? where assignment.assignment_id = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1 , String.valueOf(entity.getStatus()));
@@ -150,7 +150,7 @@ public class JDBCAssignmentDao implements AssignmentDao {
     @Override
     public List<IndexDto> findAllFutureApplied() {
                 final String query = "select * from edited_car_park.assignment" +
-                " left join route on edited_car_park.assignment.route = route.route_id" +
+                " left join route on edited_car_park.assignment.route_id = route.route_id" +
                 " where date_start > DATE(NOW()) and status='applied'" +
                         "ORDER BY date_start";
         List<IndexDto> assignments = new CopyOnWriteArrayList<>();
@@ -175,7 +175,7 @@ public class JDBCAssignmentDao implements AssignmentDao {
         List<Assignment> assignments = new CopyOnWriteArrayList<>();
         final String query = "select * " +
                 "from assignment " +
-                "left join route r on assignment.route = r.route_id " +
+                "left join route r on assignment.route_id = r.route_id " +
                 "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
                 "left join car c on ptc.fk_car_id = c.car_id " +
                 "left join person p on ptc.fk_person_id = p.person_id " +

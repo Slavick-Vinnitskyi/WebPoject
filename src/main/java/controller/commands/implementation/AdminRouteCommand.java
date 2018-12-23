@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.List;
 
-public class AdminAddingRouteCommand implements Command {
+public class AdminRouteCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         try {

@@ -1,15 +1,10 @@
 package model.entity.dao.implementation;
 
 import model.entity.Car;
-import model.entity.Route;
 import model.entity.dao.CarDao;
 import model.entity.dao.mappers.implementation.CarMapper;
-import model.entity.dao.mappers.implementation.RouteMapper;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -23,7 +18,44 @@ public class JDBCCarDao implements CarDao {
 
     @Override
     public void create(Car entity) {
+        final String queryInsertCar = "insert into car (model, year, type) values (?,?,?)";
+        final String querySelectDriverIds = "select person_id from person where license = ?";
+        final String queryInsertToLinkTable = "insert into person_to_car(fk_person_id, fk_car_id) VALUES (?, ?)";
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement insertCarToCarTable = connection.prepareStatement(queryInsertCar, Statement.RETURN_GENERATED_KEYS);
+            insertCarToCarTable.setString(1, entity.getModel());
+            insertCarToCarTable.setDate(2, Date.valueOf(entity.getYear()));
+            insertCarToCarTable.setString(3, entity.getLicenseType().toString());
+            insertCarToCarTable.executeUpdate();
+            try (ResultSet generatedKeys = insertCarToCarTable.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    entity.setId(generatedKeys.getInt(1));
+                } else throw new SQLException("Smt wrong with id");
+            }
 
+            PreparedStatement selectDrivers = connection.prepareStatement(querySelectDriverIds);
+            selectDrivers.setString(1, entity.getLicenseType().toString());
+            ResultSet driversId = selectDrivers.executeQuery();
+
+            PreparedStatement insertToLinkTable = connection.prepareStatement(queryInsertToLinkTable);
+            while (driversId.next()) {
+                insertToLinkTable.setInt(1, driversId.getInt("person_id"));
+                insertToLinkTable.setInt(2, entity.getId());
+                insertToLinkTable.addBatch();
+            }
+            insertToLinkTable.executeBatch();
+            insertToLinkTable.close();
+            connection.commit();
+
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            ex.printStackTrace();
+        }
     }
 
     @Override

@@ -6,6 +6,7 @@ import model.entity.enums.LicenseType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Map;
 
 public class CarMapper implements ObjectMapper<Car> {
@@ -14,7 +15,7 @@ public class CarMapper implements ObjectMapper<Car> {
         Car car = new Car();
         car.setId(resultSet.getInt("car_id"));
         car.setModel(resultSet.getString("model"));
-        car.setYear(resultSet.getInt("year"));
+        car.setYear(resultSet.getDate("year").toLocalDate());
         car.setLicenseType(LicenseType.valueOf(resultSet.getString("type")));
         return car;
     }

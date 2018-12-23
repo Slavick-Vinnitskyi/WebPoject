@@ -121,7 +121,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <form method="post" class="form-horizontal">
+                    <form method="post" class="form-horizontal" action="<c:url value="/park/admin/add_new_car"/>">
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-4">
                                 <div class="col-sm-6">
@@ -138,15 +138,15 @@
                             <div class="col-sm-1 col-sm-offset-7">
                                 <div class="radios">
                                     <label class="label_radio" for="radio-01">
-                                        <input name="sample-radio" id="radio-01" value="1" type="radio" checked/> Type A
+                                        <input name="sample-radio" id="radio-01" value="A" type="radio" checked/> Type A
                                     </label>
                                     <label class="label_radio" for="radio-02">
-                                        <input name="sample-radio" id="radio-02" value="1" type="radio"/> Type B
+                                        <input name="sample-radio" id="radio-02" value="B" type="radio"/> Type B
                                     </label>
                                 </div>
                             </div>
                             <div class="col-sm-1">
-                            <input class="btn btn-info" type="submit" value="<fmt:message key="add.add"/>">
+                            <input class="btn btn-info" type="submit" value="<fmt:message key="add.add"/>" >
                             </div>
                         </div>
                     </form>

@@ -7,7 +7,7 @@ import model.service.DriverMainPageService;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 
-public class DriverAccessButtonCommand implements Command {
+public class DriverAcceptButtonCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) throws Exception {
         DriverMainPageService service = new DriverMainPageService();

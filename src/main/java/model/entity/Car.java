@@ -2,17 +2,19 @@ package model.entity;
 
 import model.entity.enums.LicenseType;
 
+import java.time.LocalDate;
+
 public class Car {
     private int id;
     private String model;
-    private int year;
+    private LocalDate year;
     private LicenseType licenseType;
 
 
     public Car() {
     }
 
-    public Car(String model, int year, LicenseType licenseType) {
+    public Car(String model, LocalDate year, LicenseType licenseType) {
         this.model = model;
         this.year = year;
         this.licenseType = licenseType;
@@ -34,11 +36,11 @@ public class Car {
         this.model = model;
     }
 
-    public int getYear() {
+    public LocalDate getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(LocalDate year) {
         this.year = year;
     }
 
