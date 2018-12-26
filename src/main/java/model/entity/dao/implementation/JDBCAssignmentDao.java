@@ -145,7 +145,7 @@ public class JDBCAssignmentDao implements AssignmentDao {
     public List<IndexDto> findAllFutureApplied() {
                 final String query = "select * from edited_car_park.assignment" +
                 " left join route on edited_car_park.assignment.route_id = route.route_id" +
-                " where date_start > DATE(NOW()) and status='applied'" +
+                " where date_start >= DATE(NOW()) and status='applied'" +
                         "ORDER BY date_start";
         List<IndexDto> assignments = new CopyOnWriteArrayList<>();
 
