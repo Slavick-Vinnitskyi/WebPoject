@@ -11,9 +11,9 @@ public class Assignment {
     private int id;
     private LocalDate date;
     private Route route;
+    private Status status;
     private User driver;
     private Car bus;
-    private Status status;
 
     public Status getStatus() {
         return status;

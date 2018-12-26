@@ -26,16 +26,3 @@ public class AdminAddingCarButtonCommand implements Command {
         return "redirect: /park/admin/add_car";
     }
 }
-class Main {
-    public static void main(String[] args) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-
-        LocalDate date = LocalDate.parse("04-02-2013", formatter);
-        System.out.println(date.getYear());
-        System.out.println(date.getDayOfMonth());
-        System.out.println(date.getMonthValue());
-//        запись в дату
-        LocalDate date1 = LocalDate.of(date.getYear(),date.getMonthValue(),date.getDayOfMonth());
-    }
-}
-

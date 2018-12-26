@@ -3,6 +3,8 @@ package model.entity;
 import model.entity.enums.LicenseType;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Car {
     private int id;
@@ -10,6 +12,15 @@ public class Car {
     private LocalDate year;
     private LicenseType licenseType;
 
+    private List<User> drivers = new CopyOnWriteArrayList<>();
+
+    public List<User> getDrivers() {
+        return drivers;
+    }
+
+    public void setDrivers(List<User> drivers) {
+        this.drivers = drivers;
+    }
 
     public Car() {
     }

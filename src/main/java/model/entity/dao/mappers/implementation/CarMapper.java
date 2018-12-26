@@ -21,7 +21,8 @@ public class CarMapper implements ObjectMapper<Car> {
     }
 
     @Override
-    public Car makeUnique(Map<Integer, Car> cache, Car user) {
-        return null;
+    public Car makeUnique(Map<Integer, Car> cache, Car car) {
+        cache.putIfAbsent(car.getId(), car);
+        return cache.get(car.getId());
     }
 }

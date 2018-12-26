@@ -6,6 +6,8 @@ import model.entity.Route;
 import model.entity.User;
 import model.entity.dao.mappers.ObjectMapper;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
@@ -13,6 +15,13 @@ import java.util.Map;
 public class AssignmentMapper implements ObjectMapper<Assignment> {
 
 
+    public PreparedStatement extractToStatement(PreparedStatement statement, Assignment assignment, int linkId) throws SQLException {
+        statement.setDate(1, Date.valueOf(assignment.getDate()));
+        statement.setString(2, String.valueOf(assignment.getStatus()));
+        statement.setInt(3, assignment.getRoute().getId());
+        statement.setInt(4, linkId);
+        return statement;
+    }
     public Assignment extractFromResultSet(ResultSet resultSet) throws SQLException {
 
         Assignment assignment = new Assignment();
@@ -28,7 +37,7 @@ public class AssignmentMapper implements ObjectMapper<Assignment> {
         return assignment;
     }
 
-    public Assignment extractFromResultSet1(ResultSet resultSet) throws SQLException {
+    public Assignment extractAssignmentWithRoute(ResultSet resultSet) throws SQLException {
 
         Assignment assignment = new Assignment();
         assignment.setId(resultSet.getInt("assignment_id"));
@@ -36,6 +45,16 @@ public class AssignmentMapper implements ObjectMapper<Assignment> {
         assignment.setStatus(Assignment.Status.valueOf(resultSet.getString("status")));
         Route route = new RouteMapper().extractFromResultSet(resultSet);
         assignment.setRoute(route);
+        return assignment;
+    }
+    public Assignment extractAssignmentWithPerson(ResultSet resultSet) throws SQLException {
+
+        Assignment assignment = new Assignment();
+        assignment.setId(resultSet.getInt("assignment_id"));
+        assignment.setDate((resultSet.getDate("date_start").toLocalDate()));
+        assignment.setStatus(Assignment.Status.valueOf(resultSet.getString("status")));
+        User user = new UserMapper().extractFromResultSet(resultSet);
+        assignment.setDriver(user);
         return assignment;
     }
 

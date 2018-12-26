@@ -37,9 +37,12 @@ public class Servlet extends HttpServlet {
         commands.put("admin/add_car", new AdminCarCommand());
         commands.put("admin/add_new_car", new AdminAddingCarButtonCommand());
         commands.put("admin/add_route", new AdminRouteCommand());
+        commands.put("admin/add_new_route", new AdminAddingRouteButtonCommand());
+        commands.put("admin/insert_assignment", new AdminInsertAssignmentCommand());
+        commands.put("admin/find_free_drivers_and_buses", new AdminFindCommand());
         commands.put("exception", new ExceptionCommand());
-        commands.put("driverAccessButton", new DriverAcceptButtonCommand());
-        commands.put("driverRefuseButton", new DriverRefuseButtonCommand());
+        commands.put("driver/acceptButton", new DriverAcceptButtonCommand());
+        commands.put("driver/refuseButton", new DriverRefuseButtonCommand());
 
     }
 

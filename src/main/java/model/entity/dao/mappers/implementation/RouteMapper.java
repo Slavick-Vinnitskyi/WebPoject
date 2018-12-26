@@ -3,6 +3,7 @@ package model.entity.dao.mappers.implementation;
 import model.entity.Route;
 import model.entity.dao.mappers.ObjectMapper;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
@@ -17,6 +18,14 @@ public class RouteMapper implements ObjectMapper<Route> {
         route.setStartUa(resultSet.getString("start_ua"));
         route.setFinishUa(resultSet.getString("finish_ua"));
         return route;
+    }
+
+    public PreparedStatement extractToStatement(PreparedStatement statement, Route route) throws SQLException {
+        statement.setString(1, route.getStart());
+        statement.setString(2, route.getFinish());
+        statement.setString(3, route.getStartUa());
+        statement.setString(4, route.getFinishUa());
+        return statement;
     }
 
     @Override

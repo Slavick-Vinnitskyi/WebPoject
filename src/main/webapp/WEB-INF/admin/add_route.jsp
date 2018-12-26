@@ -105,7 +105,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <form method="post" class="form-horizontal">
+                        <form method="post" class="form-horizontal" action="<c:url value="/park/admin/add_new_route"/>">
                             <div class="row">
                                 <div class="col-sm-8 col-sm-offset-2">
                                     <div class="form-group">
@@ -115,7 +115,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="col-sm-2 control-label"><fmt:message key="to_en"/></label>
-                                            <input type="text" class="form-control round-input" name="start">
+                                            <input type="text" class="form-control round-input" name="finish">
                                         </div>
                                     </div>
                                 </div>
@@ -125,11 +125,11 @@
                                     <div class="form-group">
                                         <div class="col-sm-6">
                                             <label class="col-sm-2 control-label"><fmt:message key="from_ua"/></label>
-                                            <input type="text" class="form-control round-input" name="start">
+                                            <input type="text" class="form-control round-input" name="start_ua">
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="col-sm-2 control-label"><fmt:message key="to_ua"/></label>
-                                            <input type="text" class="form-control round-input" name="start">
+                                            <input type="text" class="form-control round-input" name="finish_ua">
                                         </div>
                                     </div>
                                 </div>

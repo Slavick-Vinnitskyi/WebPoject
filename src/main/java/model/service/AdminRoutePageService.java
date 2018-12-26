@@ -15,4 +15,11 @@ public class AdminRoutePageService {
             return dao.findAll();
         }
     }
+
+    public void insertRoute(Route route) throws SQLException, ClassNotFoundException {
+        try(RouteDao dao = daoFactory.createRouteDao()){
+            dao.create(route);
+        }
+    }
+
 }

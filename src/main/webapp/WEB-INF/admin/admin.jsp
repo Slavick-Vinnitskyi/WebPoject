@@ -25,6 +25,28 @@
     <!-- nicescroll -->
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.scrollTo.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.nicescroll.js" type="text/javascript"></script>
+
+    <!--custom checkbox & radio-->
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/ga.js"></script>
+    <!--custom switch-->
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-switch.js"></script>
+    <!--custom tagsinput-->
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.tagsinput.js"></script>
+
+    <!-- colorpicker -->
+
+    <!-- bootstrap-wysiwyg -->
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.hotkeys.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-wysiwyg.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-wysiwyg-custom.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/moment.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-colorpicker.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/daterangepicker.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-datepicker.js"></script>
+    <!-- ck editor -->
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/assets/ckeditor/ckeditor.js"></script>
+    <!-- custom form component script for this page-->
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/form-component.js"></script>
     <!--custome script for all page-->
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/scripts.js"></script>
 
@@ -97,40 +119,51 @@
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
-                <form method="post" class="form-horizontal">
+                <form method="post" class="form-horizontal" action="<c:url value="/park/admin/find_free_drivers_and_buses"/>">
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">
                             <div class="col-sm-6">
                                 <label class="col-sm-2 control-label"><fmt:message key="table.route"/></label>
-                                <select class="form-control m-bot15">
-                                    <option>Route 1</option>
-                                    <option>Option 2</option>
-                                    <option>Option 3</option>
+                                <select class="form-control m-bot15" name="route">
+                                    <option value="0"><c:out value="${sessionScope.selectedRoute.start}"/> - <c:out value="${sessionScope.selectedRoute.finish}"/></option>
+                                    <c:forEach var="route" items="${requestScope.routes}">
+                                        <option value="${route.id}"><c:out value="${route.start}"/> - <c:out value="${route.finish}"/></option>
+                                    </c:forEach>
                                 </select>
-                                <%--<input type="text" class="form-control round-input" name="mark">--%>
                             </div>
                             <div class="col-sm-6">
                                 <label class="col-sm-2 control-label"><fmt:message key="input.date"/></label>
-                                <input id="dp1" type="text"  value="28-10-2013" class="form-control round-input" name="date">
+                                <input id="dp1" type="text"  value="12-26-2018" class="form-control round-input" name="date">
                             </div>
                         </div>
+                        <div class="col-sm-1">
+                            <input class="btn btn-info" type="submit" value="<fmt:message key="input.find"/>">
+                        </div>
                     </div>
+                </form>
+            </div>
+            <div class="row">
+                <form method="post"  class="form-horizontal" action="<c:url value="/park/admin/insert_assignment"/>" >
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">
                             <div class="col-sm-6">
-                                <label class="col-sm-2 control-label"><fmt:message key="input.auto"/></label>
-                                <select class="form-control m-bot15" id = "ids">
-                                    <option>Car 1</option>
-                                    <option>Option 2</option>
-                                    <option>Option 3</option>
+                                <label class="col-sm-2 control-label"><fmt:message key="input.driver"/></label>
+                                <select class="form-control m-bot15" name = "driver_id">
+                                    <option>Default</option>
+                                    <c:forEach var="driver" items="${requestScope.drivers}">
+                                        <option value="${driver.id}"><c:out value="${driver.login}"/></option>
+                                    </c:forEach>
                                 </select>
                             </div>
                             <div class="col-sm-6">
-                                <label class="col-sm-2 control-label"><fmt:message key="input.driver"/></label>
-                                <select class="form-control m-bot15">
-                                    <option>Driver 1</option>
-                                    <option>Option 2</option>
-                                    <option>Option 3</option>
+                                <label class="col-sm-2 control-label"><fmt:message key="input.auto"/></label>
+                                <select class="form-control m-bot15" name = "car_id">
+                                    <option>Car 1</option>
+                                    <c:forEach var="driver" items="${requestScope.drivers}">
+                                        <c:forEach var="car" items="${driver.cars}">
+                                        <option value="${car.id}"><c:out value="${car.model}"/></option>
+                                        </c:forEach>
+                                    </c:forEach>
                                 </select>
                             </div>
                         </div>

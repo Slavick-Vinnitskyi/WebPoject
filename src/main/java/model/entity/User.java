@@ -1,7 +1,14 @@
 package model.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class User {
-    //TODO : спросить как разделить админа и водителя чтобы правильно параметризоавть interface
+    public enum ROLE {
+        driver, admin, guest
+    }
+
     private int id;
     private String login;
     private String password;
@@ -9,15 +16,26 @@ public class User {
 
     private String firstName;
     private String secondName;
-
     private String firstName_ua;
     private String secondName_ua;
 
-    public ForeignName getNameBundle(String firstName, String secondName){
+    private List<Car> cars = new ArrayList<>();
+
+    public List<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
+    }
+
+    public ForeignName getNameBundle(String firstName, String secondName) {
         return new ForeignName(firstName, secondName);
     }
+
     public class ForeignName {
         private String firstName;
+
         private String secondName;
 
         public ForeignName(String firstName, String secondName) {
@@ -40,13 +58,11 @@ public class User {
         public void setSecondName(String secondName) {
             this.secondName = secondName;
         }
+
     }
 
-    public enum ROLE {
-        driver, admin, guest
-    }
     public ROLE getRole() {
-        if(role == null) {
+        if (role == null) {
             return ROLE.guest;
         }
         return role;
@@ -79,6 +95,7 @@ public class User {
     public String getSecondName_ua() {
         return secondName_ua;
     }
+
     public void setSecondName_ua(String secondName_ua) {
         this.secondName_ua = secondName_ua;
     }
@@ -120,5 +137,26 @@ public class User {
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                Objects.equals(login, user.login) &&
+                Objects.equals(password, user.password) &&
+                role == user.role &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(secondName, user.secondName) &&
+                Objects.equals(firstName_ua, user.firstName_ua) &&
+                Objects.equals(secondName_ua, user.secondName_ua) &&
+                Objects.equals(cars, user.cars);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login, password);
     }
 }

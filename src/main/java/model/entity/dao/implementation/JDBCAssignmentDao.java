@@ -19,8 +19,20 @@ public class JDBCAssignmentDao implements AssignmentDao {
         this.connection = connection;
     }
 
+
+    public void create(Assignment entity, int linkId) throws SQLException {
+        final String query = "insert into assignment (date_start, status, route_id, person_to_car_id) VALUES (?,?,?,?)";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+
+            AssignmentMapper mapper = new AssignmentMapper();
+            PreparedStatement preparedStatement = mapper.extractToStatement(statement, entity, linkId);
+            preparedStatement.executeUpdate();
+
+        }
+    }
+
     @Override
-    public void create(Assignment entity) {
+    public void create(Assignment entity) throws SQLException {
 
     }
 
@@ -33,7 +45,7 @@ public class JDBCAssignmentDao implements AssignmentDao {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
-                    Assignment assignment = new AssignmentMapper().extractFromResultSet1(resultSet);
+                    Assignment assignment = new AssignmentMapper().extractAssignmentWithRoute(resultSet);
                     return assignment;
                 }
             } catch (SQLException e) {
@@ -122,31 +134,13 @@ public class JDBCAssignmentDao implements AssignmentDao {
                 "SET status = ? where assignment.assignment_id = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1 , String.valueOf(entity.getStatus()));
-//            preparedStatement.setInt(2 , entity.getDriver().getId());
             preparedStatement.setInt(2, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    /*@Override
-    public void updateToAssignedForUser(Assignment entity) {
-        final String query = "UPDATE assignment " +
-                "left join route r on assignment.route = r.route_id " +
-                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
-                "left join car c on ptc.fk_car_id = c.car_id " +
-                "left join person p on ptc.fk_person_id = p.person_id " +
-                "SET status = ? where p.person_id = ? and assignment_id = ?";
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1 , String.valueOf(entity.getStatus()));
-            preparedStatement.setInt(2 , entity.getDriver().getId());
-            preparedStatement.setInt(3 , entity.getId());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-*/
+
     @Override
     public List<IndexDto> findAllFutureApplied() {
                 final String query = "select * from edited_car_park.assignment" +
@@ -189,6 +183,46 @@ public class JDBCAssignmentDao implements AssignmentDao {
         }
     }
 
+    @Override
+    public List<Assignment> findAllByDate(Date date) {
+        final String query = "select * from assignment " +
+                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
+                "left join person on ptc.fk_person_id = person.person_id " +
+                "where date_start = ? and status='applied'";
+        List<Assignment> assignments = new CopyOnWriteArrayList<>();
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setDate(1, date);
+            ResultSet resultSet = statement.executeQuery();
+            AssignmentMapper mapper = new AssignmentMapper();
+            while (resultSet.next()) {
+                Assignment dto = mapper.extractAssignmentWithPerson(resultSet);
+                assignments.add(dto);
+            }
+            return new ArrayList<>(assignments);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public int findLinkId(int driverId, int carId) {
+        final String query = "select id from person_to_car where fk_person_id = ? and fk_car_id  = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1 , driverId);
+            preparedStatement.setInt(2, carId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()) {
+                return resultSet.getInt("id");
+            }
+            return 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     private List<Assignment> getAssignments(List<Assignment> assignments, PreparedStatement statement) throws SQLException {
         ResultSet resultSet = statement.executeQuery();
         return getAssignments(assignments, resultSet);
@@ -211,11 +245,5 @@ public class JDBCAssignmentDao implements AssignmentDao {
     @Override
     public void close() {
 
-    }/*
-    final String query = "UPDATE (select * from assignment " +
-            "left join route r on assignment.route = r.route_id " +
-            "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
-            "left join car c on ptc.fk_car_id = c.car_id " +
-            "left join person p on ptc.fk_person_id = p.person_id " +
-            "where p.person_id = ? and assignment.status = ? ) SET status = ?";*/
+    }
 }

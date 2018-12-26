@@ -1,13 +1,17 @@
 package model.entity.dao.implementation;
 
+import model.entity.Car;
 import model.entity.User;
 import model.entity.dao.UserDao;
+import model.entity.dao.mappers.implementation.CarMapper;
 import model.entity.dao.mappers.implementation.UserMapper;
 import model.exception.UserNotFoundException;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class JDBCUserDao implements UserDao {
@@ -26,7 +30,7 @@ public class JDBCUserDao implements UserDao {
     public User findById(int id) {
         final String query = "select * from edited_car_park.person where person_id = ?";
         try (PreparedStatement st = connection.prepareStatement(query)) {
-            st.setInt(0, id);
+            st.setInt(1, id);
             return getUser(st);
 
         } catch (SQLException e) {
@@ -83,6 +87,35 @@ public class JDBCUserDao implements UserDao {
             } else {
                 throw new UserNotFoundException("Wrong login or password");
             }
+        }
+    }
+
+    @Override
+    public List<User> findAllCarToDriver() throws SQLException {
+        Map<Integer, User> drivers = new HashMap<>();
+        Map<Integer, Car> cars = new HashMap<>();
+
+        final String query = "select * from person_to_car ptc " +
+                "left join person p on ptc.fk_person_id = p.person_id " +
+                "left join car c on ptc.fk_car_id = c.car_id";
+        try (Statement st = connection.createStatement()) {
+            ResultSet rs = st.executeQuery(query);
+
+            UserMapper userMapper = new UserMapper();
+            CarMapper carMapper = new CarMapper();
+
+            while (rs.next()) {
+                User driver = userMapper.extractFromResultSet(rs);
+                Car car = carMapper.extractFromResultSet(rs);
+
+                driver = userMapper.makeUnique(drivers, driver);
+                car = carMapper.makeUnique(cars, car);
+                driver.getCars().add(car);
+            }
+            return new ArrayList<>(drivers.values());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

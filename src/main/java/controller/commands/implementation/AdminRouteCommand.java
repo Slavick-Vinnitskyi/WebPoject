@@ -14,8 +14,8 @@ public class AdminRouteCommand implements Command {
     public String execute(HttpServletRequest request) {
         try {
 
-            AdminRoutePageService adminMainPageService = new AdminRoutePageService();
-            List<Route> routeList = adminMainPageService.getAllRoutes();
+            AdminRoutePageService service = new AdminRoutePageService();
+            List<Route> routeList = service.getAllRoutes();
             request.setAttribute("routeList", routeList);
 
         } catch (SQLException | ClassNotFoundException e) {
