@@ -112,18 +112,6 @@
                                         </div>
                                     </div>
                                     <div class="form-group ">
-                                        <label for="first_name_ua" class="control-label col-lg-2">Ім`я <span class="required">*</span></label>
-                                        <div class="col-lg-10">
-                                            <input class="form-control" id="first_name_ua" name="first_name_ua" type="text" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group ">
-                                        <label for="second_name_ua" class="control-label col-lg-2">Прізвище <span class="required">*</span></label>
-                                        <div class="col-lg-10">
-                                            <input class="form-control" id="second_name_ua" name="second_name_ua" type="text" />
-                                        </div>
-                                    </div>
-                                        <div class="form-group ">
                                         <label for="username" class="control-label col-lg-2">Login <span class="required">*</span></label>
                                         <div class="col-lg-10">
                                             <input class="form-control" id="username" name="username" type="text" />
