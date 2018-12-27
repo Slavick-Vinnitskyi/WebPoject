@@ -20,9 +20,9 @@ public class JDBCDaoFactory extends DaoFactory {
 
 
     /**
-     * @return
+     * @return JDBC implementation of UserDao
      * @throws SQLException if something wrong with driver
-     * @throws ClassNotFoundException
+     * @throws ClassNotFoundException if the driver class cannot be located
      */
     @Override
     public UserDao createUserDao() throws SQLException, ClassNotFoundException {

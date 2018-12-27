@@ -100,7 +100,7 @@ public class JDBCAssignmentDao implements AssignmentDao {
                 "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
                 "left join car c on ptc.fk_car_id = c.car_id " +
                 "left join person p on ptc.fk_person_id = p.person_id " +
-                "where p.person_id = ? and date_start > DATE(NOW())";
+                "where p.person_id = ? and date_start < DATE(NOW())";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             return getAssignments(assignments, statement);

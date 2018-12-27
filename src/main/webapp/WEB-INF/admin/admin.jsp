@@ -151,6 +151,7 @@
                                 <select class="form-control m-bot15" name = "driver_id">
                                     <option>Default</option>
                                     <c:forEach var="driver" items="${requestScope.drivers}">
+                                        <c:set var="driverId" value="${driver.id}"/>
                                         <option value="${driver.id}"><c:out value="${driver.login}"/></option>
                                     </c:forEach>
                                 </select>
@@ -159,10 +160,14 @@
                                 <label class="col-sm-2 control-label"><fmt:message key="input.auto"/></label>
                                 <select class="form-control m-bot15" name = "car_id">
                                     <option>Car 1</option>
+
+
                                     <c:forEach var="driver" items="${requestScope.drivers}">
+                                        <c:if test="${driverId == driver.id}">
                                         <c:forEach var="car" items="${driver.cars}">
                                         <option value="${car.id}"><c:out value="${car.model}"/></option>
                                         </c:forEach>
+                                        </c:if>
                                     </c:forEach>
                                 </select>
                             </div>

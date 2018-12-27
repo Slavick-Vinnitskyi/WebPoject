@@ -98,7 +98,7 @@
                         </header>
                         <div class="panel-body">
                             <div class="form">
-                                <form class="form-validate form-horizontal" id="register_form" method="get" action="${pageContext.request.contextPath}/park/register">
+                                <form class="form-validate form-horizontal" id="register_form" method="post" action="${pageContext.request.contextPath}/park/register">
                                     <div class="form-group ">
                                         <label for="first_name" class="control-label col-lg-2">First name <span class="required">*</span></label>
                                         <div class="col-lg-10">
