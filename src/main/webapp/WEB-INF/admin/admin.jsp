@@ -70,7 +70,7 @@
             <ul>
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <span class="username"><c:out value="${sessionScope.firstName}"/> <c:out value="${sessionScope.secondName}"/></span>
+                        <span class="username"><c:out value="${sessionScope.user.firstName}"/> <c:out value="${sessionScope.user.secondName}"/></span>
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu extended logout">

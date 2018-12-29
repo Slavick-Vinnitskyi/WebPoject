@@ -1,16 +1,14 @@
 package model.entity.dao.implementation;
 
-import model.entity.Assignment;
 import model.entity.Route;
+import model.entity.User;
 import model.entity.dao.RouteDao;
-import model.entity.dao.mappers.implementation.AssignmentMapper;
 import model.entity.dao.mappers.implementation.RouteMapper;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Predicate;
 
 public class JDBCRouteDao implements RouteDao {
 
@@ -21,7 +19,7 @@ public class JDBCRouteDao implements RouteDao {
     }
 
     @Override
-    public void create(Route entity) {
+    public User create(Route entity) {
         final String query = "insert into route (start, finish, start_ua, finish_ua) VALUES (?,?,?,?)";
         try(PreparedStatement statement = connection.prepareStatement(query)){
 
@@ -34,6 +32,7 @@ public class JDBCRouteDao implements RouteDao {
 
         }
 
+        return null;
     }
 
     @Override
@@ -84,6 +83,10 @@ public class JDBCRouteDao implements RouteDao {
 
     @Override
     public void close() {
-
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

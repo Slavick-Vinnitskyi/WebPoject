@@ -2,6 +2,7 @@ package model.entity.dao.implementation;
 
 import model.dto.IndexDto;
 import model.entity.Assignment;
+import model.entity.User;
 import model.entity.dao.AssignmentDao;
 import model.entity.dao.mappers.implementation.AssignmentMapper;
 import model.entity.dao.mappers.implementation.IndexDtoMapper;
@@ -32,8 +33,9 @@ public class JDBCAssignmentDao implements AssignmentDao {
     }
 
     @Override
-    public void create(Assignment entity) throws SQLException {
+    public User create(Assignment entity) throws SQLException {
 
+        return null;
     }
 
     @Override
@@ -244,6 +246,11 @@ public class JDBCAssignmentDao implements AssignmentDao {
 
     @Override
     public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }

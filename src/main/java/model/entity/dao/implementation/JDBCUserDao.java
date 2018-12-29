@@ -8,10 +8,7 @@ import model.entity.dao.mappers.implementation.UserMapper;
 import model.exception.UserNotFoundException;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class JDBCUserDao implements UserDao {
@@ -22,8 +19,46 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public void create(User entity) {
+    public User create(User entity) {
+        final String queryInsertUser = "insert into person(login, password, first_name, second_name, license, role) VALUES (?,?,?,?,?,'driver')";
+        final String querySelectCarsId = "select car_id from car where type=?";
+        final String queryInsertToLinkTable = "insert into person_to_car (fk_person_id, fk_car_id) values (?,?)";
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement insertToUserTable = connection.prepareStatement(queryInsertUser, Statement.RETURN_GENERATED_KEYS);
+            insertToUserTable.setString(1, entity.getLogin());
+            insertToUserTable.setString(2, entity.getPassword());
+            insertToUserTable.setString(3, entity.getFirstName());
+            insertToUserTable.setString(4, entity.getSecondName());
+            insertToUserTable.setString(5, entity.getLicenseType().toString());
+            insertToUserTable.executeUpdate();
+            try (ResultSet generatedKeys = insertToUserTable.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    entity.setId(generatedKeys.getInt(1));
+                } else throw new SQLException("Something wrong with user id");
+            }
+            PreparedStatement selectCars = connection.prepareStatement(querySelectCarsId);
+            selectCars.setString(1, entity.getLicenseType().toString());
+            ResultSet carsId = selectCars.executeQuery();
 
+            PreparedStatement insertToLinkTable = connection.prepareStatement(queryInsertToLinkTable, Statement.RETURN_GENERATED_KEYS);
+            while (carsId.next()) {
+                insertToLinkTable.setInt(1, entity.getId());
+                insertToLinkTable.setInt(2, carsId.getInt("car_id"));
+                insertToLinkTable.addBatch();
+            }
+            insertToLinkTable.executeBatch();
+            insertToLinkTable.close();
+            connection.commit();
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -39,11 +74,11 @@ public class JDBCUserDao implements UserDao {
         return null;
     }
 
-        @Override
+    @Override
     public List<User> findAll() {
 
 
-        List <User> drivers = new CopyOnWriteArrayList<>();
+        List<User> drivers = new CopyOnWriteArrayList<>();
 
         final String query = "select * from edited_car_park.person where role = Driver";
         try (Statement st = connection.createStatement()) {
@@ -71,8 +106,14 @@ public class JDBCUserDao implements UserDao {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        return null;
     }
 
     @Override
@@ -128,6 +169,7 @@ public class JDBCUserDao implements UserDao {
             findingUser = userMapper
                     .extractFromResultSet(rs);
         }
+
         return findingUser;
     }
 
@@ -143,6 +185,10 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public void close() {
-
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

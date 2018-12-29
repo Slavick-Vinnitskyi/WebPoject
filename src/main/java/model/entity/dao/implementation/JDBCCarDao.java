@@ -1,6 +1,7 @@
 package model.entity.dao.implementation;
 
 import model.entity.Car;
+import model.entity.User;
 import model.entity.dao.CarDao;
 import model.entity.dao.mappers.implementation.CarMapper;
 
@@ -17,7 +18,7 @@ public class JDBCCarDao implements CarDao {
     }
 
     @Override
-    public void create(Car entity) {
+    public User create(Car entity) {
         final String queryInsertCar = "insert into car (model, year, type) values (?,?,?)";
         final String querySelectDriverIds = "select person_id from person where license = ?";
         final String queryInsertToLinkTable = "insert into person_to_car(fk_person_id, fk_car_id) VALUES (?, ?)";
@@ -31,7 +32,7 @@ public class JDBCCarDao implements CarDao {
             try (ResultSet generatedKeys = insertCarToCarTable.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     entity.setId(generatedKeys.getInt(1));
-                } else throw new SQLException("Smt wrong with id");
+                } else throw new SQLException("Something wrong with person id");
             }
 
             PreparedStatement selectDrivers = connection.prepareStatement(querySelectDriverIds);
@@ -56,6 +57,7 @@ public class JDBCCarDao implements CarDao {
             }
             ex.printStackTrace();
         }
+        return null;
     }
 
     @Override
@@ -93,6 +95,10 @@ public class JDBCCarDao implements CarDao {
 
     @Override
     public void close() {
-
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

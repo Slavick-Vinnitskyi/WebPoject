@@ -22,9 +22,11 @@
         <body class="login-img3-body">
             <div class="container">
                 <form class="login-form" method="post" action="${pageContext.request.contextPath}/park/login">
-                    <div><p><c:out value="${requestScope.info}"/></p><div>
                     <div class="login-wrap">
                         <p class="login-img"><i class="icon_lock_alt"></i></p>
+                        <div class="form-group">
+                            <div class="text-center text-danger"><p><c:out value="${requestScope.info}"/></p></div>
+                        </div>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="icon_profile"></i></span>
                             <input type="text" class="form-control" placeholder="Username" autofocus name="name">

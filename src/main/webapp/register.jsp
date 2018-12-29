@@ -68,12 +68,13 @@
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true" aria-expanded="true">
-                            <img src="https://demo.neontheme.com/assets/images/flags/flag-uk.png" width="16" height="16"> </a>
+                            <a href="${pageContext.request.contextPath}/park/register.jsp?lang=en">
+                            <img src="https://demo.neontheme.com/assets/images/flags/flag-uk.png" width="16" height="16">
+                                <span>English</span> </a>
                         </li>
                         <li>
-                            <a href="#"> <img src="https://demo.neontheme.com/assets/images/flags/flag-uk.png" width="16" height="16">
-                            <span>English</span> </a>
+                            <a href="${pageContext.request.contextPath}/park/register.jsp?lang=ua"> <img src="https://demo.neontheme.com/assets/images/flags/flag-uk.png" width="16" height="16">
+                            <span>Українська</span> </a>
                         </li>
                     </ul>
                 </li>
@@ -99,6 +100,7 @@
                         <div class="panel-body">
                             <div class="form">
                                 <form class="form-validate form-horizontal" id="register_form" method="post" action="${pageContext.request.contextPath}/park/register">
+                                    <div class="text-center text-danger"><p><c:out value="${requestScope.info}"/></p></div>
                                     <div class="form-group ">
                                         <label for="first_name" class="control-label col-lg-2">First name <span class="required">*</span></label>
                                         <div class="col-lg-10">
@@ -127,6 +129,15 @@
                                         <label for="confirm_password" class="control-label col-lg-2">Confirm Password <span class="required">*</span></label>
                                         <div class="col-lg-10">
                                             <input class="form-control" id="confirm_password" name="confirm_password" type="password" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="license" class="control-label col-lg-2">License type<span class="required"></span></label>
+                                        <div class="col-lg-10">
+                                            <select class="form-control m-bot15" id="license" name="license">
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
