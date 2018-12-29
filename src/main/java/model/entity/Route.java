@@ -1,4 +1,7 @@
 package model.entity;
+
+import java.util.Objects;
+
 //TODO : подумать добавить ли билдер для маршрута
 public class Route {
     private int id;
@@ -7,15 +10,15 @@ public class Route {
     private String startUa;
     private String finishUa;
 
-    public Route() {
-    }
-
     public Route(int id, String start, String finish, String startUa, String finishUa) {
         this.id = id;
         this.start = start;
         this.finish = finish;
         this.startUa = startUa;
         this.finishUa = finishUa;
+    }
+
+    public Route() {
     }
 
     public int getId() {
@@ -56,5 +59,18 @@ public class Route {
 
     public void setFinishUa(String finishUa) {
         this.finishUa = finishUa;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Route route = (Route) o;
+        return id == route.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
