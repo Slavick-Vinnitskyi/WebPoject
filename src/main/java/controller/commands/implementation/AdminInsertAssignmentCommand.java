@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 public class AdminInsertAssignmentCommand implements Command {
     @Override
-    public String execute(HttpServletRequest request) throws Exception {
+    public String execute(HttpServletRequest request) {
         AdminMainPageService service = new AdminMainPageService();
         handleDataToInsert(request, service);
         return "redirect: /park/admin";

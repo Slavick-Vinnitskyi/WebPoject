@@ -2,6 +2,7 @@ package controller.commands.implementation;
 
 import controller.commands.Command;
 import model.entity.Route;
+import model.entity.User;
 import model.service.AdminMainPageService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class AdminFindCommand implements Command {
     @Override
@@ -17,8 +19,12 @@ public class AdminFindCommand implements Command {
         Route route = parseRoute(request, service);
         LocalDate date = parseDate(request);
         setToSession(request, route, date);
+        List<User> freeDrivers = service.getFreeCarsAndDriver(date);
+        HttpSession session = request.getSession();
+        session.setAttribute("drivers", freeDrivers);
 
-        return "redirect: /park/admin";
+        System.out.println("find button session : " + session.getId());
+        return "/WEB-INF/admin/admin.jsp";
     }
 
     private void setToSession(HttpServletRequest request, Route route, LocalDate date) {

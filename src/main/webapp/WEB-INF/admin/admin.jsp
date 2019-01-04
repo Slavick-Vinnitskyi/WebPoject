@@ -119,6 +119,7 @@
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
+                <%--FORM TO INPUT ROUTE AND DATE--%>
                 <form method="post" class="form-horizontal" action="<c:url value="/park/admin/find_free_drivers_and_buses"/>">
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">
@@ -143,31 +144,47 @@
                 </form>
             </div>
             <div class="row">
+
+                <%--FORM TO SELECT DRIVER AND HIS CAR--%>
+                <%--AJAX SCRIPT FOR THIS FORM--%>
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            $('#driverId').on('change', send_id_to_controller);
+                        });
+                        
+                    function send_id_to_controller() {
+                        var selected = $('#driverId').val();
+                        $.ajax({
+                            url: '<c:url value="/park/admin/selected_driver_id"/>',
+                            type: 'POST',
+                            data: {driverId : selected},
+                            success : function(responseText) {
+                                var str = $(responseText).getElementById("f");
+                                $("#f").html(str);
+                                $("#ajaxGetUserServletResponse").html(str);
+                                }
+                            });
+                        }
+                    </script>
+                <%--THE FROM ITSELF--%>
                 <form method="post"  class="form-horizontal" action="<c:url value="/park/admin/insert_assignment"/>" >
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">
                             <div class="col-sm-6">
                                 <label class="col-sm-2 control-label"><fmt:message key="input.driver"/></label>
-                                <select class="form-control m-bot15" name = "driver_id">
-                                    <option>Default</option>
-                                    <c:forEach var="driver" items="${requestScope.drivers}">
-                                        <c:set var="driverId" value="${driver.id}"/>
+                                <select class="form-control m-bot15" name="driver_id" id="driverId">
+                                    <option>-</option>
+                                    <c:forEach var="driver" items="${sessionScope.drivers}">
                                         <option value="${driver.id}"><c:out value="${driver.login}"/></option>
                                     </c:forEach>
                                 </select>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6" id="f">
                                 <label class="col-sm-2 control-label"><fmt:message key="input.auto"/></label>
-                                <select class="form-control m-bot15" name = "car_id">
-                                    <option>Car 1</option>
-
-
-                                    <c:forEach var="driver" items="${requestScope.drivers}">
-                                        <c:if test="${driverId == driver.id}">
-                                        <c:forEach var="car" items="${driver.cars}">
-                                        <option value="${car.id}"><c:out value="${car.model}"/></option>
-                                        </c:forEach>
-                                        </c:if>
+                                <select class="form-control m-bot15" name="car_id" id="carId">
+                                    <option>-</option>
+                                    <c:forEach var="car" items="${requestScope.allcars}">
+                                    <option value = "${car.id}"> <c:out value = "${car.model}"/></option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -270,6 +287,8 @@
                     </nav>
                 </div>
             </div>
+            <strong>Ajax Response</strong>:
+            <div id="ajaxGetUserServletResponse"></div>
             <!-- page end-->
         </section>
     </section>
