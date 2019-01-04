@@ -6,12 +6,13 @@ import model.entity.Assignment;
 import model.service.IndexService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class IndexCommand implements Command {
 
     @Override
-    public String execute(HttpServletRequest request) throws Exception {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         IndexService indexService = new IndexService();
         List<IndexDto> assignmentList = indexService.getFutureAssignments();

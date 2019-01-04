@@ -6,6 +6,7 @@ import model.entity.User;
 import model.service.AdminMainPageService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class AdminFindCommand implements Command {
     @Override
-    public String execute(HttpServletRequest request) throws Exception {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         AdminMainPageService service = new AdminMainPageService();
         Route route = parseRoute(request, service);
         LocalDate date = parseDate(request);

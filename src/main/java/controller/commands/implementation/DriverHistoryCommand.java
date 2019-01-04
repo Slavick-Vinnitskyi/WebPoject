@@ -6,6 +6,7 @@ import model.service.DriverHistoryPageService;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class DriverHistoryCommand implements Command {
@@ -13,7 +14,7 @@ public class DriverHistoryCommand implements Command {
 //    private static final Logger log = Logger.getLogger(DriverHistoryCommand.class);
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         try {
             DriverHistoryPageService service = new DriverHistoryPageService();
             User user = (User) request.getSession().getAttribute("user");

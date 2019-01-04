@@ -5,10 +5,11 @@ import model.entity.Route;
 import model.service.AdminRoutePageService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class AdminAddingRouteButtonCommand implements Command {
     @Override
-    public String execute(HttpServletRequest request) throws Exception {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Route routeToInsert = new Route();
 
         String start = request.getParameter("start");

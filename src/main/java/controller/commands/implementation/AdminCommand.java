@@ -8,6 +8,7 @@ import model.entity.User;
 import model.service.AdminMainPageService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class AdminCommand implements Command {
     @Override
-    public String execute(HttpServletRequest request) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         AdminMainPageService service = new AdminMainPageService();
         try {
 

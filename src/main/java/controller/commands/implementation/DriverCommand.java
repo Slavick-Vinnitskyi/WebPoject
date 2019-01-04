@@ -6,6 +6,7 @@ import model.entity.User;
 import model.service.DriverMainPageService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 //TODO: оптимизировать работу страницы(не переиспользовать данные с базы)
 //TODO: Попробовать возвращать Optional
@@ -17,7 +18,7 @@ public class DriverCommand implements Command {
      * to prevent form resending(Some implementation of 'Post/Redirect/Get' pattern )
      */
     @Override
-    public String execute(HttpServletRequest request) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
 
         try {
             DriverMainPageService service = new DriverMainPageService();

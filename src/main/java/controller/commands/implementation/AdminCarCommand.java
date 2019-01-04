@@ -7,12 +7,13 @@ import model.service.AdminCarPageService;
 import model.service.AdminRoutePageService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
 
 public class AdminCarCommand implements Command {
     @Override
-    public String execute(HttpServletRequest request) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
 
         try {
             AdminCarPageService service = new AdminCarPageService();

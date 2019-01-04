@@ -6,10 +6,11 @@ import model.entity.enums.LicenseType;
 import model.service.RegisterService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class RegisterCommand implements Command {
     @Override
-    public String execute(HttpServletRequest request) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
     RegisterService service = new RegisterService();
         User user = setUpUser(request);
 

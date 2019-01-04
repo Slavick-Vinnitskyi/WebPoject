@@ -7,11 +7,12 @@ import model.entity.User;
 import model.service.AdminMainPageService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 
 public class AdminInsertAssignmentCommand implements Command {
     @Override
-    public String execute(HttpServletRequest request) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         AdminMainPageService service = new AdminMainPageService();
         handleDataToInsert(request, service);
         return "redirect: /park/admin";

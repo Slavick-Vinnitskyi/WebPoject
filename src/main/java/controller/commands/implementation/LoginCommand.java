@@ -7,6 +7,7 @@ import model.exception.UserNotFoundException;
 import model.service.LoginService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.Optional;
@@ -20,7 +21,7 @@ public class LoginCommand implements Command {
      * @return user page if input is right
      */
     @Override
-    public String execute(HttpServletRequest request) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         logout(request);
         String name = request.getParameter("name");
         String pass = request.getParameter("pass");

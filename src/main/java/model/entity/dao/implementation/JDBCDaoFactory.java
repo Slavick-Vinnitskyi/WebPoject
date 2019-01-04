@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class JDBCDaoFactory extends DaoFactory {
 //    private DataSource dataSource = ConnectionPoolHolder.getDataSource();
     private static final String DRIVER = "com.mysql.jdbc.Driver";
-    private final static String DATABASE_URL = "jdbc:mysql://localhost:3306/edited_car_park?useSSL=false";
+    private final static String DATABASE_URL = "jdbc:mysql://localhost:3306/edited_car_park?useSSL=false&serverTimezone=UTC";
     private final static String DATABASE_USER = "root";
     private final static String DATABASE_PASSWORD = "root";
 

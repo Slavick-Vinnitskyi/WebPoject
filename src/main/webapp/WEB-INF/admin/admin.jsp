@@ -148,23 +148,33 @@
                 <%--FORM TO SELECT DRIVER AND HIS CAR--%>
                 <%--AJAX SCRIPT FOR THIS FORM--%>
                     <script type="text/javascript">
+
                         $(document).ready(function () {
                             $('#driverId').on('change', send_id_to_controller);
-                        });
+
                         
                     function send_id_to_controller() {
+                        $("#carId").empty();
+                        var cars_select = $("#carId");
                         var selected = $('#driverId').val();
                         $.ajax({
-                            url: '<c:url value="/park/admin/selected_driver_id"/>',
-                            type: 'POST',
+                            url: "<c:url value="/park/admin/selected_driver_id"/>",
+                            method: 'POST',
                             data: {driverId : selected},
-                            success : function(responseText) {
-                                var str = $(responseText).getElementById("f");
-                                $("#f").html(str);
-                                $("#ajaxGetUserServletResponse").html(str);
-                                }
+                            dataType: "json",
+                            success : function(cars) {
+                                $.each(cars, function () {
+                                    cars_select.append("<option value=\""+this.id+"\">" +
+                                        this.model +
+                                        "</option>");
+                                });
+                                },
+                            error: function () {
+                                cars_select.append("<option value=\"null\">error</option>");
+                            }
                             });
                         }
+                        })
                     </script>
                 <%--THE FROM ITSELF--%>
                 <form method="post"  class="form-horizontal" action="<c:url value="/park/admin/insert_assignment"/>" >
@@ -179,13 +189,13 @@
                                     </c:forEach>
                                 </select>
                             </div>
-                            <div class="col-sm-6" id="f">
-                                <label class="col-sm-2 control-label"><fmt:message key="input.auto"/></label>
-                                <select class="form-control m-bot15" name="car_id" id="carId">
-                                    <option>-</option>
-                                    <c:forEach var="car" items="${requestScope.allcars}">
-                                    <option value = "${car.id}"> <c:out value = "${car.model}"/></option>
-                                    </c:forEach>
+                            <div class="col-sm-6">
+                                <label for="carId" class="col-sm-2 control-label"><fmt:message key="input.auto"/></label>
+                                <select class="form-control m-bot15" name="car_id" id = "carId">
+                                    <%--<option>-</option>--%>
+                                    <%--<c:forEach var="car" items="${requestScope.allcars}">--%>
+                                    <%--<option value = "${car.id}"> <c:out value = "${car.model}"/></option>--%>
+                                    <%--</c:forEach>--%>
                                 </select>
                             </div>
                         </div>

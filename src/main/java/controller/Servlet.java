@@ -67,15 +67,17 @@ public class Servlet extends HttpServlet {
         Command command = getCommand(request);
         String page = null;
         try {
-            page = command.execute(request);
+            page = command.execute(request, response);
         } catch (Exception e) {
+            System.err.println("Exception in Servlet");
             e.printStackTrace();
         }
-
-        if (Objects.requireNonNull(page).contains("redirect: ")) {
-            response.sendRedirect(request.getContextPath() + page.replaceAll("redirect: ", ""));
-        } else {
-            request.getRequestDispatcher(page).forward(request, response);
+        if (page != null) {
+            if (page.contains("redirect: ")) {
+                response.sendRedirect(request.getContextPath() + page.replaceAll("redirect: ", ""));
+            } else {
+                request.getRequestDispatcher(page).forward(request, response);
+            }
         }
     }
 
@@ -86,6 +88,6 @@ public class Servlet extends HttpServlet {
         System.out.println("processRequest, path=" + path);
         path = path.replaceAll(".*/park/", "");
         path = path.replaceAll(".*/park", "");
-        return commands.getOrDefault(path, (r) -> "/park/index");
+        return commands.getOrDefault(path, (r,j) -> "/park/index");
     }
 }

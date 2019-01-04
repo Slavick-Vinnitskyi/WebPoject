@@ -6,12 +6,13 @@ import model.entity.enums.LicenseType;
 import model.service.AdminCarPageService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class AdminAddingCarButtonCommand implements Command {
     @Override
-    public String execute(HttpServletRequest request) throws Exception {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         LocalDate date = LocalDate.parse(request.getParameter("date"), formatter);
