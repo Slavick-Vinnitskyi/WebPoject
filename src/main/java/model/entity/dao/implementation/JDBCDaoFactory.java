@@ -12,7 +12,7 @@ import java.sql.SQLException;
  * @see ConnectionPoolHolder - doesn`t work
  * */
 public class JDBCDaoFactory extends DaoFactory {
-//    private DataSource dataSource = ConnectionPoolHolder.getDataSource();
+    private DataSource dataSource = ConnectionPoolHolder.getDataSource();
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     private final static String DATABASE_URL = "jdbc:mysql://localhost:3306/edited_car_park?useSSL=false&serverTimezone=UTC";
     private final static String DATABASE_USER = "root";
@@ -46,8 +46,8 @@ public class JDBCDaoFactory extends DaoFactory {
     }
 
     private Connection getConnection() throws SQLException, ClassNotFoundException {
-//        return dataSource.getConnection();
-        Class.forName(DRIVER);
-        return DriverManager.getConnection(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
+        return dataSource.getConnection();
+//        Class.forName(DRIVER);
+//        return DriverManager.getConnection(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
     }
 }

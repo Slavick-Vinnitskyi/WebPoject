@@ -13,7 +13,7 @@ public class ConnectionPoolHolder {
                 if (dataSource == null) {
                     dataSource = new BasicDataSource();
                     dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-                    dataSource.setUrl("jdbc:mysql://localhost:3306/edited_car_park");
+                    dataSource.setUrl("jdbc:mysql://localhost:3306/edited_car_park?useSSL=false");
                     dataSource.setUsername("root");
                     dataSource.setPassword("root");
                     dataSource.setMaxOpenPreparedStatements(100);
