@@ -23,8 +23,6 @@ public class AdminFindCommand implements Command {
         List<User> freeDrivers = service.getFreeCarsAndDriver(date);
         HttpSession session = request.getSession();
         session.setAttribute("drivers", freeDrivers);
-
-        System.out.println("find button session : " + session.getId());
         return "/WEB-INF/admin/admin.jsp";
     }
 

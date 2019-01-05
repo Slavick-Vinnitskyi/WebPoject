@@ -164,9 +164,9 @@
                             dataType: "json",
                             success : function(cars) {
                                 $.each(cars, function () {
-                                    cars_select.append("<option value=\""+this.id+"\">" +
-                                        this.model +
-                                        "</option>");
+                                    cars_select.append("<option value=\""+this.id+"\">"
+                                        + this.model + ", year:" + this.year
+                                        + "</option>");
                                 });
                                 },
                             error: function () {
@@ -185,7 +185,9 @@
                                 <select class="form-control m-bot15" name="driver_id" id="driverId">
                                     <option>-</option>
                                     <c:forEach var="driver" items="${sessionScope.drivers}">
-                                        <option value="${driver.id}"><c:out value="${driver.login}"/></option>
+                                        <option value="${driver.id}">
+                                            <c:out value="${driver.login}"/>, license:<c:out value="${driver.licenseType}"/>
+                                        </option>
                                     </c:forEach>
                                 </select>
                             </div>

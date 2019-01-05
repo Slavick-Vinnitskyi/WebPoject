@@ -2,6 +2,7 @@ package model.entity.dao.mappers.implementation;
 
 import model.entity.User;
 import model.entity.dao.mappers.ObjectMapper;
+import model.entity.enums.LicenseType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,6 +18,8 @@ public class UserMapper implements ObjectMapper<User> {
         user.setFirstName(resultSet.getString("first_name"));
         user.setSecondName(resultSet.getString("second_name"));
         user.setRole(User.ROLE.valueOf(resultSet.getString("role")));
+        if(user.getRole() == User.ROLE.driver)
+        user.setLicenseType(LicenseType.valueOf(resultSet.getString("license")));
         return user;
     }
 

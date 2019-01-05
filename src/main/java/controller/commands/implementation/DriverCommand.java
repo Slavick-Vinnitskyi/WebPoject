@@ -28,7 +28,9 @@ public class DriverCommand implements Command {
             User user = (User) request.getSession().getAttribute("user");
             int userId = user.getId();
 
-            List<Assignment> assignedList = Optional.of(service.getAssignmentsForDriverByStatus(userId, Assignment.Status.assigned)).orElse(new ArrayList<>());
+            List<Assignment> assignedList = Optional
+                    .of(service.getAssignmentsForDriverByStatus(userId, Assignment.Status.assigned))
+                    .orElse(new ArrayList<>());
             request.setAttribute("assignmentsAssignedList", assignedList);
             List<Assignment> appliedList = service.getAssignmentsForDriverByStatus(userId, Assignment.Status.applied);
             request.setAttribute("assignmentsAppliedList", appliedList);
@@ -49,6 +51,7 @@ public class DriverCommand implements Command {
     private void handleAssignedPageNumber(HttpServletRequest request, List<Assignment> assignedList) {
         int page = Integer.valueOf(Optional.ofNullable(request.getParameter("assignedPage")).orElse("0"));
         if(page == 1) page = 0;
+
         int end = Math.min(page + 2, assignedList.size());
         request.setAttribute("assignmentsAssignedList", assignedList.subList(page, end));
     }
