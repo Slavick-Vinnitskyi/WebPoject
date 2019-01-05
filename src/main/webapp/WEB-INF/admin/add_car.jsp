@@ -183,9 +183,9 @@
                                         <span class="sr-only"><fmt:message key="pagin.prev"/></span>
                                     </a>
                                 </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <c:forEach var="i" begin="1" end="${requestScope.totalPages}">
+                                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/park/admin/add_car?page=${i}">${i}</a></li>
+                                </c:forEach>
                                 <li class="page-item">
                                     <a class="page-link" href="#" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>

@@ -12,9 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-
+//TODO: доделать лоаказизацию
 @WebServlet(urlPatterns = "/park/*" , loadOnStartup = 1)
 public class Servlet extends HttpServlet {
 
@@ -82,8 +81,6 @@ public class Servlet extends HttpServlet {
     }
 
     private Command getCommand(HttpServletRequest request) {
-        String ipAdress = request.getRemoteAddr();
-        System.out.println("ip = " + ipAdress);
         String path = request.getRequestURI();
         System.out.println("processRequest, path=" + path);
         path = path.replaceAll(".*/park/", "");

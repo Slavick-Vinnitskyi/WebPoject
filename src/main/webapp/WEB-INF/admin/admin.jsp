@@ -241,9 +241,16 @@
                                     <span class="sr-only">Previous</span>
                                 </a>
                             </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <c:forEach var="i" begin="1" end="${requestScope.totalAssignedPages}">
+                                <li class="page-item">
+                                    <c:if test="${param.appliedPage==null}">
+                                        <a class="page-link" href="${pageContext.request.contextPath}/park/admin?assignedPage=${i}">${i}</a>
+                                    </c:if>
+                                    <c:if test="${param.appliedPage!=null}">
+                                        <a class="page-link" href="${pageContext.request.contextPath}/park/admin?assignedPage=${i}&appliedPage=${param.appliedPage}">${i}</a>
+                                    </c:if>
+                                </li>
+                            </c:forEach>
                             <li class="page-item">
                                 <a class="page-link" href="#" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
@@ -286,9 +293,16 @@
                                     <span class="sr-only">Previous</span>
                                 </a>
                             </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <c:forEach var="i" begin="1" end="${requestScope.totalAppliedPages}">
+                                <li class="page-item">
+                                    <c:if test="${param.assignedPage!=null}">
+                                        <a class="page-link" href="${pageContext.request.contextPath}/park/admin?assignedPage=${param.assignedPage}&appliedPage=${i}">${i}</a>
+                                    </c:if>
+                                    <c:if test="${param.assignedPage==null}">
+                                        <a class="page-link" href="${pageContext.request.contextPath}/park/admin?appliedPage=${i}">${i}</a>
+                                    </c:if>
+                                </li>
+                            </c:forEach>
                             <li class="page-item">
                                 <a class="page-link" href="#" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
