@@ -2,20 +2,18 @@ package controller.commands.implementation;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
+import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 import controller.commands.Command;
 import model.entity.Car;
-import model.entity.Route;
 import model.entity.User;
-import model.service.AdminCarPageService;
-import model.service.AdminMainPageService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 public class AdminFormDriverIdCommand implements Command {
@@ -26,11 +24,8 @@ public class AdminFormDriverIdCommand implements Command {
         int driverId = Integer.parseInt(request.getParameter("driverId"));
         User selectedDriver = getDriverFromListById(request, driverId).orElse(new User());
         List<Car> cars = selectedDriver.getCars();
-        cars.forEach(x->x.setYear(null));
-
-//       request.getSession().setAttribute("cars", cars);
        response.setContentType("application/json");
-       Gson json = new Gson();
+       Gson json = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
        String stringJson = json.toJson(cars);
        try(PrintWriter writer = response.getWriter()) {
            writer.print(stringJson);
@@ -44,5 +39,12 @@ public class AdminFormDriverIdCommand implements Command {
     private Optional<User> getDriverFromListById(HttpServletRequest request, int driverId) {
         List<User> driversInRequest = (List<User>) request.getSession().getAttribute("drivers");
         return driversInRequest.stream().filter(x -> x.getId() == driverId).findAny();
+    }
+}
+
+class LocalDateAdapter implements JsonSerializer<LocalDate> {
+
+    public JsonElement serialize(LocalDate date, Type typeOfSrc, JsonSerializationContext context) {
+        return new JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE));
     }
 }
