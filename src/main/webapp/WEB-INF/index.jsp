@@ -1,12 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="language" value="${not empty param.language ? param.language
- : not empty language ? language : pageContext.request.locale}" scope="session"/>
-<fmt:setLocale value="${language}" scope = "session"/>
+<%--<c:set var="language" value="${not empty param.language ? param.language--%>
+ <%--: not empty language ? language : pageContext.request.locale}" scope="session"/>--%>
+<%--<fmt:setLocale value="${language}" scope = "session"/>--%>
+<fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:bundle basename="index" prefix="index.">
-<html lang="${language}">
-<%--TODO: доавить c:if для проверти роли на индексе чтобы не выводить эти кнопки--%>
+<%--<html lang="${language}">--%>
+<html>
+<%--TODO: добавить c:if для проверти роли на индексе чтобы не выводить эти кнопки--%>
 <head>
         <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <!-- bootstrap theme -->
@@ -23,18 +25,28 @@
         <title>The all-new Uber</title>
 </head>
     <body>
-   <%-- <form>
-        <select id = "language" name = "language" onchange = "submit()">
-            <option value = "en" ${language == 'en' ? 'selected' : ''}>English</option>
-            <option value = "ua" ${language == 'ua' ? 'selected' : ''}>Українська</option>
-        </select>
---%>
    <section id="container" class="">
        <header class="header dark-bg">
            <!--logo start-->
            <a href="${pageContext.request.contextPath}/park/index" class="logo">Car <span class="lite">Park</span></a>
            <!--logo end-->
+           <div style="text-align: right" id="lang-div">
+               <a href="?sessionLocale=en"><img src="${pageContext.request.contextPath}/resources/bootstrap/img/icons/us.png"><fmt:message key="lang.en"/></a>
+               <br>
+               <a href="?sessionLocale=ua"><img src="${pageContext.request.contextPath}/resources/bootstrap/img/icons/ua.png"><fmt:message key="lang.ua"/></a>
+           </div>
        </header>
+       <style>
+           #lang-div img {
+               width: 20px;
+               height: 20px;
+               opacity: 0.7;
+           }
+
+           #lang-div img:hover {
+               opacity: 1;
+           }
+       </style>
        <!--header end-->
 
        <section id="container main-content">
