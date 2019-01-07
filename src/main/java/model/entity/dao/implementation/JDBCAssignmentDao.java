@@ -6,6 +6,7 @@ import model.entity.User;
 import model.entity.dao.AssignmentDao;
 import model.entity.dao.mappers.implementation.AssignmentMapper;
 import model.entity.dao.mappers.implementation.IndexDtoMapper;
+import util.QueryManager;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -22,7 +23,8 @@ public class JDBCAssignmentDao implements AssignmentDao {
 
 
     public void create(Assignment entity, int linkId) throws SQLException {
-        final String query = "insert into assignment (date_start, status, route_id, person_to_car_id) VALUES (?,?,?,?)";
+//        final String query = "insert into assignment (date_start, status, route_id, person_to_car_id) VALUES (?,?,?,?)";
+        final String query = QueryManager.getProperty("assignment.create");
         try (PreparedStatement statement = connection.prepareStatement(query)) {
 
             AssignmentMapper mapper = new AssignmentMapper();
@@ -40,15 +42,15 @@ public class JDBCAssignmentDao implements AssignmentDao {
 
     @Override
     public Assignment findById(int id) {
-        final String query = "select * from assignment " +
-                "left join route r on assignment.route_id = r.route_id " +
-                "where assignment.assignment_id = ?";
+//        final String query = "select * from assignment " +
+//                "left join route r on assignment.route_id = r.route_id " +
+//                "where assignment.assignment_id = ?";
+        final String query = QueryManager.getProperty("assignment.findById");
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
-                    Assignment assignment = new AssignmentMapper().extractAssignmentWithRoute(resultSet);
-                    return assignment;
+                    return new AssignmentMapper().extractAssignmentWithRoute(resultSet);
                 }
             } catch (SQLException e) {
             e.printStackTrace();
@@ -61,11 +63,12 @@ public class JDBCAssignmentDao implements AssignmentDao {
     public List<Assignment> findAll() {
         List<Assignment> assignments = new CopyOnWriteArrayList<>();
 
-        final String query = "select * from assignment " +
-                "left join route r on assignment.route_id = r.route_id " +
-                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
-                "left join car c on ptc.fk_car_id = c.car_id " +
-                "left join person p on ptc.fk_person_id = p.person_id where date_start > DATE(NOW())";
+//        final String query = "select * from assignment " +
+//                "left join route r on assignment.route_id = r.route_id " +
+//                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
+//                "left join car c on ptc.fk_car_id = c.car_id " +
+//                "left join person p on ptc.fk_person_id = p.person_id where date_start > DATE(NOW())";
+        final String query = QueryManager.getProperty("assignment.findAll");
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(query);
             return getAssignments(assignments, resultSet);
@@ -78,13 +81,14 @@ public class JDBCAssignmentDao implements AssignmentDao {
 
     public List<Assignment> findForUser(int id, Assignment.Status status) {
         List<Assignment> assignments = new CopyOnWriteArrayList<>();
-        final String query = "select * " +
-                "from assignment " +
-                "left join route r on assignment.route_id = r.route_id " +
-                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
-                "left join car c on ptc.fk_car_id = c.car_id " +
-                "left join person p on ptc.fk_person_id = p.person_id " +
-                "where p.person_id = ? and assignment.status = ?";
+//        final String query = "select * " +
+//                "from assignment " +
+//                "left join route r on assignment.route_id = r.route_id " +
+//                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
+//                "left join car c on ptc.fk_car_id = c.car_id " +
+//                "left join person p on ptc.fk_person_id = p.person_id " +
+//                "where p.person_id = ? and assignment.status = ?";
+        final String query = QueryManager.getProperty("assignment.findForUser");
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             statement.setString(2, String.valueOf(status));
@@ -96,13 +100,14 @@ public class JDBCAssignmentDao implements AssignmentDao {
     }
     public List<Assignment> findPastForUser(int id) {
         List<Assignment> assignments = new CopyOnWriteArrayList<>();
-        final String query = "select * " +
-                "from assignment " +
-                "left join route r on assignment.route_id = r.route_id " +
-                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
-                "left join car c on ptc.fk_car_id = c.car_id " +
-                "left join person p on ptc.fk_person_id = p.person_id " +
-                "where p.person_id = ? and date_start < DATE(NOW())";
+//        final String query = "select * " +
+//                "from assignment " +
+//                "left join route r on assignment.route_id = r.route_id " +
+//                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
+//                "left join car c on ptc.fk_car_id = c.car_id " +
+//                "left join person p on ptc.fk_person_id = p.person_id " +
+//                "where p.person_id = ? and date_start < DATE(NOW())";
+        final String query = QueryManager.getProperty("assignment.findPastForUser");
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             return getAssignments(assignments, statement);
@@ -115,12 +120,13 @@ public class JDBCAssignmentDao implements AssignmentDao {
 
     @Override
     public void update(Assignment entity) {
-        final String query = "UPDATE assignment " +
-                "left join route r on assignment.route_id = r.route_id " +
-                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
-                "left join car c on ptc.fk_car_id = c.car_id " +
-                "left join person p on ptc.fk_person_id = p.person_id " +
-                "SET status = ? where p.person_id = ?";
+//        final String query = "UPDATE assignment " +
+////                "left join route r on assignment.route_id = r.route_id " +
+////                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
+////                "left join car c on ptc.fk_car_id = c.car_id " +
+////                "left join person p on ptc.fk_person_id = p.person_id " +
+////                "SET status = ? where p.person_id = ?";
+        final String query = QueryManager.getProperty("assignment.update");
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1 , String.valueOf(entity.getStatus()));
             preparedStatement.setInt(2 , entity.getId());
@@ -131,9 +137,10 @@ public class JDBCAssignmentDao implements AssignmentDao {
     }
     @Override
     public void updateToAppliedForUser(Assignment entity) {
-        final String query = "UPDATE assignment " +
-        "left join route r on assignment.route_id = r.route_id " +
-                "SET status = ? where assignment.assignment_id = ?";
+//        final String query = "UPDATE assignment " +
+////        "left join route r on assignment.route_id = r.route_id " +
+////                "SET status = ? where assignment.assignment_id = ?";
+        final String query = QueryManager.getProperty("assignment.updateToAppliedForUser");
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1 , String.valueOf(entity.getStatus()));
             preparedStatement.setInt(2, entity.getId());
@@ -145,10 +152,11 @@ public class JDBCAssignmentDao implements AssignmentDao {
 
     @Override
     public List<IndexDto> findAllFutureApplied() {
-                final String query = "select * from edited_car_park.assignment" +
-                " left join route on edited_car_park.assignment.route_id = route.route_id" +
-                " where date_start >= DATE(NOW()) and status='applied'" +
-                        "ORDER BY date_start";
+//                final String query = "select * from edited_car_park.assignment" +
+//                " left join route on edited_car_park.assignment.route_id = route.route_id" +
+//                " where date_start >= DATE(NOW()) and status='applied'" +
+//                        "ORDER BY date_start";
+        final String query = QueryManager.getProperty("assignment.findAllFutureApplied");
         List<IndexDto> assignments = new CopyOnWriteArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -169,13 +177,14 @@ public class JDBCAssignmentDao implements AssignmentDao {
     @Override
     public List<Assignment> findByStatus(Assignment.Status status) {
         List<Assignment> assignments = new CopyOnWriteArrayList<>();
-        final String query = "select * " +
-                "from assignment " +
-                "left join route r on assignment.route_id = r.route_id " +
-                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
-                "left join car c on ptc.fk_car_id = c.car_id " +
-                "left join person p on ptc.fk_person_id = p.person_id " +
-                "where assignment.status = ?";
+//        final String query = "select * " +
+//                "from assignment " +
+//                "left join route r on assignment.route_id = r.route_id " +
+//                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
+//                "left join car c on ptc.fk_car_id = c.car_id " +
+//                "left join person p on ptc.fk_person_id = p.person_id " +
+//                "where assignment.status = ?";
+        final String query= QueryManager.getProperty("assignment.findByStatus");
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, String.valueOf(status));
             return getAssignments(assignments, statement);
@@ -187,10 +196,11 @@ public class JDBCAssignmentDao implements AssignmentDao {
 
     @Override
     public List<Assignment> findAllByDate(Date date) {
-        final String query = "select * from assignment " +
-                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
-                "left join person on ptc.fk_person_id = person.person_id " +
-                "where date_start = ? and status='applied'";
+//        final String query = "select * from assignment " +
+//                "left join person_to_car ptc on assignment.person_to_car_id = ptc.id " +
+//                "left join person on ptc.fk_person_id = person.person_id " +
+//                "where date_start = ? and status='applied'";
+        final String query = QueryManager.getProperty("assignment.findAllByDate");
         List<Assignment> assignments = new CopyOnWriteArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -210,7 +220,8 @@ public class JDBCAssignmentDao implements AssignmentDao {
 
     @Override
     public int findLinkId(int driverId, int carId) {
-        final String query = "select id from person_to_car where fk_person_id = ? and fk_car_id  = ?";
+//        final String query = "select id from person_to_car where fk_person_id = ? and fk_car_id  = ?";
+        final String query = QueryManager.getProperty("assignment.findLinkId");
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1 , driverId);
             preparedStatement.setInt(2, carId);

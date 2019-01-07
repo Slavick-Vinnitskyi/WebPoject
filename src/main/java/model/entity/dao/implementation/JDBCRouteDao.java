@@ -4,6 +4,7 @@ import model.entity.Route;
 import model.entity.User;
 import model.entity.dao.RouteDao;
 import model.entity.dao.mappers.implementation.RouteMapper;
+import util.QueryManager;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,7 +21,8 @@ public class JDBCRouteDao implements RouteDao {
 
     @Override
     public User create(Route entity) {
-        final String query = "insert into route (start, finish, start_ua, finish_ua) VALUES (?,?,?,?)";
+//        final String query = "insert into route (start, finish, start_ua, finish_ua) VALUES (?,?,?,?)";
+        final String query = QueryManager.getProperty("route.create");
         try(PreparedStatement statement = connection.prepareStatement(query)){
 
         RouteMapper mapper = new RouteMapper();
@@ -37,8 +39,8 @@ public class JDBCRouteDao implements RouteDao {
 
     @Override
     public Route findById(int id) {
-        final String query = "select * from route " +
-                "where route.route_id = ?";
+//        final String query = "select * from route where route.route_id = ?";
+        final String query = QueryManager.getProperty("route.findById");
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -56,7 +58,8 @@ public class JDBCRouteDao implements RouteDao {
     @Override
     public List<Route> findAll() {
         List<Route> routes = new CopyOnWriteArrayList<>();
-        final String query = "select * from edited_car_park.route";
+//        final String query = "select * from edited_car_park.route";
+        final String query = QueryManager.getProperty("route.findAll");
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(query);
             RouteMapper routeMapper = new RouteMapper();

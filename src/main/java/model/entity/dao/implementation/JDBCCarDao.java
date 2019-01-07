@@ -4,6 +4,7 @@ import model.entity.Car;
 import model.entity.User;
 import model.entity.dao.CarDao;
 import model.entity.dao.mappers.implementation.CarMapper;
+import util.QueryManager;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,9 +20,12 @@ public class JDBCCarDao implements CarDao {
 
     @Override
     public User create(Car entity) {
-        final String queryInsertCar = "insert into car (model, year, type) values (?,?,?)";
-        final String querySelectDriverIds = "select person_id from person where license = ?";
-        final String queryInsertToLinkTable = "insert into person_to_car(fk_person_id, fk_car_id) VALUES (?, ?)";
+//        final String queryInsertCar = "insert into car (model, year, type) values (?,?,?)";
+//        final String querySelectDriverIds = "select person_id from person where license = ?";
+//        final String queryInsertToLinkTable = "insert into person_to_car(fk_person_id, fk_car_id) VALUES (?, ?)";
+        final String queryInsertCar = QueryManager.getProperty("car.insertCar");
+        final String querySelectDriverIds = QueryManager.getProperty("car.selectDriverIds");
+        final String queryInsertToLinkTable =  QueryManager.getProperty("car.insertToLinkTable");
         try {
             connection.setAutoCommit(false);
             PreparedStatement insertCarToCarTable = connection.prepareStatement(queryInsertCar, Statement.RETURN_GENERATED_KEYS);
@@ -68,7 +72,8 @@ public class JDBCCarDao implements CarDao {
     @Override
     public List<Car> findAll() throws SQLException {
         List<Car> cars = new CopyOnWriteArrayList<>();
-        final String query = "select * from edited_car_park.car";
+//        final String query = "select * from edited_car_park.car";
+        final String query = QueryManager.getProperty("car.findAll");
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(query);
             CarMapper carMapper = new CarMapper();

@@ -6,6 +6,7 @@ import model.entity.dao.UserDao;
 import model.entity.dao.mappers.implementation.CarMapper;
 import model.entity.dao.mappers.implementation.UserMapper;
 import model.exception.UserNotFoundException;
+import util.QueryManager;
 
 import java.sql.*;
 import java.util.*;
@@ -20,9 +21,10 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public User create(User entity) {
-        final String queryInsertUser = "insert into person(login, password, first_name, second_name, license, role) VALUES (?,?,?,?,?,'driver')";
-        final String querySelectCarsId = "select car_id from car where type=?";
-        final String queryInsertToLinkTable = "insert into person_to_car (fk_person_id, fk_car_id) values (?,?)";
+//        final String queryInsertUser = "insert into person(login, password, first_name, second_name, license, role) VALUES (?,?,?,?,?,'driver')";
+        final String queryInsertUser = QueryManager.getProperty("user.create.insertUser");
+        final String querySelectCarsId = QueryManager.getProperty("user.create.selectCarsId");
+        final String queryInsertToLinkTable =  QueryManager.getProperty("user.create.insertToLinkTable");
         try {
             connection.setAutoCommit(false);
             PreparedStatement insertToUserTable = connection.prepareStatement(queryInsertUser, Statement.RETURN_GENERATED_KEYS);
@@ -63,7 +65,8 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public User findById(int id) {
-        final String query = "select * from edited_car_park.person where person_id = ?";
+//        final String query = "select * from edited_car_park.person where person_id = ?";
+        final String query = QueryManager.getProperty("user.findById");
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setInt(1, id);
             return getUser(st);
@@ -80,7 +83,8 @@ public class JDBCUserDao implements UserDao {
 
         List<User> drivers = new CopyOnWriteArrayList<>();
 
-        final String query = "select * from edited_car_park.person where role = Driver";
+//        final String query = "select * from edited_car_park.person where role = 'Driver'";
+        final String query = QueryManager.getProperty("user.findAll");
         try (Statement st = connection.createStatement()) {
             ResultSet rs = st.executeQuery(query);
 
@@ -99,7 +103,8 @@ public class JDBCUserDao implements UserDao {
     }
 
     public User findByName(String login) {
-        final String query = "select * from edited_car_park.person where login = ?";
+//        final String query = "select * from edited_car_park.person where login = ?";
+        final String query = QueryManager.getProperty("user.findByName");
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, login);
             return getUser(st);
@@ -118,7 +123,8 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public User findByLoginAndPassword(String login, String password) throws UserNotFoundException, SQLException {
-        final String query = "select * from edited_car_park.person where login = ? and password = ?";
+//        final String query = "select * from edited_car_park.person where login = ? and password = ?";
+        final String query = QueryManager.getProperty("user.findByLoginAndPassword");
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, login);
             st.setString(2, password);
@@ -135,10 +141,10 @@ public class JDBCUserDao implements UserDao {
     public List<User> findAllCarToDriver() throws SQLException {
         Map<Integer, User> drivers = new HashMap<>();
         Map<Integer, Car> cars = new HashMap<>();
-
-        final String query = "select * from person_to_car ptc " +
-                "left join person p on ptc.fk_person_id = p.person_id " +
-                "left join car c on ptc.fk_car_id = c.car_id";
+//        final String query = "select * from person_to_car ptc " +
+//                "left join person p on ptc.fk_person_id = p.person_id " +
+//                "left join car c on ptc.fk_car_id = c.car_id";
+        final String query = QueryManager.getProperty("user.findAllCarToDriver");
         try (Statement st = connection.createStatement()) {
             ResultSet rs = st.executeQuery(query);
 
