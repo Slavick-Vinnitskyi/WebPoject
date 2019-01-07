@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 public class AdminAddingCarButtonCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 
         LocalDate date = LocalDate.parse(request.getParameter("date"), formatter);
         String mark = request.getParameter("mark");

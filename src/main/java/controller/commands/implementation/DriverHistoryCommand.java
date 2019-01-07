@@ -31,13 +31,14 @@ public class DriverHistoryCommand implements Command {
     }
 
     private void handlePageNumber(HttpServletRequest request, List<Assignment> assignments) {
-        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("page")).orElse("0"));
-        int end = Math.min(page + 2 , assignments.size());
-        request.setAttribute("assignmentsHistory", assignments.subList(page, end));
+        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("page")).orElse("1"));
+        int start = (page - 1) * OFFSET;
+        int end = Math.min(start + OFFSET, assignments.size());
+        request.setAttribute("assignmentsHistory", assignments.subList(start, end));
     }
 
     private void setTotalPageNumber(HttpServletRequest request, List<Assignment> assignments) {
-        int totalPages = (int) Math.ceil((float)assignments.size()/2);
+        int totalPages = (int) Math.ceil((float)assignments.size()/OFFSET);
         request.setAttribute("totalPages", totalPages);
     }
 }

@@ -16,10 +16,8 @@ public class AdminRouteCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         try {
-
             AdminRoutePageService service = new AdminRoutePageService();
             List<Route> routeList = service.getAllRoutes();
-//            request.setAttribute("routeList", routeList);
             setTotalPageNumber(request, routeList);
             handlePageNumber(request, routeList);
 
@@ -29,13 +27,14 @@ public class AdminRouteCommand implements Command {
         return "/WEB-INF/admin/add_route.jsp";
     }
     private void handlePageNumber(HttpServletRequest request, List<Route> assignments) {
-        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("page")).orElse("0"));
-        int end = Math.min(page + 2 , assignments.size());
-        request.setAttribute("routeList", assignments.subList(page, end));
+        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("page")).orElse("1"));
+        int start = (page - 1) * OFFSET;
+        int end = Math.min(start + OFFSET, assignments.size());
+        request.setAttribute("routeList", assignments.subList(start, end));
     }
 
     private void setTotalPageNumber(HttpServletRequest request, List<Route> assignments) {
-        int totalPages = (int) Math.ceil((float)assignments.size()/2);
+        int totalPages = (int) Math.ceil((float)assignments.size() / OFFSET);
         request.setAttribute("totalPages", totalPages);
     }
 }
