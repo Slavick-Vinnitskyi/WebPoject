@@ -25,6 +25,9 @@ public class SecurityUtility {
         loggedUsers.remove(getUserId(session));
         setLoggedUsers(loggedUsers);
         session.removeAttribute("userId");
+        session.getAttribute("lang");
+        session.removeAttribute("lang");
+        session.getAttribute("lang");
     }
 
     public void setLoggedUsers(Map<Integer, HttpSession> loggedUsers) {

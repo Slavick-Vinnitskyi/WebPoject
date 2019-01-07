@@ -75,7 +75,7 @@ public class LoginCommand implements Command {
      * @return user id if those exist of 0 if not
      */
     private int getUserId(HttpServletRequest request) {
-        return (int) Optional.ofNullable(request.getSession().getAttribute("userId")).orElse(-1);
+        return (Integer) Optional.ofNullable(request.getSession().getAttribute("userId")).orElse(-1);
     }
 
 

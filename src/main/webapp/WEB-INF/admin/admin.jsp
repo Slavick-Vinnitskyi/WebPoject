@@ -1,11 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="language" value="${not empty param.language ? param.language
- : not empty language ? language : pageContext.request.locale}" scope="session"/>
-<fmt:setLocale value="${language}" scope = "session"/>
+<fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:bundle basename="admin" prefix="admin.">
-<html lang="en">
+<html>
 <head>
     <!-- Bootstrap CSS -->
     <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -13,8 +11,8 @@
     <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
     <!--external css-->
     <!-- font icon -->
-    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/elegant-icons-style.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/resources/bootstrap/css/font-awesome.css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/elegant-icons-style.css" rel="stylesheet"/>
     <!-- Custom styles -->
     <link href="${pageContext.request.contextPath}/resources/bootstrap/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/resources/bootstrap/css/style-responsive.css" rel="stylesheet"/>
@@ -53,7 +51,17 @@
     <title><fmt:message key="title"/></title>
 
 </head>
+<style>
+    #lang-div img {
+        width: 20px;
+        height: 20px;
+        opacity: 0.7;
+    }
 
+    #lang-div img:hover {
+        opacity: 1;
+    }
+</style>
 <body>
 <!-- container section start -->
 <section id="container" class="">
@@ -66,6 +74,7 @@
         <!--logo start-->
         <a href="${pageContext.request.contextPath}/park/logout" class="logo">Car <span class="lite">Park</span></a>
         <!--logo end-->
+
         <div class="top-nav notification-row">
             <ul>
                 <li class="dropdown">
@@ -73,10 +82,27 @@
                         <span class="username"><c:out value="${sessionScope.user.firstName}"/> <c:out value="${sessionScope.user.secondName}"/></span>
                         <b class="caret"></b>
                     </a>
-                    <ul class="dropdown-menu extended logout">
+                    <ul class="dropdown-menu extended">
                         <div class="log-arrow-up"></div>
                         <li>
-                            <a href="${pageContext.request.contextPath}/park/logout"><i class="icon_key_alt"></i>Log Out</a>
+                            <a href="${pageContext.request.contextPath}/park/logout" style="font-size: 15px;"><i class="icon_key_alt"></i><fmt:message key="logout"/></a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="username"><fmt:message key="lang.select"/></span>
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu extended ">
+                        <div class="log-arrow-up"></div>
+                        <li id="lang-div">
+                            <a href="?sessionLocale=en" style="font-size: 14px;">
+                                <fmt:message key="lang.en"/><img src="${pageContext.request.contextPath}/resources/bootstrap/img/icons/us.png"/>
+                            </a>
+                            <a href="?sessionLocale=ua" style="font-size: 14px;">
+                                <fmt:message key="lang.ua"/><img src="${pageContext.request.contextPath}/resources/bootstrap/img/icons/ua.png"/>
+                            </a>
                         </li>
                     </ul>
                 </li>
@@ -95,19 +121,19 @@
                 <li class="">
                     <a class="" href="${pageContext.request.contextPath}/park/logout">
                         <i class="icon_house"></i>
-                        <span>Index page</span>
+                        <span><fmt:message key="link.index_page"/></span>
                     </a>
                 </li>
                 <li class="sub-menu">
                     <a href="${pageContext.request.contextPath}/park/admin/add_route" class="">
                         <i class="icon_plus_alt"></i>
-                        <span>Add route</span>
+                        <span><fmt:message key="link.add_route"/></span>
                     </a>
                 </li>
                 <li class="sub-menu">
                         <a class="" href="${pageContext.request.contextPath}/park/admin/add_car">
                             <i class="icon_plus_alt"></i>
-                            <span>Add bus</span>
+                            <span><fmt:message key="link.add_bus"/></span>
                         </a>
                 </li>
             </ul>
@@ -194,10 +220,6 @@
                             <div class="col-sm-6">
                                 <label for="carId" class="col-sm-2 control-label"><fmt:message key="input.auto"/></label>
                                 <select class="form-control m-bot15" name="car_id" id = "carId">
-                                    <%--<option>-</option>--%>
-                                    <%--<c:forEach var="car" items="${requestScope.allcars}">--%>
-                                    <%--<option value = "${car.id}"> <c:out value = "${car.model}"/></option>--%>
-                                    <%--</c:forEach>--%>
                                 </select>
                             </div>
                         </div>
@@ -287,12 +309,6 @@
                     </section>
                     <nav>
                         <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                            </li>
                             <c:forEach var="i" begin="1" end="${requestScope.totalAppliedPages}">
                                 <li class="page-item">
                                     <c:if test="${param.assignedPage!=null}">
@@ -303,18 +319,10 @@
                                     </c:if>
                                 </li>
                             </c:forEach>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </li>
                         </ul>
                     </nav>
                 </div>
             </div>
-            <strong>Ajax Response</strong>:
-            <div id="ajaxGetUserServletResponse"></div>
             <!-- page end-->
         </section>
     </section>

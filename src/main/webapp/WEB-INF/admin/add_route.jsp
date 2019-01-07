@@ -1,11 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="language" value="${not empty param.language ? param.language
- : not empty language ? language : pageContext.request.locale}" scope="session"/>
-<fmt:setLocale value="${language}" scope="session"/>
+<fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:bundle basename="route" prefix="route.">
-    <html lang="${language}">
+<html>
     <head>
         <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <!-- bootstrap theme -->
@@ -30,6 +28,17 @@
 
         <title>Adding route</title>
     </head>
+    <style>
+        #lang-div img {
+            width: 20px;
+            height: 20px;
+            opacity: 0.7;
+        }
+
+        #lang-div img:hover {
+            opacity: 1;
+        }
+    </style>
     <body>
     <section id="container" class="">
         <header class="header dark-bg">
@@ -45,19 +54,32 @@
                 <ul>
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="profile-ava">
-                                <img alt=""
-                                     src="${pageContext.request.contextPath}/resources/bootstrap/img/avatar1_small.jpg">
-                            </span>
                             <span class="username"><c:out value="${sessionScope.user.firstName}"/> <c:out
                                     value="${sessionScope.user.secondName}"/></span>
                             <b class="caret"></b>
                         </a>
-                        <ul class="dropdown-menu extended logout">
+                        <ul class="dropdown-menu extended">
                             <div class="log-arrow-up"></div>
                             <li>
-                                <a href="${pageContext.request.contextPath}/park/logout"><i class="icon_key_alt"></i>Log
+                                <a href="${pageContext.request.contextPath}/park/logout" style="font-size: 15px;"><i class="icon_key_alt"></i>  Log
                                     Out</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="username"><fmt:message key="lang.select"/></span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended ">
+                            <div class="log-arrow-up"></div>
+                            <li id="lang-div">
+                                <a href="?sessionLocale=en" style="font-size: 14px;">
+                                    <fmt:message key="lang.en"/> <img src="${pageContext.request.contextPath}/resources/bootstrap/img/icons/us.png"/>
+                                </a>
+                                <a href="?sessionLocale=ua" style="font-size: 14px;">
+                                    <fmt:message key="lang.ua"/> <img src="${pageContext.request.contextPath}/resources/bootstrap/img/icons/ua.png"/>
+                                </a>
                             </li>
                         </ul>
                     </li>
@@ -189,5 +211,5 @@
         </section>
     </section>
     </body>
-    </html>
+</html>
 </fmt:bundle>

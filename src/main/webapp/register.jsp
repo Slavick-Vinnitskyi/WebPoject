@@ -64,20 +64,7 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
         <div class="nav navbar-nav">
             <ul>
-                <li class="dropdown">
-                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="${pageContext.request.contextPath}/park/register.jsp?lang=en">
-                            <img src="https://demo.neontheme.com/assets/images/flags/flag-uk.png" width="16" height="16">
-                                <span>English</span> </a>
-                        </li>
-                        <li>
-                            <a href="${pageContext.request.contextPath}/park/register.jsp?lang=ua"> <img src="https://demo.neontheme.com/assets/images/flags/flag-uk.png" width="16" height="16">
-                            <span>Українська</span> </a>
-                        </li>
-                    </ul>
-                </li>
+
                 <!-- user login dropdown end -->
             </ul>
             <!-- notificatoin dropdown end-->
