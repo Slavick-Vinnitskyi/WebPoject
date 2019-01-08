@@ -2,20 +2,20 @@ package model.entity;
 
 import java.util.Objects;
 
-//TODO : подумать добавить ли билдер для маршрута
 public class Route {
     private int id;
     private String start;
     private String finish;
-    private String startUa;
-    private String finishUa;
 
-    public Route(int id, String start, String finish, String startUa, String finishUa) {
+    public Route(int id, String start, String finish) {
         this.id = id;
         this.start = start;
         this.finish = finish;
-        this.startUa = startUa;
-        this.finishUa = finishUa;
+    }
+
+    public Route(String start, String finish) {
+        this.start = start;
+        this.finish = finish;
     }
 
     public Route() {
@@ -43,22 +43,6 @@ public class Route {
 
     public void setFinish(String finish) {
         this.finish = finish;
-    }
-
-    public String getStartUa() {
-        return startUa;
-    }
-
-    public void setStartUa(String startUa) {
-        this.startUa = startUa;
-    }
-
-    public String getFinishUa() {
-        return finishUa;
-    }
-
-    public void setFinishUa(String finishUa) {
-        this.finishUa = finishUa;
     }
 
     @Override

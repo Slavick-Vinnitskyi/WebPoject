@@ -1,5 +1,6 @@
 package model.entity.dao.implementation;
 
+import model.dto.LocalizedRoute;
 import model.entity.Route;
 import model.entity.User;
 import model.entity.dao.RouteDao;
@@ -20,8 +21,7 @@ public class JDBCRouteDao implements RouteDao {
     }
 
     @Override
-    public User create(Route entity) {
-//        final String query = "insert into route (start, finish, start_ua, finish_ua) VALUES (?,?,?,?)";
+    public Route create(Route entity) {
         final String query = QueryManager.getProperty("route.create");
         try(PreparedStatement statement = connection.prepareStatement(query)){
 
@@ -29,17 +29,29 @@ public class JDBCRouteDao implements RouteDao {
         PreparedStatement preparedStatement = mapper.extractToStatement(statement, entity);
         preparedStatement.executeUpdate();
 
-
-        }catch (SQLException ex){
-
+        }catch (SQLException ex) {
+            ex.printStackTrace();
         }
+        return entity;
+    }
 
-        return null;
+    @Override
+    public LocalizedRoute createLocalizedRoute(LocalizedRoute route) {
+        final String query = QueryManager.getProperty("route.create");
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            RouteMapper mapper = new RouteMapper();
+            PreparedStatement preparedStatement = mapper.extractToStatement(statement, route);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return route;
     }
 
     @Override
     public Route findById(int id) {
-//        final String query = "select * from route where route.route_id = ?";
         final String query = QueryManager.getProperty("route.findById");
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
@@ -58,7 +70,6 @@ public class JDBCRouteDao implements RouteDao {
     @Override
     public List<Route> findAll() {
         List<Route> routes = new CopyOnWriteArrayList<>();
-//        final String query = "select * from edited_car_park.route";
         final String query = QueryManager.getProperty("route.findAll");
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(query);

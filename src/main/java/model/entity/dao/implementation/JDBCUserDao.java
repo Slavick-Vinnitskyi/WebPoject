@@ -28,12 +28,15 @@ public class JDBCUserDao implements UserDao {
         try {
             connection.setAutoCommit(false);
             PreparedStatement insertToUserTable = connection.prepareStatement(queryInsertUser, Statement.RETURN_GENERATED_KEYS);
+
             insertToUserTable.setString(1, entity.getLogin());
             insertToUserTable.setString(2, entity.getPassword());
             insertToUserTable.setString(3, entity.getFirstName());
             insertToUserTable.setString(4, entity.getSecondName());
             insertToUserTable.setString(5, entity.getLicenseType().toString());
+
             insertToUserTable.executeUpdate();
+
             try (ResultSet generatedKeys = insertToUserTable.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     entity.setId(generatedKeys.getInt(1));
@@ -60,12 +63,11 @@ public class JDBCUserDao implements UserDao {
             }
             ex.printStackTrace();
         }
-        return null;
+        return entity;
     }
 
     @Override
     public User findById(int id) {
-//        final String query = "select * from edited_car_park.person where person_id = ?";
         final String query = QueryManager.getProperty("user.findById");
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setInt(1, id);
@@ -79,12 +81,9 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public List<User> findAll() {
-
-
         List<User> drivers = new CopyOnWriteArrayList<>();
-
-//        final String query = "select * from edited_car_park.person where role = 'Driver'";
         final String query = QueryManager.getProperty("user.findAll");
+
         try (Statement st = connection.createStatement()) {
             ResultSet rs = st.executeQuery(query);
 
@@ -103,7 +102,6 @@ public class JDBCUserDao implements UserDao {
     }
 
     public User findByName(String login) {
-//        final String query = "select * from edited_car_park.person where login = ?";
         final String query = QueryManager.getProperty("user.findByName");
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, login);
@@ -112,18 +110,17 @@ public class JDBCUserDao implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
+//        finally {
+//            try {
+//                connection.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
     }
 
     @Override
     public User findByLoginAndPassword(String login, String password) throws UserNotFoundException, SQLException {
-//        final String query = "select * from edited_car_park.person where login = ? and password = ?";
         final String query = QueryManager.getProperty("user.findByLoginAndPassword");
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, login);
@@ -141,9 +138,6 @@ public class JDBCUserDao implements UserDao {
     public List<User> findAllCarToDriver() throws SQLException {
         Map<Integer, User> drivers = new HashMap<>();
         Map<Integer, Car> cars = new HashMap<>();
-//        final String query = "select * from person_to_car ptc " +
-//                "left join person p on ptc.fk_person_id = p.person_id " +
-//                "left join car c on ptc.fk_car_id = c.car_id";
         final String query = QueryManager.getProperty("user.findAllCarToDriver");
         try (Statement st = connection.createStatement()) {
             ResultSet rs = st.executeQuery(query);

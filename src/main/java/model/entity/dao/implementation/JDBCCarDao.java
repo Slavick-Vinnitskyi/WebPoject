@@ -19,10 +19,8 @@ public class JDBCCarDao implements CarDao {
     }
 
     @Override
-    public User create(Car entity) {
-//        final String queryInsertCar = "insert into car (model, year, type) values (?,?,?)";
-//        final String querySelectDriverIds = "select person_id from person where license = ?";
-//        final String queryInsertToLinkTable = "insert into person_to_car(fk_person_id, fk_car_id) VALUES (?, ?)";
+    public Car create(Car entity) {
+
         final String queryInsertCar = QueryManager.getProperty("car.insertCar");
         final String querySelectDriverIds = QueryManager.getProperty("car.selectDriverIds");
         final String queryInsertToLinkTable =  QueryManager.getProperty("car.insertToLinkTable");
@@ -61,7 +59,7 @@ public class JDBCCarDao implements CarDao {
             }
             ex.printStackTrace();
         }
-        return null;
+        return entity;
     }
 
     @Override

@@ -8,11 +8,16 @@ import java.util.Map;
 public class LocalizedRoute {
     private Route route;
 
-    private Map<String, LocalizedPart > localizedPartMap = new HashMap<>();
+    private Map<String, LocalizedPart> localizedPartMap = new HashMap<>();
 
-    class LocalizedPart {
+    public class LocalizedPart {
         private String start;
         private String finish;
+
+        public LocalizedPart(String start, String finish) {
+            this.start = start;
+            this.finish = finish;
+        }
 
         public String getStart() {
             return start;
@@ -29,6 +34,11 @@ public class LocalizedRoute {
         public void setFinish(String finish) {
             this.finish = finish;
         }
+    }
+
+    public LocalizedRoute(Route route, Map<String, LocalizedPart> localizedPartMap) {
+        this.route = route;
+        this.localizedPartMap = localizedPartMap;
     }
 
     public Route getRoute() {
