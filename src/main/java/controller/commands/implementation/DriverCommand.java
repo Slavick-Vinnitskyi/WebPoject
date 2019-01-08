@@ -49,18 +49,17 @@ public class DriverCommand implements Command {
     }
 
     private void handleAssignedPageNumber(HttpServletRequest request, List<Assignment> assignedList) {
-        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("assignedPage")).orElse("0"));
-        if(page == 1) page = 0;
-
-        int end = Math.min(page + 2, assignedList.size());
-        request.setAttribute("assignmentsAssignedList", assignedList.subList(page, end));
+        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("assignedPage")).orElse("1"));
+        int start = (page - 1) * OFFSET;
+        int end = Math.min(start + OFFSET, assignedList.size());
+        request.setAttribute("routeList", assignedList.subList(start, end));
     }
 
     private void handleAppliedPageNumber(HttpServletRequest request, List<Assignment> appliedList) {
-        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("appliedPage")).orElse("0"));
-        if(page == 1) page = 0;
-        int end = Math.min(page + 2, appliedList.size());
-        request.setAttribute("assignmentsAppliedList", appliedList.subList(page, end));
+        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("appliedPage")).orElse("1"));
+        int start = (page - 1) * OFFSET;
+        int end = Math.min(start + OFFSET, appliedList.size());
+        request.setAttribute("routeList", appliedList.subList(start, end));
     }
 
     private void setTotalAssignedPagesNumber(HttpServletRequest request, List<Assignment> assignedList) {

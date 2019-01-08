@@ -25,18 +25,18 @@ public class DriverMainPageService {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
 
-    public List<Assignment> getAssignmentsForDriverByStatus(int id, Assignment.Status status) throws SQLException, ClassNotFoundException {
+    public List<Assignment> getAssignmentsForDriverByStatus(int id, Assignment.Status status) throws SQLException {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
             return dao.findForUser(id, status);
         }
     }
-    public Assignment getAssignmentById(int assignmentId) throws SQLException, ClassNotFoundException {
+    public Assignment getAssignmentById(int assignmentId) throws SQLException {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
             return dao.findById(assignmentId);
         }
     }
 
-    public void updateAssignment(Assignment assignment) throws SQLException, ClassNotFoundException {
+    public void updateAssignment(Assignment assignment) throws SQLException {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
             dao.updateToAppliedForUser(assignment);
         }

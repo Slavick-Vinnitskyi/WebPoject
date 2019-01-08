@@ -20,7 +20,7 @@ public class DriverAcceptButtonCommand implements Command {
     }
 
 
-    private void processDriverAccept(Assignment assignmentToApply, DriverMainPageService service) throws SQLException, ClassNotFoundException {
+    private void processDriverAccept(Assignment assignmentToApply, DriverMainPageService service) throws SQLException {
         try {
             assignmentToApply.setStatus(Assignment.Status.applied);
             service.updateAssignment(assignmentToApply);

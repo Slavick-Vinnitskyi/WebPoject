@@ -17,10 +17,9 @@ public class LoginService {
      * @param login user login
      * @param password user password
      * @return User if he exist in database
-     * @throws ClassNotFoundException when CL can`t find implemented 'createUserDao' method
      * @throws UserNotFoundException when user does`nt exist in database
      */
-    public User validateUser(String login, String password) throws ClassNotFoundException, UserNotFoundException {
+    public User validateUser(String login, String password) throws UserNotFoundException {
         try(UserDao userDao = daoFactory.createUserDao()) {
             return userDao.findByLoginAndPassword(login, password);
         }catch (SQLException e){

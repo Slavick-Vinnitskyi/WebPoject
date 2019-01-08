@@ -35,7 +35,7 @@ public class JDBCAssignmentDao implements AssignmentDao {
     }
 
     @Override
-    public User create(Assignment entity) throws SQLException {
+    public Assignment create(Assignment entity) throws SQLException {
 
         return null;
     }

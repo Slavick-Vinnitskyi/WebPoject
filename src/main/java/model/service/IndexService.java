@@ -14,7 +14,7 @@ public class IndexService {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
 
-    public List<IndexDto> getFutureAssignments() throws SQLException, ClassNotFoundException {
+    public List<IndexDto> getFutureAssignments() throws SQLException {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
             return dao.findAllFutureApplied();
         }

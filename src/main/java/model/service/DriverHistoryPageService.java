@@ -21,7 +21,7 @@ public class DriverHistoryPageService {
 
 
 
-    public List<Assignment> getPastAssignmentsForDriver(int id) throws SQLException, ClassNotFoundException {
+    public List<Assignment> getPastAssignmentsForDriver(int id) throws SQLException {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
             return dao.findPastForUser(id);
         }

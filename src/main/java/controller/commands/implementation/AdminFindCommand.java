@@ -32,7 +32,7 @@ public class AdminFindCommand implements Command {
         currentSession.setAttribute("selectedDate", date);
     }
 
-    private Route parseRoute(HttpServletRequest request, AdminMainPageService service) throws SQLException, ClassNotFoundException {
+    private Route parseRoute(HttpServletRequest request, AdminMainPageService service) throws SQLException {
         int routeId = Integer.parseInt(request.getParameter("route"));
         return service.getRouteById(routeId);
     }

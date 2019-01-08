@@ -21,7 +21,7 @@ public class AdminRouteCommand implements Command {
             setTotalPageNumber(request, routeList);
             handlePageNumber(request, routeList);
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return "/WEB-INF/admin/add_route.jsp";

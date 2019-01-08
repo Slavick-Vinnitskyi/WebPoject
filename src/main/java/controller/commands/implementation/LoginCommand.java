@@ -81,12 +81,8 @@ public class LoginCommand implements Command {
 
     private User authorization(String name, String pass) throws UserNotFoundException {
 
-        try {
             return new LoginService().validateUser(name, pass);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
+
     }
 
 

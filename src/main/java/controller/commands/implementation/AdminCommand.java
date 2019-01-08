@@ -45,32 +45,30 @@ public class AdminCommand implements Command {
         request.setAttribute("allcars", cars);
     }
 
-    private void setRoutesToRequest(HttpServletRequest request, AdminMainPageService service) throws SQLException, ClassNotFoundException {
+    private void setRoutesToRequest(HttpServletRequest request, AdminMainPageService service) throws SQLException {
         List<Route> routeList = service.getAllRoutes();
         request.setAttribute("routes", routeList);
     }
 
     private void handleAssignedPageNumber(HttpServletRequest request, List<Assignment> assignedList) {
-        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("assignedPage")).orElse("0"));
-        if(page == 1) page = 0;
-
-        int end = Math.min(page + 2, assignedList.size());
-        request.setAttribute("assigned", assignedList.subList(page, end));
+        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("assignedPage")).orElse("1"));
+        int start = (page - 1) * OFFSET;
+        int end = Math.min(start + OFFSET, assignedList.size());
+        request.setAttribute("routeList", assignedList.subList(start, end));
     }
 
     private void handleAppliedPageNumber(HttpServletRequest request, List<Assignment> appliedList) {
-        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("appliedPage")).orElse("0"));
-        if(page == 1) page = 0;
-        int end = Math.min(page + 2, appliedList.size());
+        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("appliedPage")).orElse("1"));
+        int end = Math.min(page + OFFSET, appliedList.size());
         request.setAttribute("applied", appliedList.subList(page, end));
     }
 
     private void setTotalAssignedPagesNumber(HttpServletRequest request, List<Assignment> assignedList) {
-        int totalPages = (int) Math.ceil((float)assignedList.size() / 2);
+        int totalPages = (int) Math.ceil((float)assignedList.size() / OFFSET);
         request.setAttribute("totalAssignedPages", totalPages);
     }
     private void setTotalAppliedPagesNumber(HttpServletRequest request, List<Assignment> appliedList) {
-        int totalPages = (int) Math.ceil((float)appliedList.size() / 2);
+        int totalPages = (int) Math.ceil((float)appliedList.size() / OFFSET);
         request.setAttribute("totalAppliedPages", totalPages);
     }
 }

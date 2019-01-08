@@ -10,7 +10,7 @@ public class DriverAboutService {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
 
-    public User getInfoAboutUser(int id) throws SQLException, ClassNotFoundException {
+    public User getInfoAboutUser(int id) throws SQLException {
         try(UserDao dao = daoFactory.createUserDao()) {
                 return dao.findById(id);
         }

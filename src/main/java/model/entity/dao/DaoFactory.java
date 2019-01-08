@@ -7,10 +7,10 @@ import java.sql.SQLException;
 public abstract class DaoFactory {
     private static DaoFactory daoFactory;
 
-    public abstract UserDao createUserDao() throws SQLException, ClassNotFoundException;
-    public abstract RouteDao createRouteDao() throws SQLException, ClassNotFoundException;
-    public abstract AssignmentDao createAssignmentDao() throws SQLException, ClassNotFoundException;
-    public abstract CarDao createCarDao() throws SQLException, ClassNotFoundException;
+    public abstract UserDao createUserDao() throws SQLException;
+    public abstract RouteDao createRouteDao() throws SQLException;
+    public abstract AssignmentDao createAssignmentDao() throws SQLException;
+    public abstract CarDao createCarDao() throws SQLException;
 
     public static DaoFactory getInstance() {
         if(daoFactory == null) {

@@ -22,7 +22,7 @@ public class RegisterService {
         try (UserDao dao = daoFactory.createUserDao()) {
             User byName = dao.findByName(login);
             return byName.getLogin() != null;
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
             return false;
         }
@@ -31,7 +31,7 @@ public class RegisterService {
     public User registerNewUser(User user) {
         try (UserDao dao = daoFactory.createUserDao()) {
             return dao.create(user);
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }

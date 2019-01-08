@@ -18,7 +18,7 @@ public class DriverRefuseButtonCommand implements Command {
         return "redirect: /park/driver";
     }
 
-    private void processDriverRefuse(Assignment assignmentToRefuse, DriverMainPageService service) throws SQLException, ClassNotFoundException {
+    private void processDriverRefuse(Assignment assignmentToRefuse, DriverMainPageService service) throws SQLException {
         try {
             assignmentToRefuse.setStatus(Assignment.Status.assigned);
             service.updateAssignment(assignmentToRefuse);

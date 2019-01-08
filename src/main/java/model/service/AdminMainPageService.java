@@ -21,25 +21,25 @@ public class AdminMainPageService {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
 
-    public List<Assignment> getAssignmentsByStatus(Assignment.Status status) throws SQLException, ClassNotFoundException {
+    public List<Assignment> getAssignmentsByStatus(Assignment.Status status) throws SQLException {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
             return dao.findByStatus(status);
         }
     }
 
-    public List<Route> getAllRoutes() throws SQLException, ClassNotFoundException {
+    public List<Route> getAllRoutes() throws SQLException {
         try (RouteDao dao = daoFactory.createRouteDao()) {
             return dao.findAll();
         }
     }
 
-    public Route getRouteById(int id) throws SQLException, ClassNotFoundException {
+    public Route getRouteById(int id) throws SQLException {
         try (RouteDao dao = daoFactory.createRouteDao()) {
             return dao.findById(id);
         }
     }
 
-    public List<User> getFreeCarsAndDriver(LocalDate date) throws SQLException, ClassNotFoundException {
+    public List<User> getFreeCarsAndDriver(LocalDate date) {
         List<User> allDriversWithCars;
         List<Assignment> assignmentsForThisDate = new ArrayList<>();
         try (UserDao dao = daoFactory.createUserDao()) {
@@ -60,7 +60,7 @@ public class AdminMainPageService {
     public User getDriver(int driverId) {
         try (UserDao dao = daoFactory.createUserDao()) {
             return dao.findById(driverId);
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
@@ -69,7 +69,7 @@ public class AdminMainPageService {
     public void insertAssignment(Assignment entity, int linkId) {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
             dao.create(entity, linkId);
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -77,7 +77,7 @@ public class AdminMainPageService {
     public int getLinkId(int driverId, int carId) {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
            return dao.findLinkId(driverId, carId);
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return 0;
         }
