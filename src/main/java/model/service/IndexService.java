@@ -7,7 +7,7 @@ import model.entity.dao.DaoFactory;
 import java.util.List;
 
 /**
- * Выводит для гостя все бующие назначения
+ * Выводит для гостя все бущие назначения
  */
 public class IndexService {
     private DaoFactory daoFactory = DaoFactory.getInstance();

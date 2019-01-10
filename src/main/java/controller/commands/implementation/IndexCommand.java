@@ -4,11 +4,13 @@ import controller.commands.Command;
 import model.dto.IndexDto;
 import model.service.IndexService;
 import util.QueryManager;
+import util.ThreadLocalWrapper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class IndexCommand implements Command {
 
@@ -28,11 +30,21 @@ public class IndexCommand implements Command {
     private void handlePageNumber(HttpServletRequest request, int limit) {
         int page = Integer.valueOf(Optional.ofNullable(request.getParameter("page")).orElse("1"));
         int offset = (page - 1) * limit;
-        List<IndexDto> assignments = service.getFutureAssignments(limit, offset);
-        request.setAttribute("assignmentList", assignments);
+        try {
+            List<IndexDto> assignments = service.getFutureAssignments(limit, offset);
+            request.setAttribute("assignmentList", assignments);
+        } catch (RuntimeException ex) {
+            ResourceBundle errors = ResourceBundle.getBundle("errors", ThreadLocalWrapper.getLocale());
+            request.setAttribute("selectError", errors.getString("index.select"));
+        }
     }
 
     private void setTotalPageNumber(HttpServletRequest request, int limit) {
-        request.setAttribute("totalPages", service.getTotalPagesNumber(limit));
+        try {
+            request.setAttribute("totalPages", service.getTotalPagesNumber(limit));
+        } catch (RuntimeException ex) {
+            ResourceBundle errors = ResourceBundle.getBundle("errors", ThreadLocalWrapper.getLocale());
+            request.setAttribute("pagesError", errors.getString("index.pages"));
+        }
     }
 }

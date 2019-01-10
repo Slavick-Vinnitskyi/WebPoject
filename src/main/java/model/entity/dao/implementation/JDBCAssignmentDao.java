@@ -185,10 +185,8 @@ public class JDBCAssignmentDao implements AssignmentDao {
             }
             return new ArrayList<>(assignments);
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
-
     }
 
     @Override

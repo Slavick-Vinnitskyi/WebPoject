@@ -58,7 +58,12 @@
                    <div class="col-lg-8 col-lg-offset-2">
                        <section class="panel">
                            <header class="panel-heading text-center">
+                               <c:if test="${requestScope.selectError == null}">
                                <fmt:message key="welcome"/> <fmt:message key="schedule"/>
+                               </c:if>
+                               <c:if test="${requestScope.selectError != null}">
+                                   <c:out value="${requestScope.selectError}"/>
+                               </c:if>
                            </header>
 
                            <table class="table table-striped table-advance table-hover">
@@ -80,21 +85,16 @@
                        </section>
                        <nav>
                            <ul class="pagination">
-                               <li class="page-item">
-                                   <a class="page-link" href="#" aria-label="Previous">
-                                       <span aria-hidden="true">&laquo;</span>
-                                       <span class="sr-only">Previous</span>
-                                   </a>
-                               </li>
-                               <c:forEach var="i" begin="1" end="${requestScope.totalPages}">
-                                   <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/park/index?page=${i}">${i}</a></li>
-                               </c:forEach>
-                               <li class="page-item">
-                                   <a class="page-link" href="#" aria-label="Next">
-                                       <span aria-hidden="true">&raquo;</span>
-                                       <span class="sr-only">Next</span>
-                                   </a>
-                               </li>
+                               <c:if test="${requestScope.pagesError != null}">
+                                   <c:out value="${requestScope.pagesError}"/>
+                               </c:if>
+                               <c:if test="${requestScope.pagesError == null}">
+                                   <c:forEach var="i" begin="1" end="${requestScope.totalPages}">
+                                       <li class="page-item">
+                                           <a class="page-link" href="${pageContext.request.contextPath}/park/index?page=${i}">${i}</a>
+                                       </li>
+                                   </c:forEach>
+                               </c:if>
                            </ul>
                        </nav>
                    </div>
