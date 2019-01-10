@@ -6,6 +6,8 @@ import model.entity.dao.AssignmentDao;
 import model.entity.dao.mappers.implementation.AssignmentMapper;
 import model.entity.dao.mappers.implementation.IndexDtoMapper;
 import model.exception.IllegalDeleteException;
+import model.exception.UserOrCarNotFountException;
+import org.apache.log4j.Logger;
 import util.QueryManager;
 
 import java.sql.*;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class JDBCAssignmentDao implements AssignmentDao {
+    private static final Logger log = Logger.getLogger(JDBCAssignmentDao.class);
 
     private Connection connection;
 
@@ -21,23 +24,59 @@ public class JDBCAssignmentDao implements AssignmentDao {
         this.connection = connection;
     }
 
-
-    public void create(Assignment entity, int linkId) throws SQLException {
-        final String query = QueryManager.getProperty("assignment.create");
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-
-            AssignmentMapper mapper = new AssignmentMapper();
-            PreparedStatement preparedStatement = mapper.extractToStatement(statement, entity, linkId);
-            preparedStatement.executeUpdate();
-
+    @Override
+    public Assignment create(Assignment entity) {
+        final String queryLinkId = QueryManager.getProperty("assignment.findLinkId");
+        final String queryCreate = QueryManager.getProperty("assignment.create");
+        int linkId;
+        try(PreparedStatement preparedStatement = connection.prepareStatement(queryLinkId)) {
+            connection.setAutoCommit(false);
+            preparedStatement.setInt(1, entity.getDriver().getId());
+            preparedStatement.setInt(2, entity.getBus().getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()) {
+               linkId = resultSet.getInt("id");
+            } else throw new UserOrCarNotFountException("admin.insert.assignment.not_found");
+            try(PreparedStatement statement = connection.prepareStatement(queryCreate, Statement.RETURN_GENERATED_KEYS)) {
+                AssignmentMapper mapper = new AssignmentMapper();
+                mapper.extractToStatement(statement, entity, linkId);
+                statement.executeUpdate();
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        entity.setId(generatedKeys.getInt(1));
+                        connection.commit();
+                        return entity;
+                    } else return null;
+                }
+            }
+        } catch (SQLException ex){
+            try {
+                connection.rollback();
+            } catch (SQLException e) {
+                log.error("Error", ex);
+                throw new RuntimeException("admin.insert.assignment.unknown");
+            }
+            log.error("Error", ex);
+            throw new RuntimeException("admin.insert.assignment.unknown");
         }
     }
-
-    @Override
-    public Assignment create(Assignment entity) throws SQLException {
-
-        return null;
-    }
+//
+//    @Override
+//    public int findLinkId(int driverId, int carId) {
+//        final String query = QueryManager.getProperty("assignment.findLinkId");
+//        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+//            preparedStatement.setInt(1 , driverId);
+//            preparedStatement.setInt(2, carId);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            if(resultSet.next()) {
+//                return resultSet.getInt("id");
+//            }
+//            return 0;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return 0;
+//        }
+//    }
 
     @Override
     public Assignment findById(int id) {
@@ -63,11 +102,23 @@ public class JDBCAssignmentDao implements AssignmentDao {
             ResultSet resultSet = statement.executeQuery(query);
             return getAssignments(assignments, resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
     }
 
+    @Override
+    public int getCountRows() {
+        final String query = QueryManager.getProperty("assignment.getCountAppliedRows");
+        try(Statement statement = connection.createStatement()){
+            ResultSet resultSet = statement.executeQuery(query);
+            if(resultSet.next()) {
+                return resultSet.getInt("count");
+            }else return 0;
+
+        }catch (SQLException ex){
+            throw new RuntimeException(ex);
+        }
+    }
 
     public List<Assignment> findForUser(int id, Assignment.Status status) {
         List<Assignment> assignments = new CopyOnWriteArrayList<>();
@@ -81,6 +132,7 @@ public class JDBCAssignmentDao implements AssignmentDao {
             return null;
         }
     }
+
     public List<Assignment> findPastForUser(int id) {
         List<Assignment> assignments = new CopyOnWriteArrayList<>();
         final String query = QueryManager.getProperty("assignment.findPastForUser");
@@ -93,7 +145,6 @@ public class JDBCAssignmentDao implements AssignmentDao {
         }
     }
 
-
     @Override
     public void update(Assignment entity) {
         final String query = QueryManager.getProperty("assignment.update");
@@ -105,6 +156,7 @@ public class JDBCAssignmentDao implements AssignmentDao {
             e.printStackTrace();
         }
     }
+
     @Override
     public void updateToAppliedForUser(Assignment entity) {
         final String query = QueryManager.getProperty("assignment.updateToAppliedForUser");
@@ -118,11 +170,13 @@ public class JDBCAssignmentDao implements AssignmentDao {
     }
 
     @Override
-    public List<IndexDto> findAllFutureApplied() {
+    public List<IndexDto> findAllFutureApplied(int limit, int offset) {
         final String query = QueryManager.getProperty("assignment.findAllFutureApplied");
         List<IndexDto> assignments = new CopyOnWriteArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, limit);
+            statement.setInt(2, offset);
             ResultSet resultSet = statement.executeQuery();
             IndexDtoMapper indexDtoMapper = new IndexDtoMapper();
             while (resultSet.next()) {
@@ -170,23 +224,6 @@ public class JDBCAssignmentDao implements AssignmentDao {
         }
     }
 
-    @Override
-    public int findLinkId(int driverId, int carId) {
-        final String query = QueryManager.getProperty("assignment.findLinkId");
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1 , driverId);
-            preparedStatement.setInt(2, carId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
-                return resultSet.getInt("id");
-            }
-            return 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
     private List<Assignment> getAssignments(List<Assignment> assignments, PreparedStatement statement) throws SQLException {
         ResultSet resultSet = statement.executeQuery();
         return getAssignments(assignments, resultSet);
@@ -228,6 +265,5 @@ public class JDBCAssignmentDao implements AssignmentDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 }

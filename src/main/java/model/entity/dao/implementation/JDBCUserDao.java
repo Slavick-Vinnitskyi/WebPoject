@@ -21,7 +21,6 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public User create(User entity) {
-//        final String queryInsertUser = "insert into person(login, password, first_name, second_name, license, role) VALUES (?,?,?,?,?,'driver')";
         final String queryInsertUser = QueryManager.getProperty("user.create.insertUser");
         final String querySelectCarsId = QueryManager.getProperty("user.create.selectCarsId");
         final String queryInsertToLinkTable =  QueryManager.getProperty("user.create.insertToLinkTable");
@@ -111,16 +110,10 @@ public class JDBCUserDao implements UserDao {
             e.printStackTrace();
             return null;
         }
-//        finally {
-//            try {
-//                connection.close();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
     }
 
     @Override
-    public User findByLoginAndPassword(String login, String password) throws UserNotFoundException, SQLException {
+    public User findByLoginAndPassword(String login, String password) throws UserNotFoundException {
         final String query = QueryManager.getProperty("user.findByLoginAndPassword");
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, login);
@@ -131,11 +124,13 @@ public class JDBCUserDao implements UserDao {
             } else {
                 throw new UserNotFoundException("Wrong login or password");
             }
+        }catch (SQLException ex){
+            throw new RuntimeException(ex);
         }
     }
 
     @Override
-    public List<User> findAllCarToDriver() throws SQLException {
+    public List<User> findAllCarToDriver() {
         Map<Integer, User> drivers = new HashMap<>();
         Map<Integer, Car> cars = new HashMap<>();
         final String query = QueryManager.getProperty("user.findAllCarToDriver");
@@ -155,8 +150,7 @@ public class JDBCUserDao implements UserDao {
             }
             return new ArrayList<>(drivers.values());
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

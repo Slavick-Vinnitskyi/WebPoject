@@ -10,14 +10,14 @@ import java.util.List;
 public class AdminCarPageService {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
-    public List<Car> getAllRoutes() throws SQLException {
+    public List<Car> getAllRoutes() {
         try (CarDao dao = daoFactory.createCarDao()) {
 
             return dao.findAll();
         }
     }
 
-    public void insertCar(Car entity) throws SQLException {
+    public void insertCar(Car entity) {
         try (CarDao dao = daoFactory.createCarDao()) {
             dao.create(entity);
         }

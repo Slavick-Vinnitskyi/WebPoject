@@ -68,9 +68,8 @@ public class JDBCCarDao implements CarDao {
     }
 
     @Override
-    public List<Car> findAll() throws SQLException {
+    public List<Car> findAll() {
         List<Car> cars = new CopyOnWriteArrayList<>();
-//        final String query = "select * from edited_car_park.car";
         final String query = QueryManager.getProperty("car.findAll");
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(query);
@@ -82,7 +81,7 @@ public class JDBCCarDao implements CarDao {
             return new ArrayList<>(cars);
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

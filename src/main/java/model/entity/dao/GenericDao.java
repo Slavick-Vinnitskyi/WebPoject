@@ -1,12 +1,11 @@
 package model.entity.dao;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface GenericDao<T> extends AutoCloseable {
-    T create (T entity) throws SQLException;
+    T create (T entity);
     T findById(int id);
-    List<T> findAll() throws SQLException;
+    List<T> findAll();
     void update(T entity);
     void delete(int id);
     void close();

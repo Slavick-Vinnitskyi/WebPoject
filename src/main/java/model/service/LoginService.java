@@ -22,9 +22,6 @@ public class LoginService {
     public User validateUser(String login, String password) throws UserNotFoundException {
         try(UserDao userDao = daoFactory.createUserDao()) {
             return userDao.findByLoginAndPassword(login, password);
-        }catch (SQLException e){
-            e.printStackTrace();
-            return null;
         }
     }
 

@@ -13,17 +13,16 @@ import java.util.List;
 import java.util.Optional;
 
 public class AdminRouteCommand implements Command {
+    AdminRoutePageService service = new AdminRoutePageService();
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            AdminRoutePageService service = new AdminRoutePageService();
-            List<Route> routeList = service.getAllRoutes();
-            setTotalPageNumber(request, routeList);
-            handlePageNumber(request, routeList);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+        List<Route> routeList = service.getAllRoutes();
+        setTotalPageNumber(request, routeList);
+        handlePageNumber(request, routeList);
+
         return "/WEB-INF/admin/add_route.jsp";
     }
     private void handlePageNumber(HttpServletRequest request, List<Route> assignments) {

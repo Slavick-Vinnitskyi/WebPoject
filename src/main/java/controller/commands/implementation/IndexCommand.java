@@ -2,8 +2,8 @@ package controller.commands.implementation;
 
 import controller.commands.Command;
 import model.dto.IndexDto;
-import model.entity.Assignment;
 import model.service.IndexService;
+import util.QueryManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,24 +12,27 @@ import java.util.Optional;
 
 public class IndexCommand implements Command {
 
-    @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    private IndexService service = new IndexService();
 
-        IndexService indexService = new IndexService();
-        List<IndexDto> assignmentList = indexService.getFutureAssignments();
-        setTotalPageNumber(request, assignmentList);
-        handlePageNumber(request, assignmentList);
+    @Override
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
+
+        int limit = Integer.parseInt(QueryManager.getProperty("select.limit"));
+
+        setTotalPageNumber(request, limit);
+        handlePageNumber(request, limit);
+
         return "/WEB-INF/index.jsp";
     }
-    private void handlePageNumber(HttpServletRequest request, List<IndexDto> assignments) {
+
+    private void handlePageNumber(HttpServletRequest request, int limit) {
         int page = Integer.valueOf(Optional.ofNullable(request.getParameter("page")).orElse("1"));
-        int start = (page - 1) * OFFSET;
-        int end = Math.min(start + OFFSET, assignments.size());
-        request.setAttribute("assignmentList", assignments.subList(start, end));
+        int offset = (page - 1) * limit;
+        List<IndexDto> assignments = service.getFutureAssignments(limit, offset);
+        request.setAttribute("assignmentList", assignments);
     }
 
-    private void setTotalPageNumber(HttpServletRequest request, List<IndexDto> assignments) {
-        int totalPages = (int) Math.ceil((float)assignments.size()/OFFSET);
-        request.setAttribute("totalPages", totalPages);
+    private void setTotalPageNumber(HttpServletRequest request, int limit) {
+        request.setAttribute("totalPages", service.getTotalPagesNumber(limit));
     }
 }

@@ -21,7 +21,7 @@ public class AdminMainPageService {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
 
-    public List<Assignment> getAssignmentsByStatus(Assignment.Status status) throws SQLException {
+    public List<Assignment> getAssignmentsByStatus(Assignment.Status status) {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
             return dao.findByStatus(status);
         }
@@ -29,26 +29,23 @@ public class AdminMainPageService {
     public boolean deleteAssignment(int assignmentId) {
         try(AssignmentDao dao = daoFactory.createAssignmentDao()) {
             dao.delete(assignmentId);
-        } catch (SQLException ex){
-            ex.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    public Assignment getAssignmentById(int assignmentId) throws SQLException {
-        try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
-            return dao.findById(assignmentId);
+            return true;
         }
     }
 
-    public List<Route> getAllRoutes() throws SQLException {
+//    public Assignment getAssignmentById(int assignmentId) {
+//        try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
+//            return dao.findById(assignmentId);
+//        }
+//    }
+
+    public List<Route> getAllRoutes()  {
         try (RouteDao dao = daoFactory.createRouteDao()) {
             return dao.findAll();
         }
     }
 
-    public Route getRouteById(int id) throws SQLException {
+    public Route getRouteById(int id) {
         try (RouteDao dao = daoFactory.createRouteDao()) {
             return dao.findById(id);
         }
@@ -66,35 +63,27 @@ public class AdminMainPageService {
                 return null;
             }
             return allDriversWithCars;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return null;
         }
     }
 
     public User getDriver(int driverId) {
         try (UserDao dao = daoFactory.createUserDao()) {
             return dao.findById(driverId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 
-    public void insertAssignment(Assignment entity, int linkId) {
+    public Assignment insertAssignment(Assignment entity) {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
-            dao.create(entity, linkId);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            return dao.create(entity);
         }
     }
 
-    public int getLinkId(int driverId, int carId) {
-        try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
-           return dao.findLinkId(driverId, carId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
+//    public int getLinkId(int driverId, int carId) {
+//        try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
+//           return dao.findLinkId(driverId, carId);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return 0;
+//        }
+//    }
 }

@@ -16,15 +16,11 @@ public class AdminCarCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
-        try {
-            AdminCarPageService service = new AdminCarPageService();
-            List<Car> routeList = service.getAllRoutes();
-            setTotalPageNumber(request, routeList);
-            handlePageNumber(request, routeList);
+        AdminCarPageService service = new AdminCarPageService();
+        List<Car> routeList = service.getAllRoutes();
+        setTotalPageNumber(request, routeList);
+        handlePageNumber(request, routeList);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         return "/WEB-INF/admin/add_car.jsp";
     }
     private void handlePageNumber(HttpServletRequest request, List<Car> assignments) {

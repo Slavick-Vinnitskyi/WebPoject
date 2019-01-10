@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface UserDao extends GenericDao<User> {
     User findByName(String login);
-    User findByLoginAndPassword(String login, String password) throws UserNotFoundException, SQLException;
-    List<User> findAllCarToDriver() throws SQLException;
+    User findByLoginAndPassword(String login, String password) throws UserNotFoundException;
+    List<User> findAllCarToDriver();
 }

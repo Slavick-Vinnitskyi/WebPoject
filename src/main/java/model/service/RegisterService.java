@@ -22,18 +22,12 @@ public class RegisterService {
         try (UserDao dao = daoFactory.createUserDao()) {
             User byName = dao.findByName(login);
             return byName.getLogin() != null;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;
         }
     }
 
     public User registerNewUser(User user) {
         try (UserDao dao = daoFactory.createUserDao()) {
             return dao.create(user);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 }

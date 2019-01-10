@@ -4,42 +4,41 @@ import model.entity.dao.*;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-//TODO : connection pool does not work on THIS PC
 
 /**
- * @see ConnectionPoolHolder - doesn`t work
  * */
 public class JDBCDaoFactory extends DaoFactory {
     private DataSource dataSource = ConnectionPoolHolder.getDataSource();
 
     /**
      * @return JDBC implementation of UserDao
-     * @throws SQLException if something wrong with driver
      */
     @Override
-    public UserDao createUserDao() throws SQLException {
-
+    public UserDao createUserDao() {
         return new JDBCUserDao(getConnection());
     }
 
     @Override
-    public RouteDao createRouteDao() throws SQLException {
+    public RouteDao createRouteDao() {
         return new JDBCRouteDao(getConnection());
     }
 
     @Override
-    public AssignmentDao createAssignmentDao() throws SQLException {
+    public AssignmentDao createAssignmentDao() {
         return new JDBCAssignmentDao(getConnection());
     }
 
     @Override
-    public CarDao createCarDao() throws SQLException {
+    public CarDao createCarDao() {
         return new JDBCCarDao(getConnection());
     }
 
-    private Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
+    private Connection getConnection() {
+        try {
+            return dataSource.getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

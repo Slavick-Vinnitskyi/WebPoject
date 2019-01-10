@@ -9,15 +9,16 @@ import model.service.AdminMainPageService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 
 public class AdminCommand implements Command {
+
+    AdminMainPageService service = new AdminMainPageService();
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        AdminMainPageService service = new AdminMainPageService();
         try {
 
             List<Assignment> assigned = service.getAssignmentsByStatus(Assignment.Status.assigned);
@@ -29,12 +30,12 @@ public class AdminCommand implements Command {
             handleAssignedPageNumber(request, assigned);
             handleAppliedPageNumber(request, applied);
 
-            setRoutesToRequest(request, service);
+            setRoutesToRequest(request);
             handleErrors(request);
 
             setCarsToSession(request);
 
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             e.printStackTrace();
         }
         return "/WEB-INF/admin/admin.jsp";
@@ -43,7 +44,7 @@ public class AdminCommand implements Command {
     private void handleErrors(HttpServletRequest request) {
         Optional.ofNullable((String)request.getSession().getAttribute("error")).ifPresent(x-> {
             request.getSession().removeAttribute("error");
-            request.setAttribute("error",x);
+            request.setAttribute("error", x);
         });
     }
 
@@ -53,13 +54,16 @@ public class AdminCommand implements Command {
         request.setAttribute("allcars", cars);
     }
 
-    private void setRoutesToRequest(HttpServletRequest request, AdminMainPageService service) throws SQLException {
+    private void setRoutesToRequest(HttpServletRequest request) {
         List<Route> routeList = service.getAllRoutes();
         request.setAttribute("routes", routeList);
     }
 
     private void handleAssignedPageNumber(HttpServletRequest request, List<Assignment> assignedList) {
-        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("assignedPage")).orElse("1"));
+        int page = Integer
+                .valueOf(Optional
+                        .ofNullable(request.getParameter("assignedPage"))
+                        .orElse("1"));
         int start = (page - 1) * OFFSET;
         int end = Math.min(start + OFFSET, assignedList.size());
         request.setAttribute("assigned", assignedList.subList(start, end));

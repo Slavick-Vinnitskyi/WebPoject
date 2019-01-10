@@ -2,6 +2,7 @@ package controller.commands.implementation;
 
 import controller.commands.Command;
 import model.entity.Assignment;
+import model.entity.Car;
 import model.entity.Route;
 import model.entity.User;
 import model.service.AdminMainPageService;
@@ -23,21 +24,27 @@ public class AdminInsertAssignmentCommand implements Command {
         Route route = (Route) request.getSession().getAttribute("selectedRoute");
         int driverId = Integer.parseInt(request.getParameter("driver_id"));
         int carId = Integer.parseInt(request.getParameter("car_id"));
-        int linkId = getLinkId(driverId, carId, service);
+//        int linkId = getLinkId(driverId, carId, service);
         Assignment assignment = new Assignment();
         assignment.setStatus(Assignment.Status.assigned);
         assignment.setDate(date);
         assignment.setRoute(route);
-        User driver = getDriver(driverId, service);
+        User driver = new User();
+        driver.setId(driverId);
         assignment.setDriver(driver);
-        service.insertAssignment(assignment, linkId);
+        Car car = new Car();
+        car.setId(carId);
+        assignment.setBus(car);
+//        User driver = getDriver(driverId, service);
+//        assignment.setDriver(driver);
+        service.insertAssignment(assignment);
     }
 
-    private int getLinkId(int driverId, int carId, AdminMainPageService service) {
-        return service.getLinkId(driverId, carId);
-    }
+//    private int getLinkId(int driverId, int carId, AdminMainPageService service) {
+//        return service.getLinkId(driverId, carId);
+//    }
 
-    private User getDriver(int driverId, AdminMainPageService service) {
-        return service.getDriver(driverId);
-    }
+//    private User getDriver(int driverId, AdminMainPageService service) {
+//        return service.getDriver(driverId);
+//    }
 }
