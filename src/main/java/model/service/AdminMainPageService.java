@@ -26,6 +26,21 @@ public class AdminMainPageService {
             return dao.findByStatus(status);
         }
     }
+    public boolean deleteAssignment(int assignmentId) {
+        try(AssignmentDao dao = daoFactory.createAssignmentDao()) {
+            dao.delete(assignmentId);
+        } catch (SQLException ex){
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public Assignment getAssignmentById(int assignmentId) throws SQLException {
+        try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
+            return dao.findById(assignmentId);
+        }
+    }
 
     public List<Route> getAllRoutes() throws SQLException {
         try (RouteDao dao = daoFactory.createRouteDao()) {

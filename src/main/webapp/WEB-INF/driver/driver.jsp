@@ -121,7 +121,7 @@
                         <div class="col-lg-6">
                             <section class="panel">
                                 <header class="panel-heading text-center">
-                                        <c:out value="${sessionScope.user.firstName}"/><fmt:message key="assignments"/>
+                                        <c:out value="${sessionScope.user.firstName}"/><c:out value="${requestScope.messageToUser}"/>
                                 </header>
 
                                 <table class="table table-striped table-advance table-hover">
@@ -130,6 +130,7 @@
                                         <th><i class="icon_pin_alt"></i><fmt:message key="table.start"/> </th>
                                         <th><i class="icon_pin_alt"></i><fmt:message key="table.finish"/></th>
                                         <th><i class="icon_calendar"></i> <fmt:message key="table.time"/></th>
+                                        <th><i class="icon_drive_alt"></i> <fmt:message key="table.car"/></th>
                                         <th><i class="icon_cogs"></i><fmt:message key="table.status"/></th>
                                         <th><i class="icon_cogs"></i><fmt:message key="table.action"/></th>
                                     </tr>
@@ -138,6 +139,7 @@
                                             <td><c:out value="${ass.route.start}"/></td>
                                             <td><c:out value="${ass.route.finish}"/></td>
                                             <td><c:out value="${ass.date}"/></td>
+                                            <td><c:out value="${ass.bus.model}"/></td>
                                             <td><c:out value="${ass.status}"/></td>
                                             <td>
                                                 <form method="post" action="<c:url value="/park/driver/acceptButton"/>">
@@ -180,7 +182,7 @@
                         <div class="col-lg-6">
                             <section class="panel">
                                 <header class="panel-heading text-center" >
-                                    <c:out value="${sessionScope.user.firstName}"/><fmt:message key="routes"/>
+                                    <c:out value="${sessionScope.user.firstName}"/><c:out value="${requestScope.appliedMessageToUser}"/>
                                 </header>
 
                                 <table class="table table-striped table-advance table-hover">
@@ -189,21 +191,16 @@
                                         <th><i class="icon_pin_alt"></i><fmt:message key="table.start"/> </th>
                                         <th><i class="icon_pin_alt"></i><fmt:message key="table.finish"/></th>
                                         <th><i class="icon_calendar"></i> <fmt:message key="table.time"/></th>
+                                        <th><i class="icon_drive_alt"></i> <fmt:message key="table.car"/></th>
                                         <th><i class="icon_cogs"></i><fmt:message key="table.status"/></th>
-                                        <th><i class="icon_cogs"></i><fmt:message key="table.action"/></th>
                                     </tr>
                                     <c:forEach var = "ass" items="${requestScope.assignmentsAppliedList}">
                                         <tr class="table-secondary">
                                             <td><c:out value="${ass.route.start}"/></td>
                                             <td><c:out value="${ass.route.finish}"/></td>
                                             <td><c:out value="${ass.date}"/></td>
+                                            <td><c:out value="${ass.bus.model}"/></td>
                                             <td><c:out value="${ass.status}"/></td>
-                                            <td>
-                                                <form method="post" action="<c:url value="/park/driver/refuseButton"/>">
-                                                    <input type="number" hidden name="refused_id" value="${ass.id}"/>
-                                                    <input type="submit" name="refuse" class="btn btn-danger" value="<fmt:message key="table.deny"/>"/>
-                                                </form>
-                                            </td>
                                         </tr>
                                     </c:forEach>
                                     </tbody>

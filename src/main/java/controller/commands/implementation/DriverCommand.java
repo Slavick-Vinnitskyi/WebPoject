@@ -4,12 +4,11 @@ import controller.commands.Command;
 import model.entity.Assignment;
 import model.entity.User;
 import model.service.DriverMainPageService;
+import util.ThreadLocalWrapper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 //TODO: оптимизировать работу страницы(не переиспользовать данные с базы)
 //TODO: Попробовать возвращать Optional
@@ -32,7 +31,9 @@ public class DriverCommand implements Command {
                     .of(service.getAssignmentsForDriverByStatus(userId, Assignment.Status.assigned))
                     .orElse(new ArrayList<>());
             request.setAttribute("assignmentsAssignedList", assignedList);
+            setMessageToUser(request, assignedList);
             List<Assignment> appliedList = service.getAssignmentsForDriverByStatus(userId, Assignment.Status.applied);
+            setAppliedMessageToUser(request, appliedList);
             request.setAttribute("assignmentsAppliedList", appliedList);
             setTotalAssignedPagesNumber(request, assignedList);
             setTotalAppliedPagesNumber(request, appliedList);
@@ -46,6 +47,27 @@ public class DriverCommand implements Command {
         }
 
         return "/WEB-INF/driver/driver.jsp";
+    }
+
+    private void setMessageToUser(HttpServletRequest request, List<Assignment> assignedList) {
+        Locale locale = ThreadLocalWrapper.getLocale();
+        ResourceBundle bundle = ResourceBundle.getBundle("driver", locale);
+
+        if (assignedList.size() == 0)
+            request.setAttribute("messageToUser", bundle.getString("driver.message.emptyTable"));
+        else
+            request.setAttribute("messageToUser", bundle.getString("driver.assignments"));
+
+    }
+    private void setAppliedMessageToUser(HttpServletRequest request, List<Assignment> appliedList) {
+        Locale locale = ThreadLocalWrapper.getLocale();
+        ResourceBundle bundle = ResourceBundle.getBundle("driver", locale);
+
+        if (appliedList.size() == 0)
+            request.setAttribute("appliedMessageToUser", bundle.getString("driver.message.emptyRoutes"));
+        else
+            request.setAttribute("appliedMessageToUser", bundle.getString("driver.routes"));
+
     }
 
     private void handleAssignedPageNumber(HttpServletRequest request, List<Assignment> assignedList) {

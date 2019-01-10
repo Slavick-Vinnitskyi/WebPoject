@@ -202,6 +202,13 @@
                         }
                         })
                     </script>
+                    <c:if test="${not empty requestScope.error}">
+                        <script>
+                            window.addEventListener("load", function (){
+                                alert("${requestScope.error}");
+                            })
+                        </script>
+                    </c:if>
                 <%--THE FROM ITSELF--%>
                 <form method="post"  class="form-horizontal" action="<c:url value="/park/admin/insert_assignment"/>" >
                     <div class="form-group">
@@ -243,6 +250,7 @@
                                 <th><i class="icon_calendar"></i> <fmt:message key="table.date"/></th>
                                 <th><i class="icon_drive_alt"></i> <fmt:message key="table.car"/></th>
                                 <th><i class="icon_pin_alt"></i> <fmt:message key="table.route"/></th>
+                                <th><i class="icon_cogs"></i><fmt:message key="table.action"/></th>
                             </tr>
                             <c:forEach var="assign" items="${requestScope.assigned}">
                                 <tr>
@@ -250,6 +258,12 @@
                                     <td><c:out value="${assign.date}"/></td>
                                     <td><c:out value="${assign.bus.model}"/></td>
                                     <td><c:out value="${assign.route.start}"/> - <c:out value="${assign.route.finish}"/></td>
+                                    <td>
+                                        <form method="post" action="<c:url value="/park/admin/cancelButton"/>">
+                                            <input type="number" hidden name="refused_id" value="${assign.id}"/>
+                                            <input type="submit" name="refuse" class="btn btn-danger" value="<fmt:message key="table.cancel"/>"/>
+                                        </form>
+                                    </td>
                                 </tr>
                             </c:forEach>
                             </tbody>

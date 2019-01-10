@@ -30,6 +30,7 @@ public class AdminCommand implements Command {
             handleAppliedPageNumber(request, applied);
 
             setRoutesToRequest(request, service);
+            handleErrors(request);
 
             setCarsToSession(request);
 
@@ -37,6 +38,13 @@ public class AdminCommand implements Command {
             e.printStackTrace();
         }
         return "/WEB-INF/admin/admin.jsp";
+    }
+
+    private void handleErrors(HttpServletRequest request) {
+        Optional.ofNullable((String)request.getSession().getAttribute("error")).ifPresent(x-> {
+            request.getSession().removeAttribute("error");
+            request.setAttribute("error",x);
+        });
     }
 
     private void setCarsToSession(HttpServletRequest request) {
@@ -54,7 +62,7 @@ public class AdminCommand implements Command {
         int page = Integer.valueOf(Optional.ofNullable(request.getParameter("assignedPage")).orElse("1"));
         int start = (page - 1) * OFFSET;
         int end = Math.min(start + OFFSET, assignedList.size());
-        request.setAttribute("routeList", assignedList.subList(start, end));
+        request.setAttribute("assigned", assignedList.subList(start, end));
     }
 
     private void handleAppliedPageNumber(HttpServletRequest request, List<Assignment> appliedList) {

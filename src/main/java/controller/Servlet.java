@@ -33,6 +33,7 @@ public class Servlet extends HttpServlet {
         commands.put("driver", new DriverCommand());
         commands.put("driver/history", new DriverHistoryCommand());
         commands.put("driver/about", new DriverAboutCommand());
+        commands.put("driver/acceptButton", new DriverAcceptButtonCommand());
         commands.put("admin", new AdminCommand());
         commands.put("admin/add_car", new AdminCarCommand());
         commands.put("admin/add_new_car", new AdminAddingCarButtonCommand());
@@ -41,9 +42,8 @@ public class Servlet extends HttpServlet {
         commands.put("admin/insert_assignment", new AdminInsertAssignmentCommand());
         commands.put("admin/find_free_drivers_and_buses", new AdminFindCommand());
         commands.put("admin/selected_driver_id", new AdminFormDriverIdCommand());
+        commands.put("admin/cancelButton", new AdminRefuseButtonCommand());
         commands.put("exception", new ExceptionCommand());
-        commands.put("driver/acceptButton", new DriverAcceptButtonCommand());
-        commands.put("driver/refuseButton", new DriverRefuseButtonCommand());
 
     }
 
