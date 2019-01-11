@@ -6,6 +6,7 @@ import model.entity.dao.UserDao;
 import model.exception.UserNotFoundException;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 /**
  * Будет валидировать введенные данные на коректность
@@ -19,9 +20,9 @@ public class LoginService {
      * @return User if he exist in database
      * @throws UserNotFoundException when user does`nt exist in database
      */
-    public User validateUser(String login, String password) throws UserNotFoundException {
+    public Optional<User> validateUser(String login, String password) {
         try(UserDao userDao = daoFactory.createUserDao()) {
-            return userDao.findByLoginAndPassword(login, password);
+            return Optional.ofNullable(userDao.findByLoginAndPassword(login, password));
         }
     }
 

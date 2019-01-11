@@ -44,11 +44,11 @@
                     </div>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="icon_profile"></i></span>
-                        <input type="text" class="form-control" placeholder="<fmt:message key="placeholder.username"/>" autofocus name="name">
+                        <input type="text" class="form-control" placeholder="<fmt:message key="placeholder.username"/>" autofocus name="login">
                     </div>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                        <input type="password" class="form-control" placeholder="<fmt:message key="placeholder.password"/>" name="pass">
+                        <input type="password" class="form-control" placeholder="<fmt:message key="placeholder.password"/>" name="password">
                     </div>
                     <button class="btn btn-primary btn-lg btn-block" type="submit"><fmt:message key="button.login"/></button>
                     <div class="text-center">

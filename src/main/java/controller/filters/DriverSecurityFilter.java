@@ -47,8 +47,8 @@ public class DriverSecurityFilter implements Filter {
     }
 
     private User.ROLE getUserRole(HttpSession session) {
-        return session.getAttribute("role") != null ?
-                (User.ROLE) session.getAttribute("role") : User.ROLE.guest;
+        return session.getAttribute("user") != null ?
+                ((User) session.getAttribute("user")).getRole() : User.ROLE.guest;
     }
 
 }

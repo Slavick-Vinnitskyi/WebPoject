@@ -3,7 +3,7 @@ package controller.commands.implementation;
 import controller.commands.utils.SecurityUtility;
 import controller.commands.Command;
 import model.entity.User;
-import model.exception.UserNotFoundException;
+import model.exception.InvalidInputException;
 import model.service.LoginService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,9 +12,9 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.Optional;
 
-//TODO: make userDTO instead of user object
 public class LoginCommand implements Command {
     private SecurityUtility security = new SecurityUtility();
+    private LoginService service = new LoginService();
 
     /**
      * @param request request from client
@@ -23,16 +23,28 @@ public class LoginCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         logout(request);
-        String name = request.getParameter("name");
-        String pass = request.getParameter("pass");
+
+        String name = request.getParameter("login");
+        String pass = request.getParameter("password");
 
         try {
-            User user = checkLoginAndPassword(name, pass);
-            logIn(request, user);
+            User user = checkLoginAndPassword(request, name, pass);
             return getRedirectPath(user.getRole());
-        } catch (UserNotFoundException | NullPointerException e) {
-            return informAboutWrongInput(request);
+        } catch (InvalidInputException ex) {
+            return informAboutWrongInput(request, ex.getMessage());
         }
+    }
+
+    private User checkLoginAndPassword(HttpServletRequest request, String login, String password) {
+        if (login == null || login.equals("") || password == null || password.equals("")) {
+            throw new InvalidInputException("Invalid name or password");
+        }
+        Optional<User> user = service.validateUser(login, password);
+        if (user.isPresent()) {
+            logIn(request, user.get());
+            return user.get();
+        }
+        return null;
     }
 
     private void logIn(HttpServletRequest request, User user) {
@@ -44,19 +56,16 @@ public class LoginCommand implements Command {
         sessionSetup(request, user);
     }
 
+    private void sessionSetup(HttpServletRequest request, User user) {
+        HttpSession session = request.getSession();
+        user.setPassword(null);
+        session.setAttribute("user", user);
+    }
+
     private void destroyPreviousSession(Map<Integer, HttpSession> loggedUsers, int userId) {
         if (loggedUsers.containsKey(userId)) {
             loggedUsers.get(userId).invalidate();
         }
-    }
-
-    private void sessionSetup(HttpServletRequest request, User user) {
-        HttpSession session = request.getSession();
-        session.setAttribute("userId", user.getId());
-        session.setAttribute("role", user.getRole());
-        session.setAttribute("firstName", user.getFirstName());
-        session.setAttribute("secondName", user.getSecondName());
-        session.setAttribute("user", user);
     }
 
     /**
@@ -65,36 +74,13 @@ public class LoginCommand implements Command {
      * @param request with session that will be putted instead of previous
      */
     private void logout(HttpServletRequest request) {
-        if (getUserId(request) != -1) {
-            security.logOut(request.getSession());
-        }
+        Optional.ofNullable(request.getSession().getAttribute("user")).ifPresent(x ->
+                security.logOut(request.getSession())
+        );
     }
 
-    /**
-     * @param request needs to get the session
-     * @return user id if those exist of 0 if not
-     */
-    private int getUserId(HttpServletRequest request) {
-        return (Integer) Optional.ofNullable(request.getSession().getAttribute("userId")).orElse(-1);
-    }
-
-
-    private User authorization(String name, String pass) throws UserNotFoundException {
-
-            return new LoginService().validateUser(name, pass);
-
-    }
-
-
-    private User checkLoginAndPassword(String login, String password) throws UserNotFoundException {
-        if (login == null || login.equals("") || password == null || password.equals("")) {
-            return null;
-        }
-        return authorization(login, password);
-    }
-
-    private String informAboutWrongInput(HttpServletRequest request) {
-        request.setAttribute("info", "Invalid name or password");
+    private String informAboutWrongInput(HttpServletRequest request, String message) {
+        request.setAttribute("info", message);
         return "/login.jsp";
     }
 
