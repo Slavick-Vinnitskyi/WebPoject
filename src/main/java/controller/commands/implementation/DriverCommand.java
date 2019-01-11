@@ -40,10 +40,8 @@ public class DriverCommand implements Command {
             handleAssignedPageNumber(request, assignedList);
             handleAppliedPageNumber(request, appliedList);
 
-        } catch (NullPointerException e) {
+        } catch (RuntimeException e) {
             System.out.println("bad");
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return "/WEB-INF/driver/driver.jsp";
@@ -85,11 +83,11 @@ public class DriverCommand implements Command {
     }
 
     private void setTotalAssignedPagesNumber(HttpServletRequest request, List<Assignment> assignedList) {
-        int totalPages = (int) Math.ceil((float)assignedList.size() / 2);
+        int totalPages = (int) Math.ceil((float)assignedList.size() / OFFSET);
         request.setAttribute("totalAssignedPages", totalPages);
     }
     private void setTotalAppliedPagesNumber(HttpServletRequest request, List<Assignment> appliedList) {
-        int totalPages = (int) Math.ceil((float)appliedList.size() / 2);
+        int totalPages = (int) Math.ceil((float)appliedList.size() / OFFSET);
         request.setAttribute("totalAppliedPages", totalPages);
     }
 }

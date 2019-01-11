@@ -6,6 +6,7 @@ import model.entity.dao.UserDao;
 import model.entity.dao.mappers.implementation.CarMapper;
 import model.entity.dao.mappers.implementation.UserMapper;
 import model.exception.InvalidInputException;
+import model.exception.UserAlreadyExistException;
 import util.QueryManager;
 
 import java.sql.*;
@@ -58,9 +59,9 @@ public class JDBCUserDao implements UserDao {
             try {
                 connection.rollback();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
-            ex.printStackTrace();
+            throw new UserAlreadyExistException("register.userExist");
         }
         return entity;
     }

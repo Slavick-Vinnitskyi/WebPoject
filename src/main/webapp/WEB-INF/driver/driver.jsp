@@ -21,7 +21,6 @@
         <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.js"></script>
         <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
         <!-- nicescroll -->
-        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.scrollTo.min.js"></script>
         <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.nicescroll.js" type="text/javascript"></script>
         <!--custome script for all page-->
         <script type="text/javascript">
@@ -61,9 +60,6 @@
                             </a>
                             <ul class="dropdown-menu extended logout">
                                 <div class="log-arrow-up"></div>
-                                <li class="eborder-top">
-                                    <a  href="${pageContext.request.contextPath}/park/driver/about"><i class="icon_profile"></i> <fmt:message key="link.own_page"/></a>
-                                </li>
                                 <li>
                                     <a href="${pageContext.request.contextPath}/park/logout"><i class="icon_key_alt"></i><fmt:message key="link.logout"/></a>
                                 </li>
@@ -154,12 +150,6 @@
                             </section>
                             <nav>
                                 <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                            <span class="sr-only">Previous</span>
-                                        </a>
-                                    </li>
                                     <c:forEach var="i" begin="1" end="${requestScope.totalAssignedPages}">
                                         <li class="page-item">
                                             <c:if test="${param.appliedPage==null}">
@@ -170,12 +160,6 @@
                                             </c:if>
                                         </li>
                                     </c:forEach>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                            <span class="sr-only">Next</span>
-                                        </a>
-                                    </li>
                                 </ul>
                             </nav>
                         </div>
@@ -208,12 +192,6 @@
                             </section>
                             <nav>
                                 <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                            <span class="sr-only">Previous</span>
-                                        </a>
-                                    </li>
                                     <c:forEach var="i" begin="1" end="${requestScope.totalAppliedPages}">
                                         <li class="page-item">
                                             <c:if test="${param.assignedPage!=null}">
@@ -224,12 +202,6 @@
                                             </c:if>
                                         </li>
                                     </c:forEach>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                            <span class="sr-only">Next</span>
-                                        </a>
-                                    </li>
                                 </ul>
                             </nav>
                         </div>

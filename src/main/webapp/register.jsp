@@ -1,6 +1,10 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html lang="en">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:bundle basename="index" prefix="register.">
+<html>
 
 <head>
     <!-- Bootstrap CSS -->
@@ -50,7 +54,7 @@
     <script src="${pageContext.request.contextPath}resources/bootstrap/js/scripts.js"></script>
     <script src="${pageContext.request.contextPath}resources/bootstrap/js/gritter.js" type="text/javascript"></script>
 
-    <title>Registration</title>
+    <title><fmt:message key="title"/></title>
 </head>
 
 <body>
@@ -59,7 +63,7 @@
     <!--header start-->
     <header class="navbar-header header dark-bg">
         <!--logo start-->
-        <a href="${pageContext.request.contextPath}/park/index" class="logo">Car <span class="lite">Park</span></a>
+        <a href="${pageContext.request.contextPath}/park/index" class="logo"><c:out value="Car"/><span class="lite"><c:out value="Park"/></span></a>
         <!--logo end-->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
         <div class="nav navbar-nav">
@@ -82,55 +86,59 @@
                 <div class="col-lg-4 col-lg-offset-4">
                     <section class="panel">
                         <header class="panel-heading text-center">
-                            Input your data here
+                            <fmt:message key="input"/>
                         </header>
                         <div class="panel-body">
                             <div class="form">
                                 <form class="form-validate form-horizontal" id="register_form" method="post" action="${pageContext.request.contextPath}/park/register">
                                     <div class="text-center text-danger"><p><c:out value="${requestScope.info}"/></p></div>
                                     <div class="form-group ">
-                                        <label for="first_name" class="control-label col-lg-2">First name <span class="required">*</span></label>
+                                        <div class="text-center text-danger"><p><c:out value="${requestScope.wrongFirstName}"/></p></div>
+                                        <label for="first_name" class="control-label col-lg-2"><fmt:message key="firstName"/> <span class="required">*</span></label>
                                         <div class="col-lg-10">
                                             <input class="form-control" id="first_name" name="first_name" type="text" />
                                         </div>
                                     </div>
                                     <div class="form-group ">
-                                        <label for="second_name" class="control-label col-lg-2">Second name <span class="required">*</span></label>
+                                        <div class="text-center text-danger"><p><c:out value="${requestScope.wrongSecondName}"/></p></div>
+                                        <label for="second_name" class="control-label col-lg-2"><fmt:message key="secondName"/> <span class="required">*</span></label>
                                         <div class="col-lg-10">
                                             <input class=" form-control" id="second_name" name="second_name" type="text" />
                                         </div>
                                     </div>
                                     <div class="form-group ">
-                                        <label for="username" class="control-label col-lg-2">Login <span class="required">*</span></label>
+                                        <div class="text-center text-danger"><p><c:out value="${requestScope.wrongLogin}"/></p></div>
+                                        <label for="username" class="control-label col-lg-2"><fmt:message key="login"/> <span class="required">*</span></label>
                                         <div class="col-lg-10">
                                             <input class="form-control" id="username" name="username" type="text" />
                                         </div>
                                     </div>
                                     <div class="form-group ">
-                                    <label for="password" class="control-label col-lg-2">Password <span class="required">*</span></label>
+                                        <div class="text-center text-danger"><p><c:out value="${requestScope.wrongPassword}"/></p></div>
+                                        <label for="password" class="control-label col-lg-2"><fmt:message key="password"/> <span class="required">*</span></label>
                                         <div class="col-lg-10">
                                             <input class="form-control" id="password" name="password" type="password" />
                                         </div>
                                     </div>
                                     <div class="form-group ">
-                                        <label for="confirm_password" class="control-label col-lg-2">Confirm Password <span class="required">*</span></label>
+                                        <label for="confirm_password" class="control-label col-lg-2"><fmt:message key="password.repeat"/> <span class="required">*</span></label>
                                         <div class="col-lg-10">
                                             <input class="form-control" id="confirm_password" name="confirm_password" type="password" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="license" class="control-label col-lg-2">License type<span class="required"></span></label>
+                                        <label for="license" class="control-label col-lg-2"><fmt:message key="license"/><span class="required"></span></label>
                                         <div class="col-lg-10">
                                             <select class="form-control m-bot15" id="license" name="license">
-                                                <option value="A">A</option>
-                                                <option value="B">B</option>
+                                                <option value="A"><fmt:message key="license.A"/></option>
+                                                <option value="B"><fmt:message key="license.B"/></option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="text-center">
-                                            <button class="btn btn-primary" type="submit">Submit</button>
-                                            <button class="btn btn-outline-dark" type="button"><a href="${pageContext.request.contextPath}/park/logout">Deny</a></button>
+                                            <button class="btn btn-primary" type="submit"><fmt:message key="submit"/></button>
+                                            <button class="btn btn-outline-dark" type="button"><a href="${pageContext.request.contextPath}/park/logout"><fmt:message key="deny"/></a></button>
                                         </div>
                                     </div>
                                 </form>
@@ -147,3 +155,4 @@
 
 </body>
 </html>
+</fmt:bundle>
