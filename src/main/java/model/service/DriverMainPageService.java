@@ -1,14 +1,12 @@
 package model.service;
 
 import model.entity.Assignment;
-import model.entity.Route;
-import model.entity.User;
 import model.entity.dao.AssignmentDao;
 import model.entity.dao.DaoFactory;
-import model.entity.dao.RouteDao;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Будет :
@@ -24,22 +22,28 @@ import java.util.List;
 public class DriverMainPageService {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
-
-    public List<Assignment> getAssignmentsForDriverByStatus(int id, Assignment.Status status) {
+    public List<Assignment> getAssignmentsForDriverByStatus(int id, int limit, int offset, Assignment.Status status) {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
-            return dao.findForUser(id, status);
+            return Optional.ofNullable(dao.findForUser(id, limit, offset, status)).orElse(new ArrayList<>());
         }
     }
+
     public Assignment getAssignmentById(int assignmentId) {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
             return dao.findById(assignmentId);
         }
     }
 
-    public void updateAssignment(Assignment assignment) {
+    public void updateAssignment(int assignmentId) {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
-            dao.updateToAppliedForUser(assignment);
+            dao.updateToApplied(assignmentId);
         }
     }
 
+    public int getAssignmentsPagesNumber(int limit, int driverId, Assignment.Status status) {
+        try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
+            int count = dao.getCountRowsForDriverByStatus(driverId, status);
+            return (int) Math.ceil((float) count / limit);
+        }
+    }
 }

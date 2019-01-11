@@ -7,9 +7,9 @@ import java.sql.Date;
 import java.util.List;
 
 public interface AssignmentDao extends GenericDao<Assignment> {
-    List<Assignment> findForUser(int id, Assignment.Status status);
+    List<Assignment> findForUser(int id, int limit, int offset, Assignment.Status status);
     List<Assignment> findPastForUser(int id);
-    void updateToAppliedForUser(Assignment entity);
+    void updateToApplied(int assignmentId);
 
     List<IndexDto> findAllFutureApplied(int limit, int offset);
 
@@ -18,4 +18,6 @@ public interface AssignmentDao extends GenericDao<Assignment> {
     List<Assignment> findAllByDate(Date date);
 
     int getCountRows();
+
+    int getCountRowsForDriverByStatus(int driverId, Assignment.Status status);
 }
