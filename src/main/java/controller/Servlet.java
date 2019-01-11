@@ -32,7 +32,6 @@ public class Servlet extends HttpServlet {
         commands.put("logout", new LogoutCommand());
         commands.put("driver", new DriverCommand());
         commands.put("driver/history", new DriverHistoryCommand());
-        commands.put("driver/about", new DriverAboutCommand());
         commands.put("driver/acceptButton", new DriverAcceptButtonCommand());
         commands.put("admin", new AdminCommand());
         commands.put("admin/add_car", new AdminCarCommand());

@@ -5,7 +5,7 @@ import model.entity.User;
 import model.entity.dao.UserDao;
 import model.entity.dao.mappers.implementation.CarMapper;
 import model.entity.dao.mappers.implementation.UserMapper;
-import model.exception.UserNotFoundException;
+import model.exception.InvalidInputException;
 import util.QueryManager;
 
 import java.sql.*;
@@ -113,7 +113,7 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public User findByLoginAndPassword(String login, String password) throws UserNotFoundException {
+    public User findByLoginAndPassword(String login, String password) {
         final String query = QueryManager.getProperty("user.findByLoginAndPassword");
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, login);
@@ -122,9 +122,9 @@ public class JDBCUserDao implements UserDao {
             if (resultSet.next()) {
                 return getUser(st);
             } else {
-                throw new UserNotFoundException("Wrong login or password");
+                throw new InvalidInputException("Invalid name or password");
             }
-        }catch (SQLException ex){
+        } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -157,13 +157,10 @@ public class JDBCUserDao implements UserDao {
     private User getUser(PreparedStatement st) throws SQLException {
         User findingUser = new User();
         ResultSet rs = st.executeQuery();
-        UserMapper userMapper = new UserMapper();
 
         while (rs.next()) {
-            findingUser = userMapper
-                    .extractFromResultSet(rs);
+            findingUser = new UserMapper().extractFromResultSet(rs);
         }
-
         return findingUser;
     }
 
