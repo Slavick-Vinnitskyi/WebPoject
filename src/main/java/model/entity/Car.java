@@ -69,11 +69,13 @@ public class Car {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Car car = (Car) o;
-        return id == car.id;
+        return model.equals(car.model) &&
+                year.equals(car.year) &&
+                licenseType == car.licenseType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(model, year, licenseType);
     }
 }

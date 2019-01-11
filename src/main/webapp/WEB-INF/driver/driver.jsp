@@ -110,7 +110,14 @@
                     <!-- sidebar menu end-->
                 </div>
             </aside>
+            <c:if test="${not empty requestScope.error}">
+                <script>
 
+                    window.addEventListener("load", function (){
+                        alert("${requestScope.error}");
+                    })
+                </script>
+            </c:if>
             <section id="main-content">
                 <section class="wrapper">
                     <div class="row">
@@ -192,16 +199,21 @@
                             </section>
                             <nav>
                                 <ul class="pagination">
-                                    <c:forEach var="i" begin="1" end="${requestScope.totalAppliedPages}">
-                                        <li class="page-item">
-                                            <c:if test="${param.assignedPage!=null}">
-                                                <a class="page-link" href="${pageContext.request.contextPath}/park/driver?assignedPage=${param.assignedPage}&appliedPage=${i}">${i}</a>
-                                            </c:if>
-                                            <c:if test="${param.assignedPage==null}">
-                                            <a class="page-link" href="${pageContext.request.contextPath}/park/driver?appliedPage=${i}">${i}</a>
-                                            </c:if>
-                                        </li>
-                                    </c:forEach>
+                                    <c:if test="${requestScope.pagesError != null}">
+                                        <c:out value="${requestScope.pagesError}"/>
+                                    </c:if>
+                                    <c:if test="${requestScope.pagesError == null}">
+                                        <c:forEach var="i" begin="1" end="${requestScope.totalAppliedPages}">
+                                            <li class="page-item">
+                                                <c:if test="${param.assignedPage!=null}">
+                                                    <a class="page-link" href="${pageContext.request.contextPath}/park/driver?assignedPage=${param.assignedPage}&appliedPage=${i}">${i}</a>
+                                                </c:if>
+                                                <c:if test="${param.assignedPage==null}">
+                                                    <a class="page-link" href="${pageContext.request.contextPath}/park/driver?appliedPage=${i}">${i}</a>
+                                                </c:if>
+                                            </li>
+                                        </c:forEach>
+                                    </c:if>
                                 </ul>
                             </nav>
                         </div>

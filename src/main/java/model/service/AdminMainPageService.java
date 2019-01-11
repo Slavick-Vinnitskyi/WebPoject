@@ -9,7 +9,6 @@ import model.entity.dao.RouteDao;
 import model.entity.dao.UserDao;
 
 import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,20 +25,15 @@ public class AdminMainPageService {
             return dao.findByStatus(status);
         }
     }
+
     public boolean deleteAssignment(int assignmentId) {
-        try(AssignmentDao dao = daoFactory.createAssignmentDao()) {
+        try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
             dao.delete(assignmentId);
             return true;
         }
     }
 
-//    public Assignment getAssignmentById(int assignmentId) {
-//        try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
-//            return dao.findById(assignmentId);
-//        }
-//    }
-
-    public List<Route> getAllRoutes()  {
+    public List<Route> getAllRoutes() {
         try (RouteDao dao = daoFactory.createRouteDao()) {
             return dao.findAll();
         }
@@ -66,24 +60,9 @@ public class AdminMainPageService {
         }
     }
 
-    public User getDriver(int driverId) {
-        try (UserDao dao = daoFactory.createUserDao()) {
-            return dao.findById(driverId);
-        }
-    }
-
     public Assignment insertAssignment(Assignment entity) {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
             return dao.create(entity);
         }
     }
-
-//    public int getLinkId(int driverId, int carId) {
-//        try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
-//           return dao.findLinkId(driverId, carId);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return 0;
-//        }
-//    }
 }

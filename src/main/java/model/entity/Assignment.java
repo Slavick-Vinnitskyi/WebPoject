@@ -76,12 +76,23 @@ public class Assignment {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Assignment that = (Assignment) o;
-        return id == that.id;
+
+        if (!date.equals(that.date)) return false;
+        if (route != null ? !route.equals(that.route) : that.route != null) return false;
+        if (status != that.status) return false;
+        if (driver != null ? !driver.equals(that.driver) : that.driver != null) return false;
+        return bus != null ? bus.equals(that.bus) : that.bus == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        int result = date.hashCode();
+        result = 31 * result + (route != null ? route.hashCode() : 0);
+        result = 31 * result + status.hashCode();
+        result = 31 * result + (driver != null ? driver.hashCode() : 0);
+        result = 31 * result + (bus != null ? bus.hashCode() : 0);
+        return result;
     }
 }

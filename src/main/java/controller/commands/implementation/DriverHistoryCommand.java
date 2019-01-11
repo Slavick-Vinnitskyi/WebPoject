@@ -1,47 +1,59 @@
 package controller.commands.implementation;
 import controller.commands.Command;
+import model.dto.IndexDto;
 import model.entity.Assignment;
 import model.entity.User;
 import model.service.DriverHistoryPageService;
 import org.apache.log4j.Logger;
+import util.QueryManager;
+import util.ThreadLocalWrapper;
 
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class DriverHistoryCommand implements Command {
 
+    private DriverHistoryPageService service = new DriverHistoryPageService();
     private static final Logger log = Logger.getLogger(DriverHistoryCommand.class);
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            DriverHistoryPageService service = new DriverHistoryPageService();
-            User user = (User) request.getSession().getAttribute("user");
-            int userId = user.getId();
-            List <Assignment> assignments = service.getPastAssignmentsForDriver(userId);
-            setTotalPageNumber(request, assignments);
-            handlePageNumber(request, assignments);
-            log.info("Driver \'" + user.getLogin() + "\' is watching history");
-        } catch (Exception e) {
-            log.info(e);
-//            e.printStackTrace();
-        }
+
+        User user = (User) request.getSession().getAttribute("user");
+        int userId = user.getId();
+
+        int limit = Integer.parseInt(QueryManager.getProperty("select.limit"));
+
+        setTotalPageNumber(request,userId, limit);
+        setPageHistory(request, userId, limit);
+
+        log.info(user.getLogin() + " is watching history");
 
         return "/WEB-INF/driver/history.jsp";
     }
 
-    private void handlePageNumber(HttpServletRequest request, List<Assignment> assignments) {
-        int page = Integer.parseInt(Optional.ofNullable(request.getParameter("page")).orElse("1"));
-        int start = (page - 1) * OFFSET;
-        int end = Math.min(start + OFFSET, assignments.size());
-        request.setAttribute("assignmentsHistory", assignments.subList(start, end));
+    private void setPageHistory(HttpServletRequest request, int driverId, int limit) {
+        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("page")).orElse("1"));
+        int offset = (page - 1) * limit;
+        try {
+            List<Assignment> assignments = service.getPastAssignmentsForDriver(driverId, limit, offset);
+            request.setAttribute("assignmentsHistory", assignments);
+        } catch (RuntimeException ex) {
+            ResourceBundle errors = ResourceBundle.getBundle("errors", ThreadLocalWrapper.getLocale());
+            request.setAttribute("selectError", errors.getString("index.select"));
+        }
     }
 
-    private void setTotalPageNumber(HttpServletRequest request, List<Assignment> assignments) {
-        int totalPages = (int) Math.ceil((float)assignments.size()/OFFSET);
-        request.setAttribute("totalPages", totalPages);
+    private void setTotalPageNumber(HttpServletRequest request, int driverId, int limit) {
+        try {
+            request.setAttribute("pages", service.getTotalPagesNumber(driverId, limit));
+        } catch (RuntimeException ex) {
+            ResourceBundle errors = ResourceBundle.getBundle("errors", ThreadLocalWrapper.getLocale());
+            request.setAttribute("pagesError", errors.getString("index.pages"));
+        }
     }
 }

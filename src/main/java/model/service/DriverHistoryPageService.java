@@ -21,9 +21,16 @@ public class DriverHistoryPageService {
 
 
 
-    public List<Assignment> getPastAssignmentsForDriver(int id) {
+    public List<Assignment> getPastAssignmentsForDriver(int driverId, int limit, int offset) {
         try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
-            return dao.findPastForUser(id);
+            return dao.findPastForUser(driverId, limit, offset);
+        }
+    }
+
+    public int getTotalPagesNumber(int driverId, int limit) {
+        try (AssignmentDao dao = daoFactory.createAssignmentDao()) {
+            int count = dao.getCountHistoryRows(driverId);
+            return (int) Math.ceil((float) count / limit);
         }
     }
 }

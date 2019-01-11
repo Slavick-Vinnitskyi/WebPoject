@@ -60,23 +60,6 @@ public class JDBCAssignmentDao implements AssignmentDao {
             throw new RuntimeException("admin.insert.assignment.unknown");
         }
     }
-//
-//    @Override
-//    public int findLinkId(int driverId, int carId) {
-//        final String query = QueryManager.getProperty("assignment.findLinkId");
-//        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-//            preparedStatement.setInt(1 , driverId);
-//            preparedStatement.setInt(2, carId);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            if(resultSet.next()) {
-//                return resultSet.getInt("id");
-//            }
-//            return 0;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return 0;
-//        }
-//    }
 
     @Override
     public Assignment findById(int id) {
@@ -120,24 +103,61 @@ public class JDBCAssignmentDao implements AssignmentDao {
         }
     }
 
-    public List<Assignment> findForUser(int id, Assignment.Status status) {
+    @Override
+    public int getCountRowsForDriverByStatus(int driverId, Assignment.Status status) {
+        final String query = QueryManager.getProperty("assignment.getCountRowsForDriver");
+        try(PreparedStatement statement = connection.prepareStatement(query)){
+            statement.setInt(1, driverId);
+            statement.setString(2, String.valueOf(status));
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()) {
+                return resultSet.getInt("count");
+            }else return 0;
+
+        }catch (SQLException ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public int getCountHistoryRows(int driverId) {
+        final String query = QueryManager.getProperty("assignment.getCountHistoryRowsForDriver");
+        try(PreparedStatement statement = connection.prepareStatement(query)){
+            statement.setInt(1, driverId);
+            statement.setString(2, String.valueOf(Assignment.Status.applied));
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()) {
+                return resultSet.getInt("count");
+            }else return 0;
+
+        }catch (SQLException ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public List<Assignment> findForUser(int id, int limit, int offset, Assignment.Status status) {
         List<Assignment> assignments = new CopyOnWriteArrayList<>();
         final String query = QueryManager.getProperty("assignment.findForUser");
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             statement.setString(2, String.valueOf(status));
+            statement.setInt(3, limit);
+            statement.setInt(4, offset);
             return getAssignments(assignments, statement);
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
     }
 
-    public List<Assignment> findPastForUser(int id) {
+    @Override
+    public List<Assignment> findPastForUser(int id, int limit, int offset) {
         List<Assignment> assignments = new CopyOnWriteArrayList<>();
         final String query = QueryManager.getProperty("assignment.findPastForUser");
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
+            statement.setInt(2, limit);
+            statement.setInt(3, offset);
             return getAssignments(assignments, statement);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -158,14 +178,15 @@ public class JDBCAssignmentDao implements AssignmentDao {
     }
 
     @Override
-    public void updateToAppliedForUser(Assignment entity) {
+    public void updateToApplied(int assignmentId) {
         final String query = QueryManager.getProperty("assignment.updateToAppliedForUser");
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1 , String.valueOf(entity.getStatus()));
-            preparedStatement.setInt(2, entity.getId());
-            preparedStatement.executeUpdate();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, String.valueOf(Assignment.Status.applied));
+            preparedStatement.setInt(2, assignmentId);
+            int i = preparedStatement.executeUpdate();
+            if(i == 0) throw new RuntimeException("driver.button");
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
