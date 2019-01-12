@@ -160,7 +160,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <label class="col-sm-2 control-label"><fmt:message key="input.date"/></label>
-                                <input id="dp1" type="text"  value="12-26-2018" class="form-control round-input" name="date">
+                                <input id="dp1" type="text" value="${sessionScope.selectedDate}" class="form-control round-input" name="date">
                             </div>
                         </div>
                         <div class="col-sm-1">
@@ -271,12 +271,6 @@
                     </section>
                     <nav>
                         <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                            </li>
                             <c:forEach var="i" begin="1" end="${requestScope.totalAssignedPages}">
                                 <li class="page-item">
                                     <c:if test="${param.appliedPage==null}">
@@ -287,12 +281,6 @@
                                     </c:if>
                                 </li>
                             </c:forEach>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </li>
                         </ul>
                     </nav>
                 </div>

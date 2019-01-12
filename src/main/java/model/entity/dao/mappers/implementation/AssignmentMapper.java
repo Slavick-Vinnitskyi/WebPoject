@@ -58,6 +58,16 @@ public class AssignmentMapper implements ObjectMapper<Assignment> {
         return assignment;
     }
 
+    public Assignment extractAssignmentWithPersonAndCar(ResultSet resultSet) throws SQLException {
+
+        Assignment assignment = extractAssignmentWithPerson(resultSet);
+        User user = new UserMapper().extractFromResultSet(resultSet);
+        Car bus = new CarMapper().extractFromResultSet(resultSet);
+        assignment.setDriver(user);
+        assignment.setBus(bus);
+        return assignment;
+    }
+
 
 
 

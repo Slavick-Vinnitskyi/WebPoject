@@ -9,7 +9,10 @@ import model.service.AdminMainPageService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 
@@ -34,6 +37,7 @@ public class AdminCommand implements Command {
             handleErrors(request);
 
             setCarsToSession(request);
+            setDate(request);
 
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -57,6 +61,12 @@ public class AdminCommand implements Command {
     private void setRoutesToRequest(HttpServletRequest request) {
         List<Route> routeList = service.getAllRoutes();
         request.setAttribute("routes", routeList);
+    }
+
+    private void setDate(HttpServletRequest request) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+        if(request.getSession().getAttribute("selectedDate") == null)
+            request.getSession().setAttribute("selectedDate", LocalDate.now().format(formatter));
     }
 
     private void handleAssignedPageNumber(HttpServletRequest request, List<Assignment> assignedList) {

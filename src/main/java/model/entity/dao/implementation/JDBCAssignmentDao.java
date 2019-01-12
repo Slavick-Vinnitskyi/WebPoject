@@ -233,13 +233,12 @@ public class JDBCAssignmentDao implements AssignmentDao {
             ResultSet resultSet = statement.executeQuery();
             AssignmentMapper mapper = new AssignmentMapper();
             while (resultSet.next()) {
-                Assignment dto = mapper.extractAssignmentWithPerson(resultSet);
-                assignments.add(dto);
+                Assignment assignment = mapper.extractAssignmentWithPersonAndCar(resultSet);
+                assignments.add(assignment);
             }
             return new ArrayList<>(assignments);
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

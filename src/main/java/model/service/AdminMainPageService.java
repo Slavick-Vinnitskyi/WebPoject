@@ -1,6 +1,7 @@
 package model.service;
 
 import model.entity.Assignment;
+import model.entity.Car;
 import model.entity.Route;
 import model.entity.User;
 import model.entity.dao.AssignmentDao;
@@ -12,6 +13,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *  Выводить маршруты
@@ -47,16 +49,42 @@ public class AdminMainPageService {
 
     public List<User> getFreeCarsAndDriver(LocalDate date) {
         List<User> allDriversWithCars;
-        List<Assignment> assignmentsForThisDate = new ArrayList<>();
+        List<Assignment> assignmentsForThisDate;
+
         try (UserDao dao = daoFactory.createUserDao()) {
             allDriversWithCars = dao.findAllCarToDriver();
             try (AssignmentDao assignmentDao = daoFactory.createAssignmentDao()) {
-                assignmentsForThisDate = assignmentDao.findAllByDate(Date.valueOf(date));
 
-            } catch (NullPointerException ex) {
-                return null;
+                assignmentsForThisDate = assignmentDao.findAllByDate(Date.valueOf(date));
+                List<User> busyDrivers = assignmentsForThisDate.stream().map(Assignment::getDriver).collect(Collectors.toList());
+                List<Car> busyCars = assignmentsForThisDate.stream().map(Assignment::getBus).collect(Collectors.toList());
+                removeBusyDrivers(allDriversWithCars, busyDrivers);
+                removeBusyCars(allDriversWithCars, busyCars);
             }
             return allDriversWithCars;
+        }
+    }
+
+    private void removeBusyCars(List<User> allDriversWithCars, List<Car> busyCars) {
+        for (User allDriversWithCar : allDriversWithCars) {
+            List<Car> allCars = allDriversWithCar.getCars();
+            for (int j = 0; j < allCars.size(); j++) {
+                for (Car busyCar : busyCars) {
+                    if (allCars.get(j).equals(busyCar)) {
+                        allDriversWithCar.getCars().remove(j);
+                    }
+                }
+            }
+        }
+    }
+
+    private void removeBusyDrivers(List<User> allDriversWithCars, List<User> busyDrivers) {
+        for (int i = 0; i < allDriversWithCars.size(); i++) {
+            for (User busyDriver : busyDrivers) {
+                if (allDriversWithCars.get(i).equals(busyDriver)) {
+                    allDriversWithCars.remove(i);
+                }
+            }
         }
     }
 

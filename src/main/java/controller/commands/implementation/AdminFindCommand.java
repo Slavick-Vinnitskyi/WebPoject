@@ -14,22 +14,24 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class AdminFindCommand implements Command {
+    AdminMainPageService service = new AdminMainPageService();
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        AdminMainPageService service = new AdminMainPageService();
+
         Route route = parseRoute(request, service);
         LocalDate date = parseDate(request);
         setToSession(request, route, date);
         List<User> freeDrivers = service.getFreeCarsAndDriver(date);
         HttpSession session = request.getSession();
         session.setAttribute("drivers", freeDrivers);
-        return "/WEB-INF/admin/admin.jsp";
+        return "redirect: /park/admin";
     }
 
     private void setToSession(HttpServletRequest request, Route route, LocalDate date) {
         HttpSession currentSession = request.getSession();
         currentSession.setAttribute("selectedRoute", route);
-        currentSession.setAttribute("selectedDate", date);
+        currentSession.setAttribute("selectedDate", date.format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
     }
 
     private Route parseRoute(HttpServletRequest request, AdminMainPageService service) throws SQLException {
