@@ -1,8 +1,6 @@
 package model.entity;
 
 import java.time.LocalDate;
-import java.util.Objects;
-
 public class Assignment {
 
     public enum Status {
@@ -72,6 +70,18 @@ public class Assignment {
         this.route = route;
     }
 
+//    @Override
+//    public String toString() {
+//        return "Assignment{" +
+//                "id=" + id +
+//                ", date=" + date +
+//                ", route=" + route +
+//                ", status=" + status +
+//                ", driver=" + driver +
+//                ", bus=" + bus +
+//                '}';
+//    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,20 +89,25 @@ public class Assignment {
 
         Assignment that = (Assignment) o;
 
-        if (!date.equals(that.date)) return false;
-        if (route != null ? !route.equals(that.route) : that.route != null) return false;
-        if (status != that.status) return false;
-        if (driver != null ? !driver.equals(that.driver) : that.driver != null) return false;
-        return bus != null ? bus.equals(that.bus) : that.bus == null;
+        return date.equals(that.date) &&
+                route.equals(that.route) &&
+                status == that.status;
     }
-
-    @Override
-    public int hashCode() {
-        int result = date.hashCode();
-        result = 31 * result + (route != null ? route.hashCode() : 0);
-        result = 31 * result + status.hashCode();
-        result = 31 * result + (driver != null ? driver.hashCode() : 0);
-        result = 31 * result + (bus != null ? bus.hashCode() : 0);
-        return result;
+//
+//    @Override
+//    public int hashCode() {
+//        int result = date.hashCode();
+//        result = 31 * result + (route != null ? route.hashCode() : 0);
+//        result = 31 * result + status.hashCode();
+//        result = 31 * result + (driver != null ? driver.hashCode() : 0);
+//        result = 31 * result + (bus != null ? bus.hashCode() : 0);
+//        return result;
+//    }
+}
+class A{
+    public static void main(String[] args) {
+        System.out.println(new Assignment().hashCode());
+        System.out.println(new Assignment());
+        System.out.println(Integer.toHexString(1711574013));
     }
 }

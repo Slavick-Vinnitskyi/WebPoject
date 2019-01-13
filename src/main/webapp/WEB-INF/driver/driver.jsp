@@ -73,10 +73,10 @@
                             <ul class="dropdown-menu extended ">
                                 <div class="log-arrow-up"></div>
                                 <li id="lang-div">
-                                    <a href="?sessionLocale=en" style="font-size: 14px;">
+                                    <a href="?locale=en" style="font-size: 14px;">
                                         <fmt:message key="lang.en"/> <img src="${pageContext.request.contextPath}/resources/bootstrap/img/icons/us.png"/>
                                     </a>
-                                    <a href="?sessionLocale=ua" style="font-size: 14px;">
+                                    <a href="?locale=ua" style="font-size: 14px;">
                                         <fmt:message key="lang.ua"/> <img src="${pageContext.request.contextPath}/resources/bootstrap/img/icons/ua.png"/>
                                     </a>
                                 </li>

@@ -2,20 +2,23 @@ package model.entity.dao.implementation;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import javax.sql.DataSource;
+import java.util.ResourceBundle;
 
 public class ConnectionPoolHolder {
     private static BasicDataSource dataSource;
 
+
     public static DataSource getDataSource() {
 
+        ResourceBundle bundle = ResourceBundle.getBundle("sql_config");
         if (dataSource == null) {
             synchronized (ConnectionPoolHolder.class) {
                 if (dataSource == null) {
                     dataSource = new BasicDataSource();
-                    dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-                    dataSource.setUrl("jdbc:mysql://localhost:3306/edited_car_park?useSSL=false");
-                    dataSource.setUsername("root");
-                    dataSource.setPassword("root");
+                    dataSource.setDriverClassName(bundle.getString("database.driver.class"));
+                    dataSource.setUrl(bundle.getString("database.url"));
+                    dataSource.setUsername(bundle.getString("database.user"));
+                    dataSource.setPassword(bundle.getString("database.password"));
                     dataSource.setMaxOpenPreparedStatements(100);
                 }
             }

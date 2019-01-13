@@ -46,11 +46,21 @@ public class Route {
     }
 
     @Override
+    public String toString() {
+        return "Route{" +
+                "id=" + id +
+                ", start='" + start + '\'' +
+                ", finish='" + finish + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Route route = (Route) o;
-        return id == route.id;
+        return start.equals(route.start)
+                && finish.equals(route.finish);
     }
 
     @Override

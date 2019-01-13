@@ -13,18 +13,18 @@ import java.util.Optional;
 @WebFilter(filterName = "LocaleFilter", urlPatterns = {"/*"})
 public class LocaleFilter implements Filter {
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        Optional.ofNullable(request.getParameter("sessionLocale")).ifPresent(x -> {
+        Optional.ofNullable(request.getParameter("locale")).ifPresent(x -> {
             request.getSession().setAttribute("lang", x);
             ThreadLocalWrapper.setLocale(new Locale(x));
         });
-        if (request.getParameter("sessionLocale") == null) {
+        if (request.getParameter("locale") == null) {
             try {
                 ThreadLocalWrapper.setLocale(new Locale((String) request.getSession().getAttribute("lang")));
             } catch (NullPointerException ex) {

@@ -2,6 +2,7 @@ package controller;
 
 import controller.commands.*;
 import controller.commands.implementation.*;
+import model.service.AdminMainPageService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -39,7 +40,7 @@ public class Servlet extends HttpServlet {
         commands.put("admin/add_route", new AdminRouteCommand());
         commands.put("admin/add_new_route", new AdminAddingRouteButtonCommand());
         commands.put("admin/insert_assignment", new AdminInsertAssignmentCommand());
-        commands.put("admin/find_free_drivers_and_buses", new AdminFindCommand());
+        commands.put("admin/find_free_drivers_and_buses", new AdminFindCommand(new AdminMainPageService()));
         commands.put("admin/selected_driver_id", new AdminFormDriverIdCommand());
         commands.put("admin/cancelButton", new AdminRefuseButtonCommand());
         commands.put("exception", new ExceptionCommand());
@@ -83,8 +84,7 @@ public class Servlet extends HttpServlet {
     private Command getCommand(HttpServletRequest request) {
         String path = request.getRequestURI();
         System.out.println("processRequest, path=" + path);
-        path = path.replaceAll(".*/park/", "");
-        path = path.replaceAll(".*/park", "");
+        path = path.replaceAll(".*/park/", "").replaceAll(".*/park", "");
         return commands.getOrDefault(path, (r,j) -> "/park/index");
     }
 }

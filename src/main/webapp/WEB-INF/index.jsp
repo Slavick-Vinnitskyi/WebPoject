@@ -27,9 +27,9 @@
            <a href="${pageContext.request.contextPath}/park/index" class="logo">Car <span class="lite">Park</span></a>
            <!--logo end-->
            <div style="text-align: right" id="lang-div">
-               <a href="?sessionLocale=en"><img src="${pageContext.request.contextPath}/resources/bootstrap/img/icons/us.png"><fmt:message key="lang.en"/></a>
+               <a href="?locale=en"><img src="${pageContext.request.contextPath}/resources/bootstrap/img/icons/us.png"><fmt:message key="lang.en"/></a>
                <br>
-               <a href="?sessionLocale=ua"><img src="${pageContext.request.contextPath}/resources/bootstrap/img/icons/ua.png"><fmt:message key="lang.ua"/></a>
+               <a href="?locale=ua"><img src="${pageContext.request.contextPath}/resources/bootstrap/img/icons/ua.png"><fmt:message key="lang.ua"/></a>
            </div>
        </header>
        <style>
