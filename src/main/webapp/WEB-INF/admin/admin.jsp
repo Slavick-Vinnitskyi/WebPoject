@@ -217,7 +217,7 @@
                                 <label class="col-sm-2 control-label"><fmt:message key="input.driver"/></label>
                                 <select class="form-control m-bot15" name="driver_id" id="driverId">
                                     <option>-</option>
-                                    <c:forEach var="driver" items="${sessionScope.drivers}">
+                                    <c:forEach var="driver" items="${requestScope.drivers}">
                                         <option value="${driver.id}">
                                             <c:out value="${driver.login}"/>, license:<c:out value="${driver.licenseType}"/>
                                         </option>

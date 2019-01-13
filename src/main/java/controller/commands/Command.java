@@ -5,6 +5,5 @@ import javax.servlet.http.HttpServletResponse;
 
 @FunctionalInterface
 public interface Command {
-    int OFFSET = 10;
     String execute(HttpServletRequest request, HttpServletResponse response) throws Exception;
 }

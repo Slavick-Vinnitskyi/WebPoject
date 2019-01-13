@@ -106,7 +106,7 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id;
+        return login.equals(user.login);
     }
 
     @Override

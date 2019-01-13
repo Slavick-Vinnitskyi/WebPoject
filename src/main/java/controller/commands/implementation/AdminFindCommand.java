@@ -14,7 +14,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class AdminFindCommand implements Command {
-    AdminMainPageService service = new AdminMainPageService();
+    AdminMainPageService service;
+
+    public AdminFindCommand(AdminMainPageService service) {
+        this.service = service;
+    }
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -34,7 +38,7 @@ public class AdminFindCommand implements Command {
         currentSession.setAttribute("selectedDate", date.format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
     }
 
-    private Route parseRoute(HttpServletRequest request, AdminMainPageService service) throws SQLException {
+    private Route parseRoute(HttpServletRequest request, AdminMainPageService service)  {
         int routeId = Integer.parseInt(request.getParameter("route"));
         return service.getRouteById(routeId);
     }

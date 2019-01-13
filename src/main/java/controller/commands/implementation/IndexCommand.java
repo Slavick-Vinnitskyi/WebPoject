@@ -28,7 +28,8 @@ public class IndexCommand implements Command {
     }
 
     private void handlePageNumber(HttpServletRequest request, int limit) {
-        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("page")).orElse("1"));
+        int page = Math.max(Integer.valueOf(Optional.ofNullable(request.getParameter("page")).orElse("1")), 1 );
+        page = Math.min(page, (Integer) Optional.ofNullable(request.getAttribute("totalPages")).orElse(Integer.MAX_VALUE));
         int offset = (page - 1) * limit;
         try {
             List<IndexDto> assignments = service.getFutureAssignments(limit, offset);
