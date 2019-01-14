@@ -75,19 +75,18 @@ public class AdminCommand implements Command {
     }
 
     private void handleAssignedPageNumber(HttpServletRequest request, List<Assignment> assignedList, int offset) {
-        int page = Integer
-                .valueOf(Optional
-                        .ofNullable(request.getParameter("assignedPage"))
-                        .orElse("1"));
+        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("assignedPage")).orElse("1"));
         int start = (page - 1) * offset;
         int end = Math.min(start + offset, assignedList.size());
         request.setAttribute("assigned", assignedList.subList(start, end));
     }
 
     private void handleAppliedPageNumber(HttpServletRequest request, List<Assignment> appliedList, int offset) {
-        int page = Integer.valueOf(Optional.ofNullable(request.getParameter("appliedPage")).orElse("1"));
-        int end = Math.min(page + offset, appliedList.size());
-        request.setAttribute("applied", appliedList.subList(page, end));
+        int page = Math.max(Integer.valueOf(Optional.ofNullable(request.getParameter("appliedPage")).orElse("1")), 1 );
+        page = Math.min(page, (Integer) Optional.ofNullable(request.getAttribute("totalAppliedPages")).orElse(Integer.MAX_VALUE));
+        int start = (page - 1) * offset;
+        int end = Math.min(start + offset, appliedList.size());
+        request.setAttribute("applied", appliedList.subList(start, end));
     }
 
     private void setTotalAssignedPagesNumber(HttpServletRequest request, List<Assignment> assignedList, int offset) {
