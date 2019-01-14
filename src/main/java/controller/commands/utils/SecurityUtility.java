@@ -35,6 +35,8 @@ public class SecurityUtility {
 
     public Map<Integer, HttpSession> getLoggedUsers() {
 
-        return (ConcurrentHashMap<Integer, HttpSession>) context.getAttribute("loggedUsers");
+        return
+                Optional.ofNullable((ConcurrentHashMap<Integer, HttpSession>) context.getAttribute("loggedUsers"))
+                        .orElse(new ConcurrentHashMap<>());
     }
 }

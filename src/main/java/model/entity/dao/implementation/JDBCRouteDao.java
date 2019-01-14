@@ -23,7 +23,7 @@ public class JDBCRouteDao implements RouteDao {
 
     @Override
     public Route create(Route entity) {
-        final String query = QueryManager.getProperty("route.create");
+        final String query = QueryManager.getProperty("route.createEntity");
         try (PreparedStatement statement = connection.prepareStatement(query)) {
 
             RouteMapper mapper = new RouteMapper();

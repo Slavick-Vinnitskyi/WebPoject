@@ -1,7 +1,7 @@
 package controller.commands.implementation;
 
 import model.entity.User;
-import org.junit.After;
+import model.entity.enums.LicenseType;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -10,8 +10,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -30,26 +28,20 @@ public class RegisterCommandTest {
     @Before
     public void setUp() {
         Mockito.when(request.getServletContext()).thenReturn(context);
-        Mockito.when(context.getAttribute("logged-users")).thenReturn(users);
+        Mockito.when(context.getAttribute("loggedUsers")).thenReturn(users);
         Mockito.when(request.getSession()).thenReturn(session);
-        Mockito.when(request.getParameter("username")).thenReturn("testname");
-        Mockito.when(request.getParameter("password")).thenReturn("testpass");
-        Mockito.when(request.getParameter("first-name")).thenReturn("");
-        Mockito.when(request.getParameter("last-name")).thenReturn("");
-        Mockito.when(request.getParameter("first-name-en")).thenReturn("");
-        Mockito.when(request.getParameter("last-name-en")).thenReturn("");
+        Mockito.when(request.getParameter("first_name")).thenReturn("Slavick");
+        Mockito.when(request.getParameter("second_name")).thenReturn("Vinnitskyi");
+        Mockito.when(request.getParameter("username")).thenReturn("login");
+        Mockito.when(request.getParameter("confirm_password")).thenReturn("login");
+        Mockito.when(request.getParameter("license")).thenReturn(String.valueOf(LicenseType.A));
     }
 
     @Test
     public void process() {
         String uri = registerCommand.execute(request, response);
-        assertEquals("/servlet/guest/login", uri);
+        assertEquals("/register.jsp", uri);
         String loginUri = loginCommand.execute(request, response);
-        assertEquals("redirect:free/home?login=true", loginUri);
-    }
-
-    @After
-    public void tearDown() throws SQLException {
-//        new JDBCUserDao(ConnectionPoolHolder.getDataSource().getConnection()).delete();
+        assertEquals("/login.jsp", loginUri);
     }
 }

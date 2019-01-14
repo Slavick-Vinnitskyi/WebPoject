@@ -1,15 +1,19 @@
 package model.entity.dao.implementation;
 
 import config.DBConfigurer;
+import model.dto.LocalizedRoute;
 import model.entity.Route;
 import model.entity.dao.DaoFactory;
 import model.entity.dao.DaoFactoryTest;
 import model.entity.dao.RouteDao;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.HashMap;
+
+import static org.junit.Assert.assertEquals;
 
 public class JDBCRouteDaoTest {
     private static DBConfigurer dbRunner;
@@ -37,7 +41,7 @@ public class JDBCRouteDaoTest {
         RouteDao dao = daoFactory.createRouteDao();
         int expectedCount = 1;
         int actualCount = dao.findAll().size();
-        Assert.assertEquals(expectedCount, actualCount);
+        assertEquals(expectedCount, actualCount);
     }
 
     @Test
@@ -47,8 +51,36 @@ public class JDBCRouteDaoTest {
         String expectedStart = "Krakov";
         String expectedEnd = "Berlin";
         Route route = dao.findById(testedId);
-        Assert.assertEquals(expectedStart, route.getStart());
-        Assert.assertEquals(expectedEnd, route.getFinish());
+        assertEquals(expectedStart, route.getStart());
+        assertEquals(expectedEnd, route.getFinish());
     }
 
+    @Test
+    public void create() {
+        RouteDao dao = daoFactory.createRouteDao();
+        Route route = new Route();
+        route.setStart("Kyiv");
+        route.setFinish("London");
+        assertEquals(1, dao.findAll().size());
+        Route actual = dao.create(route);
+        assertEquals(2,dao.findAll().size());
+        assertEquals(route, actual);
+
+    }
+
+    @Test
+    public void createLocalizedRoute() {
+        RouteDao dao = daoFactory.createRouteDao();
+        HashMap<String, LocalizedRoute.LocalizedPart> localizedPartMap = new HashMap<>();
+
+        LocalizedRoute routeWrapper = new LocalizedRoute(new Route("Kyiv", "London"), localizedPartMap);
+        LocalizedRoute.LocalizedPart localizedPart = routeWrapper.new LocalizedPart( "Київ", "Лондон");
+
+        localizedPartMap.put("ua", localizedPart);
+
+        assertEquals(1, dao.findAll().size());
+        LocalizedRoute actual = dao.createLocalizedRoute(routeWrapper);
+        assertEquals(2,dao.findAll().size());
+        assertEquals(routeWrapper, actual);
+    }
 }

@@ -1,6 +1,5 @@
 package controller.commands.implementation;
 
-import model.entity.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -9,8 +8,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.Assert.*;
 
@@ -25,16 +23,19 @@ public class LoginCommandTest {
     private HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
     private HttpSession session = Mockito.mock(HttpSession.class);
     private ServletContext context = Mockito.mock(ServletContext.class);
-    private ArrayList<User> users = new ArrayList<>();
+    private ConcurrentHashMap<Integer, HttpSession> users = new ConcurrentHashMap<>();
+
+
 
 
     @Before
     public void setUp() {
+        users.put(2, session);
         Mockito.when(request.getServletContext()).thenReturn(context);
         Mockito.when(context.getAttribute("loggedUsers")).thenReturn(users);
         Mockito.when(request.getSession()).thenReturn(session);
-        Mockito.when(request.getParameter("username")).thenReturn("asdf");
-        Mockito.when(request.getParameter("password")).thenReturn("asdf");
+        Mockito.when(request.getParameter("login")).thenReturn("User");
+        Mockito.when(request.getParameter("password")).thenReturn("User");
     }
 
     @Test
