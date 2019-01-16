@@ -3,6 +3,7 @@ package controller;
 import controller.commands.*;
 import controller.commands.implementation.*;
 import model.service.AdminMainPageService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -14,10 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-//TODO: локализованное DAO
-//TODO: полный рефакторинг
+
 @WebServlet(urlPatterns = "/park/*" , loadOnStartup = 1)
 public class Servlet extends HttpServlet {
+    private static final Logger log = Logger.getLogger(Servlet.class);
 
     private static ServletContext context;
     private static Map<String, Command> commands;
@@ -44,7 +45,7 @@ public class Servlet extends HttpServlet {
         commands.put("admin/selected_driver_id", new AdminFormDriverIdCommand());
         commands.put("admin/cancelButton", new AdminRefuseButtonCommand());
         commands.put("exception", new ExceptionCommand());
-
+        log.info("Commands was initialized");
     }
 
     public static ServletContext getContext() {
@@ -75,16 +76,18 @@ public class Servlet extends HttpServlet {
         if (page != null) {
             if (page.contains("redirect: ")) {
                 response.sendRedirect(request.getContextPath() + page.replaceAll("redirect: ", ""));
+                log.info("redirect :" + page);
             } else {
                 request.getRequestDispatcher(page).forward(request, response);
+                log.info("forward :" + page);
             }
         }
     }
 
     private Command getCommand(HttpServletRequest request) {
         String path = request.getRequestURI();
-        System.out.println("processRequest, path=" + path);
+        log.info("path=" + path);
         path = path.replaceAll(".*/park/", "").replaceAll(".*/park", "");
-        return commands.getOrDefault(path, (r,j) -> "/park/index");
+        return commands.getOrDefault(path, (r, j) -> "/park/index");
     }
 }
