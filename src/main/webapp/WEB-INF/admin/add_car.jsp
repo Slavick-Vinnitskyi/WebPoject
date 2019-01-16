@@ -21,27 +21,8 @@
         <!-- nicescroll -->
         <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.scrollTo.min.js"></script>
         <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.nicescroll.js" type="text/javascript"></script>
-        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery-ui-1.9.2.custom.min.js"></script>
 
-        <!--custom checkbox & radio-->
-        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/ga.js"></script>
-        <!--custom switch-->
-        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-switch.js"></script>
-        <!--custom tagsinput-->
-        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.tagsinput.js"></script>
-
-        <!-- colorpicker -->
-
-        <!-- bootstrap-wysiwyg -->
-        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.hotkeys.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-wysiwyg.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-wysiwyg-custom.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/moment.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-colorpicker.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/daterangepicker.js"></script>
         <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-datepicker.js"></script>
-        <!-- ck editor -->
-        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/assets/ckeditor/ckeditor.js"></script>
         <!-- custom form component script for this page-->
         <script src="${pageContext.request.contextPath}/resources/bootstrap/js/form-component.js"></script>
         <!-- custome script for all page -->

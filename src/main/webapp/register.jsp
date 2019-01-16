@@ -19,29 +19,16 @@
     <link href="${pageContext.request.contextPath}/resources/bootstrap/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/resources/bootstrap/css/style-responsive.css" rel="stylesheet" />
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery-1.8.3.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-switch.js"></script>
     <!--custom tagsinput-->
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.tagsinput.js"></script>
 
-    <!-- colorpicker -->
-
-    <!-- bootstrap-wysiwyg -->
-    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.hotkeys.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-wysiwyg.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-wysiwyg-custom.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/moment.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-colorpicker.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/daterangepicker.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-datepicker.js"></script>
-    <!-- ck editor -->
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/assets/ckeditor/ckeditor.js"></script>
     <!-- custom form component script for this page-->
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/form-component.js"></script>
     <!-- custome script for all page -->
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/scripts.js"></script>
 
     <!-- javascripts -->
-    <script src="${pageContext.request.contextPath}resources/bootstrap/js/jquery.js"></script>
+    <script src="${pageContext.request.contextPath}resources/bootstrap/js/jquery-1.8.3.min.js"></script>
     <script src="${pageContext.request.contextPath}resources/bootstrap/js/bootstrap.min.js"></script>
     <!-- nice scroll -->
     <script src="${pageContext.request.contextPath}resources/bootstrap/js/jquery.scrollTo.min.js"></script>
